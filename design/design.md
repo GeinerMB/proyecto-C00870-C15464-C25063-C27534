@@ -29,30 +29,37 @@ aplicando la metodología de "Crazy 8's".
 ## Acuerdos de grupo:
 Tras votaciones, el equipo esogió los siguientes diseños base para los wireframes:
 
-Home:
+### Home:
 ![Home](./ejercicio-c8/escogidos/Home.jpg)
 
-Lobby:
+### Lobby:
 ![Lobby](./ejercicio-c8/escogidos/Lobby.jpg)
 
-Rules:
+### Rules:
 ![Rules](./ejercicio-c8/escogidos/Rules.jpg)
 
-Game:
+### Game:
 ![Game](./ejercicio-c8/escogidos/Game.jpg)
 
-About:
+### About:
 ![About](./ejercicio-c8/escogidos/About.jpg)
 
 ## Wireframes finales
+
+### Home:
 ![Home](./wireframes/Home.png)
 
+### Lobby:
 ![Lobby](./wireframes/Lobby.png)
 
+### Rules:
 ![Rules](./wireframes/Rules.png)
 
+### Gameplay:
 ![Game](./wireframes/Game.png)
 
+### Scoreboard:
 ![Scoreboard](./wireframes/Scoreboard.png)
 
+### About:
 ![About](./wireframes/About.png)
