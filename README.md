@@ -51,7 +51,10 @@ El juego cuenta con reglas claras que definene cómo progresar en el juego, adem
 de un servidor que registra y gestiona el estado global del juego. 
 
 ### Condición de fin:
-Un partida termina cuando:
+Una partida termina cuando:
 - Se completen todos niveles (un total de 5).
 - Los jugadores sean eliminados tras agotar sus puntos de vida.
 - El planeta que están defendiendo agote sus puntos de vida.
+
+## Diseño:
+[Diseño](./design/design.md)

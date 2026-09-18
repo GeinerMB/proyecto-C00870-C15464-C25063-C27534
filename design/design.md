@@ -7,7 +7,7 @@
 ![Wireflow](./wireflow.jpg)
 
 ## Diseño individual en papel de cada integrante:
-A continuación se muestran las ideas de cada integrante generadas
+A continuación, se muestran las ideas de cada integrante generadas
 aplicando la metodología de "Crazy 8's".
 
 ### Josué:
@@ -27,7 +27,22 @@ aplicando la metodología de "Crazy 8's".
 ![C8 Geiner](./ejercicio-c8/C8_Geiner.jpg)
 
 ## Acuerdos de grupo:
-...
+Tras votaciones, el equipo esogió los siguientes diseños base para los wireframes:
+
+Home:
+![Home](./ejercicio-c8/escogidos/Home.jpg)
+
+Lobby:
+![Lobby](./ejercicio-c8/escogidos/Lobby.jpg)
+
+Rules:
+![Rules](./ejercicio-c8/escogidos/Rules.jpg)
+
+Game:
+![Game](./ejercicio-c8/escogidos/Game.jpg)
+
+About:
+![About](./ejercicio-c8/escogidos/About.jpg)
 
 ## Wireframes finales
 ![Home](./wireframes/Home.png)
