@@ -4,6 +4,7 @@
 ![Site Map](./site_map.jpg)
 
 ## Wireflow del flujo principal del juego:
+![Wireflow](./wireflow.jpg)
 
 ## Diseño individual en papel de cada integrante:
 A continuación se muestran las ideas de cada integrante generadas
@@ -29,6 +30,14 @@ aplicando la metodología de "Crazy 8's".
 ...
 
 ## Wireframes finales
-...
+![Home](./wireframes/Home.png)
 
-## Wireflow
+![Lobby](./wireframes/Lobby.png)
+
+![Rules](./wireframes/Rules.png)
+
+![Game](./wireframes/Game.png)
+
+![Scoreboard](./wireframes/Scoreboard.png)
+
+![About](./wireframes/About.png)
