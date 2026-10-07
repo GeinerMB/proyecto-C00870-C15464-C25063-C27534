@@ -63,3 +63,4 @@ Tras votaciones, el equipo esogió los siguientes diseños base para los wirefra
 
 ### About:
 ![About](./wireframes/About.png)
+
