@@ -58,3 +58,98 @@ Una partida termina cuando:
 
 ## Diseño:
 [Diseño](./design/design.md)
+
+## Tecnología de la interfaz
+
+Se eligió el framework **React** para organizar la interfaz en componentes
+reutilizables, separar el contenido de cada página y facilitar el trabajo en equipo. Esta estructura permitirá incorporar los estilos y la interacción en las siguientes entregas. La elección también responde al objetivo del equipo de adquirir experiencia con React.
+
+**Vite** se utiliza para ejecutar la interfaz durante el desarrollo y generar los archivos compilados. **React Router** permite navegar entre las páginas.
+
+## Requisitos de desarrollo
+
+- **Node.js 24.21.0 LTS:** versión de referencia para el equipo.
+- **npm:** gestor de paquetes incluido con Node.js.
+
+Verificar las versiones desde la terminal que se utilizará para trabajar:
+
+```bash
+node --version
+npm --version
+```
+
+Para instalar y seleccionar la versión de Node.js con **nvm** en WSL, Linux o
+macOS:
+
+```bash
+nvm install 24.21.0
+nvm use 24.21.0
+nvm alias default 24.21.0
+```
+
+## Dependencias
+
+Las dependencias se registran en `package.json` y sus versiones exactas en
+`package-lock.json`.
+
+| Dependencia | Tipo | Función |
+| --- | --- | --- |
+| `react` | Aplicación | Define los componentes de la interfaz. |
+| `react-dom` | Aplicación | Renderiza los componentes en el navegador. |
+| `react-router` | Aplicación | Gestiona la navegación entre páginas. |
+| `vite` | Desarrollo | Ejecuta la interfaz localmente y genera la compilación. |
+| `@vitejs/plugin-react` | Desarrollo | Integra React con Vite y habilita la actualización de componentes durante el desarrollo. |
+
+No es necesario instalar estos paquetes individualmente: el
+comando `npm ci` instala las dependencias del proyecto usando el archivo de
+bloqueo.
+
+## Instalación y ejecución local
+
+1. Clonar el repositorio y entrar en su carpeta:
+
+   ```bash
+   git clone https://github.com/GeinerMB/proyecto-C00870-C15464-C25063-C27534.git
+   cd proyecto-C00870-C15464-C25063-C27534
+   ```
+
+2. Instalar las dependencias desde la raíz, donde se encuentra `package.json`:
+
+   ```bash
+   npm ci
+   ```
+
+3. Ejecutar la interfaz durante el desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Abrir en el navegador la URL indicada por la terminal, normalmente
+   `http://localhost:5173/`. Para detener la ejecución, presionar `Ctrl + C`.
+
+Vite proporciona un servidor local de desarrollo para visualizar la interfaz.
+La implementación del servidor multijugador corresponde a una entrega posterior.
+
+## Comandos disponibles
+
+| Comando | Función |
+| --- | --- |
+| `npm ci` | Instala las dependencias según `package-lock.json`. |
+| `npm run dev` | Ejecuta la interfaz con actualización automática al guardar cambios. |
+| `npm run build` | Genera la versión compilada en `dist/`. |
+| `npm run preview` | Permite revisar localmente la compilación generada con `npm run build`. |
+
+Después de obtener cambios que modifiquen las dependencias, ejecutar nuevamente
+`npm ci` antes de continuar trabajando. Para revisar la compilación:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Archivos de dependencias y compilación
+
+- `package.json` y `package-lock.json` deben mantenerse en el repositorio.
+- `node_modules/` y `dist/` están incluidos en `.gitignore`.
+- `node_modules/` se genera localmente en su computadora mediante `npm ci`.
