@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from "react-router";
 import Home from "./pages/Home.jsx";
+import Lobby from "./pages/Lobby.jsx";
 
 export default function App() {
   return (
@@ -12,6 +13,9 @@ export default function App() {
             <li>
               <Link to="/">Inicio</Link>
             </li>
+            <li>
+              <Link to="/lobby">Lobby</Link>
+            </li>
           </ul>
         </nav>
       </header>
@@ -19,6 +23,7 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/lobby" element={<Lobby />} />
         </Routes>
       </main>
 
