@@ -7,7 +7,7 @@ export default function Lobby() {
   
   return (
     <>
-      <section id="lobby-room" aria-labelledby="lobby-room">
+      <section id="lobby-room" aria-labelledby="lobby-room-title">
         <header>
           <h1 id="lobby-room-title">Prepara tu escuadrón</h1>
           <p>3 de 4 espacios ocupados</p>
@@ -166,7 +166,7 @@ export default function Lobby() {
         </button>          
       </section>
 
-      <dialog id="leave-from-lobby" aria-labelledby="leave-from-lobby-title">
+      <dialog id="leave-from-lobby" aria-labelledby="leave-lobby-title">
         <header>
           <h2 id="leave-lobby-title">
             ¿Abandonar la partida?
