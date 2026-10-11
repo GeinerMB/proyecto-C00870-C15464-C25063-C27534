@@ -4,18 +4,6 @@ import Home from "./pages/Home.jsx";
 export default function App() {
   return (
     <>
-      <header>
-        <p>Galactic Squadrons</p>
-
-        <nav aria-label="Navegación principal">
-          <ul>
-            <li>
-              <Link to="/">Inicio</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
