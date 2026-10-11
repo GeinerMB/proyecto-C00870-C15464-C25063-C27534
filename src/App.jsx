@@ -2,6 +2,7 @@ import { Link, Route, Routes } from "react-router";
 import Home from "./pages/Home.jsx";
 import Lobby from "./pages/Lobby.jsx";
 import Rules from "./pages/Rules.jsx";
+import Game from "./pages/Game.jsx";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/lobby" element={<Lobby />} />
           <Route path="/rules" element={<Rules />} />
+          <Route path="/game" element={<Game />} />
         </Routes>
       </main>
 

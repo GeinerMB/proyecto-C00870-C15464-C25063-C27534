@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import fighterShip from "../../assets/player/fighter_ship.svg";
+import planetImage from "../../assets/planets/planet_earth.png";
 
 export default function Lobby() {
   const navigate = useNavigate();
@@ -138,7 +139,31 @@ export default function Lobby() {
           <h2 id="lobby-mission-title">Misión</h2>
         </header>
 
+        {/* Agregar imagen del planeta */}
+        <figure>
+          <img
+            src={planetImage}
+            alt="Imagen del planeta Tierra"
+            width="100"
+            height="100"
+          />
+        </figure>
 
+        <dl>
+          <dt>Planeta</dt>
+          <dd>Tierra</dd>
+
+          <dt>Dificultad</dt>
+          <dd>Normal</dd>
+        </dl>
+
+        <button type="button">
+          Privada
+        </button>  
+
+        <button type="button" onClick={() => navigate("/game")}>
+          Jugar
+        </button>          
       </section>
     </>
   );
