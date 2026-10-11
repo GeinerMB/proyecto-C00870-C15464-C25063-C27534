@@ -45,7 +45,7 @@ export default function Lobby() {
                 Listo
               </button>
 
-              <button type="button" onClick={() => navigate("/")}>
+              <button type="button" command="show-modal" commandfor="leave-from-lobby">
                 Abandonar
               </button>              
 
@@ -165,6 +165,30 @@ export default function Lobby() {
           Jugar
         </button>          
       </section>
+
+      <dialog id="leave-from-lobby" aria-labelledby="leave-from-lobby-title">
+        <header>
+          <h2 id="leave-lobby-title">
+            ¿Abandonar la partida?
+          </h2>
+        </header>
+
+        <p id="leave-lobby-description">
+          ¿Seguro que deseas abandonar la partida y volver al inicio?
+        </p>
+
+        <footer>
+          <button type="button" command="close" commandfor="leave-from-lobby"
+            onClick={() => navigate("/")}
+          >
+            Abandonar
+          </button>
+
+          <button type="button" command="close" commandfor="leave-from-lobby">
+            Cancelar
+          </button>          
+        </footer>
+      </dialog>
     </>
   );
 }
