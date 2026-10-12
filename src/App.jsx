@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from "react-router";
 import Home from "./pages/Home.jsx";
+import Rules from "./pages/Rules.jsx";
 
 export default function App() {
   return (
@@ -12,6 +13,9 @@ export default function App() {
             <li>
               <Link to="/">Inicio</Link>
             </li>
+            <li>
+              <Link to="/pages/rules/">Reglas</Link>
+            </li>
           </ul>
         </nav>
       </header>
@@ -19,6 +23,7 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/pages/rules" element={<Rules />} />
         </Routes>
       </main>
 
