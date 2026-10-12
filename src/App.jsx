@@ -9,33 +9,6 @@ import AboutUs from "./pages/About-us.jsx";
 export default function App() {
   return (
     <>
-      <header>
-        <p>Galactic Squadrons</p>
-
-        <nav aria-label="Navegación principal">
-          <ul>
-            <li>
-              <Link to="/">Inicio</Link>
-            </li>
-            <li>
-              <Link to="/lobby">Lobby</Link>
-            </li>
-            <li>
-              <Link to="/rules">Reglas</Link>
-            </li>
-            <li>
-              <Link to="/game">Juego</Link>
-            </li>
-            <li>
-              <Link to="/scoreboard">Marcadores</Link>
-            </li>
-            <li>
-              <Link to="/about-us">Quiénes somos</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
