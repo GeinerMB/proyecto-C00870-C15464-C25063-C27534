@@ -20,7 +20,7 @@ export default function Home() {
             </button>
           </li>
           <li>
-            <button type="button" onClick={() => navigate("/scores")}>
+            <button type="button" onClick={() => navigate("/scoreboard")}>
               Marcadores
             </button>
           </li>
@@ -30,7 +30,7 @@ export default function Home() {
             </button>
           </li>
           <li>
-            <button type="button" onClick={() => navigate("/about")}>
+            <button type="button" onClick={() => navigate("/about-us")}>
               Quiénes somos
             </button>
           </li>
