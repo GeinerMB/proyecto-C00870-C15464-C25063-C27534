@@ -66,6 +66,11 @@ export default function Rules() {
         </ul>
 
       </section>
+      <section id="buttons" aria-labelledby="rules-buttons">
+        <button type="button" onClick={() => navigate(-1)}>
+          Regresar
+        </button>          
+      </section>      
     </>
   );
 }
