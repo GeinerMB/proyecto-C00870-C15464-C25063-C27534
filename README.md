@@ -12,6 +12,19 @@ Galactic Squadrons
 | Alejandro Solano Barboza  | C27534 | Diseño / QA / Coordinación |
 | Geiner Montoya Barrientos | C25063 | Frontend / Maquetado       |
 
+## Índice
+- [Descripción](#descripción)
+- [Reglas](#reglas)
+- [Justificación de los requisitos](#justificación-de-los-requisitos)
+- [Diseño](#diseño)
+- [Tecnología de la interfaz](#tecnología-de-la-interfaz)
+- [Requisitos de desarrollo](#requisitos-de-desarrollo)
+- [Dependencias](#dependencias)
+- [Instalación y ejecución local](#instalación-y-ejecución-local)
+- [Comandos disponibles](#comandos-disponibles)
+- [Archivos de dependencias y compilación](#archivos-de-dependencias-y-compilación)
+- [Validación HTML con W3C](#validación-html-con-w3c)
+
 ## Descripción:
 El juego transcurre de forma individual o cooperativa, entre 2 personas y 
 tentativamente un máximo 4. Cada partida va por rondas, donde cada una buscará 
@@ -153,3 +166,8 @@ npm run preview
 - `package.json` y `package-lock.json` deben mantenerse en el repositorio.
 - `node_modules/` y `dist/` están incluidos en `.gitignore`.
 - `node_modules/` se genera localmente en su computadora mediante `npm ci`.
+
+## Validación HTML con W3C
+
+El procedimiento, las evidencias y los resultados de las validaciones
+se encuentran en la [documentación de validación HTML](design/validation/Validation.md).
