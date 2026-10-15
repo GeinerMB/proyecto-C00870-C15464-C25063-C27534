@@ -47,7 +47,7 @@ export default function Lobby() {
 
               <button type="button" command="show-modal" commandfor="leave-from-lobby">
                 Abandonar
-              </button>              
+              </button>
 
             </article>
           </li>
