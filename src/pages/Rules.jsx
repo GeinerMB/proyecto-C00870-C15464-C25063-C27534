@@ -6,7 +6,7 @@ export default function Rules() {
 
   return (
     <>
-      <section id="rules" aria-labelledby="rules">
+      <section id="rules" aria-labelledby="rules-title">
         <header>
           <h1 id="rules-title">Instrucciones</h1>
         </header>
@@ -66,11 +66,11 @@ export default function Rules() {
         </ul>
 
       </section>
-      <section id="buttons" aria-labelledby="rules-buttons">
+      <div id="buttons">
         <button type="button" onClick={() => navigate(-1)}>
           Regresar
-        </button>          
-      </section>      
+        </button>
+      </div>   
     </>
   );
 }
