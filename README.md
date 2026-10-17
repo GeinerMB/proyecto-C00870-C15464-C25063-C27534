@@ -12,6 +12,9 @@ Galactic Squadrons
 | Alejandro Solano Barboza  | C27534 | Diseño / QA / Coordinación |
 | Geiner Montoya Barrientos | C25063 | Frontend / Maquetado       |
 
+## Github Pages
+https://geinermb.github.io/proyecto-C00870-C15464-C25063-C27534/
+
 ## Índice
 - [Descripción](#descripción)
 - [Reglas](#reglas)
