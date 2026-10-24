@@ -1,0 +1,128 @@
+/* ==========================================================================
+	Galactic Squadrons - Common Styles
+	========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Generales
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+
+  /* Tipografía: agregar aquí la fuente elegida.
+  font-family: "Nombre de la fuente", sans-serif;
+  */
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El contenido crece para mantener el pie al final. */
+#root > main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-1);
+}
+
+footer {
+  margin-block-start: var(--space-1);
+}
+
+/* Pie general definido en App.jsx. */
+#root > footer {
+  padding: .50rem;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   2. Márgenes del contenido
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+figure {
+  margin-block-start: 0;
+  margin-block-end: var(--space-1);
+}
+
+ul,
+ol {
+  padding-inline-start: 1.5rem;
+}
+
+figure {
+  margin-inline: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. Enlaces
+   -------------------------------------------------------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Controles y ventanas de diálogo
+   -------------------------------------------------------------------------- */
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+dialog {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   5. Foco visible para navegación por teclado
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Listas
+   -------------------------------------------------------------------------- */
+
+ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* ==========================================================================
+   7. Botones
+   -------------------------------------------------------------------------- */
+

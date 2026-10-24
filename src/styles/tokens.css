@@ -1,0 +1,12 @@
+/* ==========================================================================
+	Galactic Squadrons - C00870 - C15464 - C25063 - C27534
+	Paleta de colores y tokens de diseño
+	========================================================================== */
+
+:root {
+ --color-background: #0b0c10;
+ --color-text: #ffffff;
+
+ --space-1: 1rem;
+ --content-width: 72rem;
+}

@@ -5,8 +5,8 @@ export default function Home() {
 
   return (
     <>
-      <section aria-labelledby="home-title">
-        <h1 id="home-title">Galactic Squadrons</h1>
+      <section className="home" aria-labelledby="home-title">
+        <h1 id="home-title" className="home_title">Galactic Squadrons</h1>
         
         <nav aria-label="Menú principal">
           <ul>
