@@ -6,6 +6,16 @@
    1. Generales
    -------------------------------------------------------------------------- */
 
+/* Fuente de la interfaz */
+@font-face {
+  font-family: "Axion RX 14";
+  src: url("https://db.onlinewebfonts.com/t/1b6eebb4270d7d02694b68fb7c5a94d9.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -18,9 +28,6 @@ body {
   color: var(--color-text);
   line-height: 1.5;
 
-  /* Tipografía: agregar aquí la fuente elegida.
-  font-family: "Nombre de la fuente", sans-serif;
-  */
 }
 
 #root {
@@ -92,6 +99,15 @@ a {
    4. Controles y ventanas de diálogo
    -------------------------------------------------------------------------- */
 
+/* Tipografía de los títulos y botones de navegación */
+h1,
+h2,
+h3,
+.navigation-button {
+  font-family: var(--font-main);
+  font-weight: 400;
+}
+
 button,
 input,
 select,
@@ -126,3 +142,56 @@ ul {
    7. Botones
    -------------------------------------------------------------------------- */
 
+button {
+  position: relative;
+  isolation: isolate; /* Para que los pseudo-elementos no se mezclen con el contenido del botón. */
+
+  display: inline-grid;
+  place-items: center;
+
+  width: min(100%, var(--button-width));
+  min-height: 4rem;
+  padding: 1.25rem 2.5rem;
+  margin: 0.75rem 0.5rem;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  text-align: center;
+
+  /* transition: transform var(--navigation-transition); */
+}
+
+button::before,
+button::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: var(--button-shape);
+}
+
+button::before {
+  z-index: -2;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    var(--button-border-mid),
+    var(--button-border-dark) 15%,
+    var(--button-border-dark) 49%,
+    var(--button-border-mid) 50%,
+    var(--button-border-dark)
+  );
+}
+
+button::after {
+  z-index: -1;
+  inset: 0.6rem 0.75rem;
+
+  background: blue;
+}
