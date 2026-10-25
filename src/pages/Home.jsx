@@ -11,7 +11,7 @@ export default function Home() {
         <nav aria-label="Menú principal">
           <ul>
             <li>
-              <button type="button" command="show-modal" commandfor="go-to-lobby">
+              <button type="button" className="navigation-button" command="show-modal" commandfor="go-to-lobby">
                 Jugar
               </button>
             </li>
@@ -43,6 +43,11 @@ export default function Home() {
           <h2 id="go-lobby-title">
             Deseas hostear una partida o unirte a una ya existente?
           </h2>
+
+          <button type="button" command="close" commandfor="go-to-lobby">
+            Cerrar
+          </button>
+
         </header>
         <p id="go-lobby-description">
           Selecciona una opción para continuar.

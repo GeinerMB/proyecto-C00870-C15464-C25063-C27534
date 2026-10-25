@@ -151,7 +151,7 @@ button {
 
   width: min(100%, var(--button-width));
   min-height: 4rem;
-  padding: 1.25rem 2.5rem;
+  padding: 1.25rem 2rem;
   margin: 0.75rem 0.5rem;
 
   border: 0;
@@ -160,14 +160,18 @@ button {
 
   font-family: var(--font-main);
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   line-height: 1.3;
   text-align: center;
-
-  /* transition: transform var(--navigation-transition); */
 }
 
-button::before,
+button::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: var(--button-border-shape);
+}
+
 button::after {
   content: "";
   position: absolute;
@@ -181,17 +185,69 @@ button::before {
 
   background: linear-gradient(
     to bottom,
-    var(--button-border-mid),
+    /* Reflejo superior */
+    var(--button-border-light) 0%,
+    var(--button-border-mid) 10%,
+
+    /* Cara superior del bisel */
     var(--button-border-dark) 15%,
     var(--button-border-dark) 49%,
-    var(--button-border-mid) 50%,
-    var(--button-border-dark)
+
+    /* Cambio de luz en la mitad del marco */
+    var(--button-border-light) 50%,
+    var(--button-border-mid) 60%,
+
+    /* Sombra y reflejo inferior */
+    var(--button-border-dark) 90%,
+    var(--button-border-dark) 100%
   );
 }
 
 button::after {
   z-index: -1;
-  inset: 0.6rem 0.75rem;
+  inset: 0.6rem 0.6rem;
 
-  background: blue;
+  background: linear-gradient(
+    to bottom,
+    var(--button-face-top),
+    var(--button-face-bottom) 49%,
+    var(--button-face-dark) 50%,
+    var(--button-face-bottom)
+  ); 
+}
+
+/* ==========================================================================
+   8. Modales
+   -------------------------------------------------------------------------- */
+
+dialog {
+
+  border: 5px solid var(--button-border-dark);
+  
+  background: linear-gradient(
+    to bottom,
+    var(--color-background),
+    var(--dialog-background-bottom)
+  );
+}
+
+/* ==========================================================================
+   9. Efectos y transiciones
+   -------------------------------------------------------------------------- */
+
+@media (hover: hover) {
+  button:hover {
+    transform: translateY(-2px);
+  }
+
+  button:hover::after {
+    /* inset | desp horizontal | desp vertical | desenfoque | expansión | color */
+    box-shadow:
+      inset 0 6px 12px -5px var(--button-edge),
+      inset 0 -6px 12px -5px var(--button-edge);
+  }
+}
+
+button:active:not(:disabled) {
+  transform: translateY(2px);
 }

@@ -9,10 +9,19 @@
 		-------------------------------------------------------------------------- */
 	--color-background: #0b0c10;
 	--color-text: #ffffff;
+  --dialog-background-bottom: #152230;
 
-	--button-border-light: #d8ecff;
-  --button-border-mid: #769dc7;
-  --button-border-dark: #183556;
+  --button-border-light: #91a7be;
+  --button-border-mid: #79899b;
+  --button-border-dark: #506174;
+
+  --button-face-top: #105299;
+  --button-face-bottom: #083a8b;
+  --button-face-dark: #002a74;
+  --button-face-hover: #1a67b8;
+
+  /* Reflejos */
+  --button-edge: #36baff;
 
 
 	/* --------------------------------------------------------------------------
@@ -23,7 +32,7 @@
 	/* --------------------------------------------------------------------------
 		3. Tamaños
 		-------------------------------------------------------------------------- */
-	--button-width: 20rem;
+	--button-width: 18rem;
 	--content-width: 72rem;
 
 	/* --------------------------------------------------------------------------
@@ -35,6 +44,15 @@
 		5. Formas
 		-------------------------------------------------------------------------- */
 	--button-shape: polygon(
+    6% 0, /* Esquina superior izquierda */
+    94% 0, /* Esquina superior derecha */
+    100% 50%, /* Punto medio derecho */
+    94% 100%, /* Esquina inferior derecha */
+    6% 100%, /* Esquina inferior izquierda */
+    0 50% /* Punto medio izquierdo */
+  );
+
+  --button-border-shape: polygon(
     7% 0, /* Esquina superior izquierda */
     93% 0, /* Esquina superior derecha */
     100% 50%, /* Punto medio derecho */
@@ -42,4 +60,10 @@
     7% 100%, /* Esquina inferior izquierda */
     0 50% /* Punto medio izquierdo */
   );
+
+  /* --------------------------------------------------------------------------
+    6. Links
+    -------------------------------------------------------------------------- */
+  
+  --main-background-image: url("../../assets/background/space_background_002.png");
 }
