@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router";
 
+import GameModal from "../components/GameModal.jsx";
+
 export default function Home() {
   const navigate = useNavigate();
 
@@ -38,40 +40,31 @@ export default function Home() {
           </ul>
         </nav>
       </section>
-      <dialog id="go-to-lobby" className="game-modal" aria-labelledby="go-lobby-title">
-        <div className="game-modal__window">
-          <header className="game-modal__header">
-            <h2 id="go-lobby-title">
-              Comenzar partida
-            </h2>
 
-            <button type="button" className="game-modal__close"command="close" commandfor="go-to-lobby">
-              Cerrar
+      <GameModal
+        id="go-to-lobby"
+        title="Comenzar partida"
+        description="Selecciona una opción para continuar."
+        actions={
+          <>
+            <button type="button" onClick={() => navigate("/lobby")}>
+              Hostear partida
             </button>
 
-          </header>
+            <button type="button" onClick={() => navigate("/lobby")}>
+              Unirse a partida
+            </button>
 
-          <div className="game-modal__body">
-
-            <p className="game-modal__question">
-              ¿Deseas hostear una partida o unirte a una ya existente?
-            </p>
-
-            <p id="go-lobby-description">
-              Selecciona una opción para continuar.
-            </p>
-
-            <footer className="game-modal__actions">
-              <button type="button" onClick={() => navigate("/lobby")}>
-                Hostear partida
-              </button>
-              <button type="button" onClick={() => navigate("/lobby")}>
-                Unirse a partida
-              </button>
-            </footer>             
-          </div>
-        </div>
-      </dialog>
+            <button type="button" command="close" commandfor="go-to-lobby">
+              Cancelar
+            </button>
+          </>
+        }
+      >
+        <p className="game-modal__question">
+          ¿Deseas hostear una partida o unirte a una ya existente?
+        </p>
+      </GameModal>
     </>
   );
 }

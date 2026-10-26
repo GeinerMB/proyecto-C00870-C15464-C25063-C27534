@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router";
 import fighterShip from "../../assets/player/fighter_ship.svg";
 import planetImage from "../../assets/planets/planet_earth.png";
 
+import GameModal from "../components/GameModal.jsx";
+
 export default function Lobby() {
   const navigate = useNavigate();
   
@@ -166,29 +168,22 @@ export default function Lobby() {
         </button>          
       </section>
 
-      <dialog id="leave-from-lobby" aria-labelledby="leave-lobby-title">
-        <header>
-          <h2 id="leave-lobby-title">
-            ¿Abandonar la partida?
-          </h2>
-        </header>
+      <GameModal
+        id="leave-from-lobby"
+        title="¿Abandonar la partida?"
+        description="¿Seguro que deseas abandonar la partida y volver al inicio?"
+        actions={
+          <>
+            <button type="button" onClick={() => navigate("/")}>
+              Abandonar
+            </button>
 
-        <p id="leave-lobby-description">
-          ¿Seguro que deseas abandonar la partida y volver al inicio?
-        </p>
-
-        <footer>
-          <button type="button" command="close" commandfor="leave-from-lobby"
-            onClick={() => navigate("/")}
-          >
-            Abandonar
-          </button>
-
-          <button type="button" command="close" commandfor="leave-from-lobby">
-            Cancelar
-          </button>          
-        </footer>
-      </dialog>
+            <button type="button" command="close" commandfor="leave-from-lobby">
+              Cancelar
+            </button>
+          </>
+        }
+      />
     </>
   );
 }
