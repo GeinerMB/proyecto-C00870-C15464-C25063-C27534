@@ -6,7 +6,9 @@
    1. Generales
    -------------------------------------------------------------------------- */
 
-/* Fuente de la interfaz */
+/* Fuentes de la interfaz */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 @font-face {
   font-family: "Axion RX 14";
   src: url("https://db.onlinewebfonts.com/t/1b6eebb4270d7d02694b68fb7c5a94d9.woff2")
@@ -27,7 +29,14 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   line-height: 1.5;
+  font-family: var(--font-body);
 
+
+  /* Prueba de fondo con imagen. */
+  background-image: var(--main-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 #root {
@@ -165,21 +174,13 @@ button {
   text-align: center;
 }
 
+/* Borde del botón */
 button::before {
   content: "";
   position: absolute;
   pointer-events: none;
   clip-path: var(--button-border-shape);
-}
 
-button::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  clip-path: var(--button-shape);
-}
-
-button::before {
   z-index: -2;
   inset: 0;
 
@@ -203,7 +204,13 @@ button::before {
   );
 }
 
+/* Cara del botón */
 button::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: var(--button-shape);
+
   z-index: -1;
   inset: 0.6rem 0.6rem;
 
@@ -221,14 +228,84 @@ button::after {
    -------------------------------------------------------------------------- */
 
 dialog {
+  width: min(var(--dialog-width), calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
 
-  border: 5px solid var(--button-border-dark);
-  
+  padding: var(--dialog-frame);
+  border: 0;
+  color: var(--color-text);
+
+  clip-path: var(--dialog-shape);
+}
+
+dialog::backdrop {
+  background: var(--dialog-backdrop);
+}
+
+/* Estilos del componente GameModal */
+.game-modal {
   background: linear-gradient(
-    to bottom,
-    var(--color-background),
-    var(--dialog-background-bottom)
+    120deg,
+    var(--dialog-metal-light),
+    var(--dialog-metal-mid) 20%,
+    var(--dialog-metal-dark) 49%,
+    var(--dialog-metal-light) 72%,
+    var(--dialog-metal-mid)
   );
+}
+
+/* Ventana interior: cubre el centro y deja visible el marco. */
+.game-modal__window {
+  overflow: hidden;
+  background: var(--dialog-surface);
+  clip-path: var(--dialog-shape);
+}
+
+/* Cabecera azul y separación metálica. */
+.game-modal__header {
+  padding: var(--space-3);
+  text-align: center;
+
+  border-bottom: 3px solid var(--dialog-metal-mid);
+
+  background: linear-gradient(
+    var(--dialog-header-top),
+    var(--dialog-header-bottom)
+  );
+}
+
+.game-modal__header h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  overflow-wrap: anywhere;
+}
+
+/* Interior liso. */
+.game-modal__body {
+  position: relative;
+  isolation: isolate;
+  padding: 1.75rem;
+  background: var(--dialog-surface);
+  text-align: center;
+}
+
+/* Distribución de los botones dentro del modal. */
+.game-modal__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+}
+
+.game-modal__actions > button {
+  width: min(100%, var(--button-width));
+  margin: 0;
+
+  padding-inline: var(--space-2);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
 }
 
 /* ==========================================================================

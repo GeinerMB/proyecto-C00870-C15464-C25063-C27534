@@ -9,8 +9,8 @@
 		-------------------------------------------------------------------------- */
 	--color-background: #0b0c10;
 	--color-text: #ffffff;
-  --dialog-background-bottom: #152230;
 
+  /* Botones */
   --button-border-light: #91a7be;
   --button-border-mid: #79899b;
   --button-border-dark: #506174;
@@ -19,26 +19,48 @@
   --button-face-bottom: #083a8b;
   --button-face-dark: #002a74;
   --button-face-hover: #1a67b8;
-
-  /* Reflejos */
   --button-edge: #36baff;
 
+  /* Modales */
+  --dialog-surface: #1b2535;
+
+  --dialog-metal-light: #e4edf7;
+  --dialog-metal-mid: #a9b8c8;
+  --dialog-metal-dark: #7b8b9d;
+
+  --dialog-header-top: #080e24;
+  --dialog-header-bottom: #13336b;
+  --dialog-header-glow: #2266b7;
+
+  --dialog-backdrop: rgb(0 0 0 / 70%);  
 
 	/* --------------------------------------------------------------------------
 		2. Espaciado
 		-------------------------------------------------------------------------- */
 	--space-1: 1rem;
+  --space-2: 1.25rem;
+  --space-3: 1.5rem;
+  --space-4: 1.75rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
 
 	/* --------------------------------------------------------------------------
 		3. Tamaños
 		-------------------------------------------------------------------------- */
-	--button-width: 18rem;
 	--content-width: 72rem;
 
+  /* Botones */
+  --button-width: 18rem;
+
+  /* Modales*/
+  --dialog-width: 35rem;
+  --dialog-frame: 6px;
+  --dialog-corner: 28px;
 	/* --------------------------------------------------------------------------
 		4. Tipografías
 		-------------------------------------------------------------------------- */
 	--font-main: "Axion RX 14", Arial, sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
 
 	/* --------------------------------------------------------------------------
 		5. Formas
@@ -59,6 +81,17 @@
     93% 100%, /* Esquina inferior derecha */
     7% 100%, /* Esquina inferior izquierda */
     0 50% /* Punto medio izquierdo */
+  );
+
+  --dialog-shape: polygon(
+    var(--dialog-corner) 0,
+    calc(100% - var(--dialog-corner)) 0,
+    100% var(--dialog-corner),
+    100% calc(100% - var(--dialog-corner)),
+    calc(100% - var(--dialog-corner)) 100%,
+    var(--dialog-corner) 100%,
+    0 calc(100% - var(--dialog-corner)),
+    0 var(--dialog-corner)
   );
 
   /* --------------------------------------------------------------------------
