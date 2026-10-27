@@ -58,6 +58,12 @@ footer {
   margin-block-start: var(--space-1);
 }
 
+footer p {
+  margin: 0.5rem 0;
+  font-size: 13px;
+  text-align: center;
+}
+
 /* Pie general definido en App.jsx. */
 #root > footer {
   padding: .50rem;
