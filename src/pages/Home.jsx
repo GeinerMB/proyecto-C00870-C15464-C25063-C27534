@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 
 import GameModal from "../components/GameModal.jsx";
+import "../styles/home.css";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -39,6 +40,10 @@ export default function Home() {
             </li>
           </ul>
         </nav>
+
+        <div className="home__background" aria-hidden="true">
+          <span className="home__planet" />
+        </div>
       </section>
 
       <GameModal
