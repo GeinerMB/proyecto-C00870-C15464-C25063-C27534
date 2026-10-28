@@ -5,16 +5,29 @@
 /* --------------------------------------------------------------------------
    1. Home
    -------------------------------------------------------------------------- */
+#root > main:has(> .home) {
+  display: grid;
+  place-items: center;
+}
+
 .home {
   position: relative;
   isolation: isolate;
+
+  width: 100%;
+  text-align: center;
+}
+
+.home_title {
+  margin: var(--space-6);
 }
 
 
 /* --------------------------------------------------------------------------
    2. Fondo de la página
    -------------------------------------------------------------------------- */
-.home__background {
+
+.home_background {
   position: fixed;
   inset: 0;
   z-index: -1;          /* Detrás del contenido */
@@ -22,3 +35,41 @@
   pointer-events: none; /* Permite hacer clic en el menú */
 }
 
+.home_enemy_scout {
+  position: absolute;
+  top: 25%;
+  left: -80px;
+  width: 64px;
+  height: 37px;
+
+  animation: vuelo 18s linear infinite;
+}
+
+.home_enemy_scout::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  background: var(--enemy-scout) no-repeat;
+  background-size: 512px 37px;
+  image-rendering: pixelated;
+
+  transform: rotate(90deg) scale(2); /* Apunta hacia la derecha */
+  animation: motores 0.8s steps(8) infinite;
+}
+
+
+/* --------------------------------------------------------------------------
+   . Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes motores {
+  from { background-position: 0 0; }
+  to   { background-position: -512px 0; }
+}
+
+@keyframes vuelo {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(100vw + 160px)); }
+}

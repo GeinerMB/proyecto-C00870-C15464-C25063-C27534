@@ -41,8 +41,11 @@ export default function Home() {
           </ul>
         </nav>
 
-        <div className="home__background" aria-hidden="true">
-          <span className="home__planet" />
+        <div className="home_background" aria-hidden="true">
+          <span className="home_planet" />
+          <span className="home_player player_fighter" />
+          <span className="home_player_bullet" />
+          <span className="home_enemy_scout" />
         </div>
       </section>
 
