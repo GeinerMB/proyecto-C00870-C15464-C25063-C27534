@@ -42,10 +42,22 @@ export default function Home() {
         </nav>
 
         <div className="home_background" aria-hidden="true">
-          <span className="home_planet" />
-          <span className="home_player player_fighter" />
-          <span className="home_player_bullet" />
-          <span className="home_enemy_scout" />
+          <span className="home_player" />
+          {/* Dos enemigos independientes */}
+          <span className="home_enemy_scout home_enemy_scout--one" />
+          <span className="home_enemy_explosion home_enemy_explosion--one" />
+          <span className="home_enemy_scout home_enemy_scout--two" />
+          <span className="home_enemy_explosion home_enemy_explosion--two" />
+
+          {/* Ataque contra el primer enemigo */}
+          <span className="home_player_bullet home_player_bullet--miss-one" />
+          <span className="home_player_bullet home_player_bullet--miss-two" />
+          <span className="home_player_bullet home_player_bullet--hit-one" />
+
+          {/* Ataque contra el segundo enemigo */}
+          <span className="home_player_bullet home_player_bullet--miss-three" />
+          <span className="home_player_bullet home_player_bullet--miss-four" />
+          <span className="home_player_bullet home_player_bullet--hit-two" />
         </div>
       </section>
 

@@ -146,4 +146,53 @@
 
   /* Other assets */
 
+
+  /* --------------------------------------------------------------------------
+    7. Home - Animations
+    -------------------------------------------------------------------------- */
+  --scene-duration: 24s;
+
+  --outside-left: -160px;
+  --outside-right: calc(100vw + 160px);
+
+  --sprite-factor: 1;
+
+  /* JUGADOR: posición de combate, tamaño y origen de los disparos. */
+  --player-x: 18vw;
+  --player-size: clamp(40px, 5vw, 72px);
+  --shot-origin-x: calc(var(--player-x) + var(--player-size) / 2);
+
+  --scout-scale: calc(2 * var(--sprite-factor));
+  --bullet-scale: calc(1.5 * var(--sprite-factor));
+
+  --impact-offset: calc(48px * var(--sprite-factor));
+
+  /* ENEMIGO 1: altura de vuelo y posición donde recibe el impacto. */
+  --enemy-one-y: 22vh;
+  --enemy-one-hit-x: 70vw;
+
+  /* ENEMIGO 2: altura de vuelo y posición donde recibe el impacto. */
+  --enemy-two-y: 78vh;
+  --enemy-two-hit-x: 66vw;
+
+  /* DISPAROS FALLIDOS: alturas distintas a las de los enemigos.
+     El jugador también utiliza estos valores para colocarse al disparar. */
+  --miss-one-y: 36vh;
+  --miss-two-y: 44vh;
+  --miss-three-y: 64vh;
+  --miss-four-y: 56vh;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sprite-factor: 0.8;
+  }
+}
+
+/* Pantallas pequeñas: sprites al 60%.
+   Esta regla va después para prevalecer cuando se cumplen ambas. */
+@media (max-width: 600px) {
+  :root {
+    --sprite-factor: 0.6;
+  }
 }
