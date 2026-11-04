@@ -12,29 +12,29 @@ export default function Home() {
         <h1 id="home-title" className="home_title">Galactic Squadrons</h1>
         
         <nav aria-label="Menú principal">
-          <ul>
+          <ul className="home_navigation">
             <li>
-              <button type="button" className="navigation-button" command="show-modal" commandfor="go-to-lobby">
+              <button type="button" className="home_menu_button" command="show-modal" commandfor="go-to-lobby">
                 Jugar
               </button>
             </li>
             <li>
-              <button type="button" onClick={() => navigate("/rules")}>
+              <button type="button" className="home_menu_button" onClick={() => navigate("/rules")}>
                 Instrucciones
               </button>
             </li>
             <li>
-              <button type="button" onClick={() => navigate("/scoreboard")}>
+              <button type="button" className="home_menu_button" onClick={() => navigate("/scoreboard")}>
                 Marcadores
               </button>
             </li>
             <li>
-              <button type="button" onClick={() => navigate("/settings")} disabled>
+              <button type="button" className="home_menu_button" onClick={() => navigate("/settings")} disabled>
                 Configuración
               </button>
             </li>
             <li>
-              <button type="button" onClick={() => navigate("/about-us")}>
+              <button type="button" className="home_menu_button" onClick={() => navigate("/about-us")}>
                 Quiénes somos
               </button>
             </li>

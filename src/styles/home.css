@@ -22,9 +22,8 @@
   margin: var(--space-6);
 }
 
-
 /* --------------------------------------------------------------------------
-   2. Fondo de la página
+   2. Background
    -------------------------------------------------------------------------- */
 
 .home_background {
@@ -238,7 +237,70 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Animations
+   3. Responsive adjustments
+   -------------------------------------------------------------------------- */
+
+/* Evita que el fondo se corte en pantallas pequeñas */
+@media (max-height: 728px) {
+  #root:has(> main > .home) {
+    min-height: 100dvh;
+  }
+
+  #root > main:has(> .home) {
+    padding: var(--home-unit);
+  }
+
+  .home {
+    font-size: var(--home-unit);
+  }
+
+  .home_title {
+    font-size: calc(var(--home-unit) * 2.5);
+    margin: calc(2 * var(--home-unit));
+    overflow-wrap: anywhere;
+  }
+
+  .home_navigation {
+    margin-block-end: var(--home-unit);
+  }
+
+  .home_menu_button {
+    width: min(
+        calc(100% - var(--home-unit)),
+        calc(18 * var(--home-unit)));
+
+    min-height: calc(4 * var(--home-unit));
+
+    padding:
+        calc(1.25 * var(--home-unit))
+        calc(2 * var(--home-unit));
+
+    margin:
+        calc(0.75 * var(--home-unit))
+        calc(0.5 * var(--home-unit));
+
+    font-size: calc(1.3 * var(--home-unit));
+    line-height: 1.3;
+  }
+
+  .home_menu_button::after {
+    inset: calc(0.6 * var(--home-unit));
+  }
+
+  #root:has(> main > .home) > footer {
+    margin-block-start: var(--home-unit);
+    padding: calc(0.5 * var(--home-unit));
+  }
+
+  #root:has(> main > .home) > footer p {
+    margin: calc(0.5 * var(--home-unit)) 0;
+
+    font-size: calc(0.8125 * var(--home-unit));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Animations
    -------------------------------------------------------------------------- */
 
 @keyframes home-player-flight {
