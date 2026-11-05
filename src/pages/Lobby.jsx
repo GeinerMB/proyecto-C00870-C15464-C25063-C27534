@@ -179,9 +179,6 @@ export default function Lobby() {
             </li>
             <li>
               <article aria-labelledby="player-four-title" className="player-card player-card-empty">
-                <h2 id="player-four-title" className="player-card_name">
-                  Jugador 4
-                </h2>
 
                 <p>Espacio libre</p>
                 <button 
