@@ -194,12 +194,12 @@ export default function Lobby() {
           <footer className="lobby-room_footer">
             <dl className="lobby-room_details">
               <div className="lobby-room_detail">
-                <dt>Sala</dt>
+                <dt>Sala:</dt>
                 <dd>GS-001</dd>
               </div>
 
               <div className="lobby-room_detail">
-                <dt>Código</dt>
+                <dt>Código:</dt>
                 <dd>ABC-123</dd>
               </div>
             </dl>
@@ -224,10 +224,10 @@ export default function Lobby() {
           </figure>
 
           <dl className="lobby-mission-details">
-            <dt>Planeta</dt>
+            <dt>Planeta:</dt>
             <dd>Tierra</dd>
 
-            <dt>Dificultad</dt>
+            <dt>Dificultad:</dt>
             <dd>Normal</dd>
           </dl>
 

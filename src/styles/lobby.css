@@ -3,13 +3,210 @@
 	========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Player Cards
+   1. Lobby
+   -------------------------------------------------------------------------- */
+
+#root > main:has(> .lobby) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+#root:has(> main > .lobby) {
+  min-height: 100dvh;
+}
+
+/* El footer general comienza donde termina el main. */
+#root:has(> main > .lobby) > footer {
+  margin-block-start: 0;
+}
+
+/* Lobby room panel*/
+.lobby {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  gap: var(--space-3);
+
+  width: 100%;
+}
+
+.lobby-room {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  flex: 7 1 0;
+  min-width: 0;
+
+  padding: 0.5rem var(--space-1);
+}
+
+.lobby-room_header,
+.lobby-room_footer {
+  flex: 0 0 auto;
+}
+
+.lobby-room_header {
+  text-align: center;
+}
+
+.lobby-room_title {
+  margin: 0 0 0.5rem;
+}
+
+.lobby-room_occupancy {
+  margin: 0;
+  color: var(--dialog-metal-light);
+}
+
+.lobby-room_footer {
+  margin: 0;
+}
+
+.lobby-room_details {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-1);
+
+  margin: 0;
+  font-size: 1rem;
+}
+
+.lobby-room_detail {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+
+  font-family: var(--font-main);
+}
+
+.lobby-room_detail dt {
+  color: var(--dialog-metal-light);
+}
+
+.lobby-room_detail dd {
+  margin: 0;
+}
+
+/* Lobby mission panel */
+.lobby-mission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+
+  flex: 3 1 0;
+  min-width: 0;
+
+  padding: var(--space-1);
+  margin: 0;
+
+  border: 5px solid var(--button-border-mid);
+  background: var(--dialog-surface);
+  text-align: center;
+}
+
+.lobby-mission_header {
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+
+  background: linear-gradient(
+    var(--dialog-header-top),
+    var(--dialog-header-bottom)
+  );
+}
+
+.lobby-mission_title {
+  margin: 0;
+  font-size: 2rem;
+  overflow-wrap: anywhere;
+}
+
+/* Presentación del planeta. */
+.lobby-mission-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 85%;
+  min-height: 15rem;
+  margin: 0;
+  padding: 1rem;
+  
+  border: 3px solid var(--button-border-dark);
+  background: radial-gradient(
+    var(--dialog-header-bottom),
+    var(--dialog-header-top)
+  );
+}
+
+.lobby-mission-planet {
+  display: block;
+  width: 10rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.lobby-mission-details {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 0.375rem 0.5rem;
+
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.lobby-mission-details dt {
+  color: var(--dialog-metal-light);
+  text-align: right;
+}
+
+.lobby-mission-details dd {
+  margin: 0;
+  text-align: left;
+}
+
+.lobby-mission-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  width: 100%;
+  margin-top: auto;
+
+  max-width: var(--button-width);
+}
+
+.lobby-mission-button {
+  width: 100%;
+  min-height: 4rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  overflow-wrap: anywhere;
+}
+
+.lobby-mission-button::after {
+  inset: 0.5rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Player Cards
    -------------------------------------------------------------------------- */
 
 .players-list {
   display: flex;
   align-items: stretch;
   gap: 0.75rem;
+  flex: 1;
 
   margin: 0;
   padding: 0;
@@ -33,21 +230,10 @@
   min-width: 0;
   min-height: 28rem;
   padding: 0.875rem;
+  border-radius: 0.4rem;
 
   border: 5px solid var(--button-border-mid);
   background: var(--dialog-surface);
-    /* linear-gradient(
-      var(--dialog-surface),
-      var(--dialog-surface)
-    ) padding-box,
-    linear-gradient(
-      135deg,
-      var(--dialog-metal-light),
-      var(--dialog-metal-mid) 25%,
-      var(--dialog-metal-dark) 60%,
-      var(--dialog-metal-mid)
-    ) border-box; */
-  /* box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 30%); */
   text-align: center;
 }
 
