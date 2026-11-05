@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Galactic Squadrons - About Us Styles
+   ========================================================================== */
+
+:root {
+    --color-background: #0b0f19;
+    --color-text: #f3f4f6;
+    --dialog-surface: #111827;
+    --dialog-metal-mid: #4b5563;
+    --dialog-metal-light: #9ca3af;
+    --dialog-metal-dark: #1f2937;
+    --button-border-mid: #374151;
+    --button-border-dark: #1f2937;
+    --dialog-header-top: #1e3a8a;
+    --dialog-header-bottom: #0f172a;
+    --font-main: "Axion RX 14", system-ui, sans-serif;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+}
+
+#about-us {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-2);
+    box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   1. Cabecera principal unificada
+   -------------------------------------------------------------------------- */
+#about-us>header {
+    width: 100%;
+    text-align: center;
+    padding: var(--space-3);
+    background: var(--dialog-surface);
+    border: 4px solid var(--dialog-metal-mid);
+    box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+}
+
+#about-us>header h1 {
+    font-family: var(--font-main);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 0.5rem;
+}
+
+#about-us>header p {
+    color: var(--dialog-metal-light);
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Sección contenedora del equipo
+   -------------------------------------------------------------------------- */
+#about-us>section {
+    width: 100%;
+    background: var(--dialog-surface);
+    border: 4px solid var(--dialog-metal-mid);
+    padding: var(--space-3);
+    box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+}
+
+#about-us>section h2 {
+    font-family: var(--font-main);
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    text-align: center;
+    margin-bottom: var(--space-2);
+    border-bottom: 2px solid var(--dialog-metal-mid);
+    padding-bottom: 0.5rem;
+}
+
+/* Cuadrícula exacta de 4 columnas en línea */
+#about-us ul {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
+
+/* Tarjeta principal de cada integrante */
+#about-us li {
+    display: flex;
+    flex-direction: column;
+    background: var(--dialog-surface);
+    border: 5px solid var(--button-border-mid);
+    padding: 0.875rem;
+    text-align: center;
+    font-family: var(--font-main);
+    color: var(--color-text);
+    min-width: 0;
+    box-sizing: border-box;
+    gap: 0.875rem;
+}
+
+/* Título del integrante (Nombre) */
+.team-card_name {
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem 0.25rem;
+    background: linear-gradient(var(--dialog-header-top),
+            var(--dialog-header-bottom));
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
+}
+
+/* Vista previa de la nave/avatar */
+.team-ship-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 8rem;
+    margin: 0;
+    padding: 0.75rem;
+    border: 3px solid var(--button-border-dark);
+    background: radial-gradient(var(--dialog-header-bottom),
+            var(--dialog-header-top));
+}
+
+.team-card-ship {
+    display: block;
+    width: 6rem;
+    height: 6rem;
+    object-fit: contain;
+}
+
+/* --------------------------------------------------------------------------
+   3. Sub-rectángulos internos (Rol y Sobre mí)
+   -------------------------------------------------------------------------- */
+
+.team-card-role,
+.team-card-bio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    width: 100%;
+}
+
+.team-card-role-label,
+.team-card-bio-label {
+    font-size: 0.9rem;
+    color: var(--dialog-metal-light);
+}
+
+/* Sub-rectángulo para el Rol */
+.team-card-role-value {
+    width: 100%;
+    min-height: 2rem;
+    margin: 0;
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid var(--dialog-metal-mid);
+    background-color: var(--dialog-header-top);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+/* Sub-rectángulo para el Sobre mí */
+.team-card-bio p {
+    width: 100%;
+    min-height: 4rem;
+    margin: 0;
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid var(--dialog-metal-mid);
+    background-color: var(--dialog-header-top);
+    color: var(--color-text);
+    font-size: 0.75rem;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+/* --------------------------------------------------------------------------
+   4. Pie de página y enlace de retorno
+   -------------------------------------------------------------------------- */
+#about-us footer {
+    text-align: center;
+    margin-top: var(--space-1);
+}
+
+#about-us footer a {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    background: linear-gradient(var(--dialog-header-top),
+            var(--dialog-header-bottom));
+    border: 2px solid var(--button-border-mid);
+    text-decoration: none;
+    font-family: var(--font-main);
+    font-size: 1.1rem;
+    color: var(--color-text);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#about-us footer a:hover {
+    transform: translateY(-2px);
+    background: var(--dialog-header-bottom);
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsividad
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+    #about-us ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    #about-us ul {
+        grid-template-columns: 1fr;
+    }
+}

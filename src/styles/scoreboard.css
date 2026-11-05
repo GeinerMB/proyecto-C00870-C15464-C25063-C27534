@@ -1,0 +1,157 @@
+/* ==========================================================================
+   Galactic Squadrons - Scoreboard Styles
+   ========================================================================== */
+
+:root {
+    --color-background: #0b0f19;
+    --color-text: #f3f4f6;
+    --dialog-surface: #111827;
+    --dialog-metal-mid: #4b5563;
+    --dialog-metal-light: #9ca3af;
+    --dialog-metal-dark: #1f2937;
+    --button-border-mid: #374151;
+    --button-border-dark: #1f2937;
+    --dialog-header-top: #1e3a8a;
+    --dialog-header-bottom: #0f172a;
+    --font-main: "Axion RX 14", system-ui, sans-serif;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+}
+
+#scoreboard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-2);
+    box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   1. Cabecera principal unificada
+   -------------------------------------------------------------------------- */
+.scoreboard-top-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--dialog-surface);
+    border: 4px solid var(--dialog-metal-mid);
+    box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+}
+
+.scoreboard-back-button {
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--dialog-header-top);
+    color: var(--color-text);
+    border: 2px solid var(--button-border-dark);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.scoreboard-back-button:hover {
+    background: var(--dialog-header-bottom);
+}
+
+.scoreboard-main-title {
+    margin: 0;
+    font-family: var(--font-main);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    text-align: center;
+    flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   2. Contenedor y diseño de la tabla de marcadores
+   -------------------------------------------------------------------------- */
+.scoreboard-content {
+    width: 100%;
+    background: var(--dialog-surface);
+    border: 4px solid var(--dialog-metal-mid);
+    padding: var(--space-3);
+    box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 30%);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scoreboard-table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: separate;
+    border-spacing: 0 var(--space-2);
+    /* Espacio entre cada sub-rectángulo/fila */
+}
+
+.scoreboard-table th[scope="col"] {
+    font-family: var(--font-main);
+    font-size: 1.2rem;
+    color: var(--dialog-metal-light);
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--dialog-metal-mid);
+}
+
+/* Cada fila actúa como un sub-rectángulo independiente */
+.scoreboard-table tbody tr {
+    background: linear-gradient(var(--dialog-header-top),
+            var(--dialog-header-bottom));
+    border: 2px solid var(--button-border-mid);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.scoreboard-table tbody tr:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-text);
+}
+
+.scoreboard-table td,
+.scoreboard-table th[scope="row"] {
+    padding: 1rem 1.5rem;
+    font-family: var(--font-main);
+    font-size: 1.1rem;
+    color: var(--color-text);
+    border: none;
+}
+
+.score-rank {
+    width: 15%;
+    text-align: left;
+}
+
+.score-name {
+    width: 45%;
+    text-align: left;
+    font-weight: normal;
+}
+
+.score-points {
+    width: 40%;
+    text-align: right;
+}
+
+
+/* Ocultar texto visualmente para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
