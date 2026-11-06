@@ -214,12 +214,10 @@ export default function Lobby() {
           </header>
 
           <figure className="lobby-mission-preview">
-            <img
+            <span
               className="lobby-mission-planet"
-              src={planetImage}
-              alt="Imagen del planeta Tierra"
-              width="100"
-              height="100"
+              role="img"
+              aria-label="Planeta de la misión"
             />
           </figure>
 
