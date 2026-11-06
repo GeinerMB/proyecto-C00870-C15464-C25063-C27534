@@ -47,18 +47,6 @@
     box-sizing: border-box;
 }
 
-.scoreboard-back-button {
-    min-height: 2.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--dialog-header-top);
-    color: var(--color-text);
-    border: 2px solid var(--button-border-dark);
-    font-family: var(--font-main);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
 .scoreboard-back-button:hover {
     background: var(--dialog-header-bottom);
 }

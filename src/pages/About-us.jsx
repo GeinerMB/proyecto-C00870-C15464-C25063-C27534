@@ -8,23 +8,23 @@ export default function AboutUs() {
   const teamMembers = [
     {
       name: "Josué Badilla Paredes",
-      role: "Frontend",
-      bio: "XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX",
+      role: "Servidor / Comunicación",
+      bio: "Encargado del desarrollo del servidor y de la comunicación entre los jugadores y el juego.",
     },
     {
       name: "Werner Naranjo Navarro",
-      role: "Frontend/Backend",
-      bio: "XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX",
+      role: "Cliente / Lógica de Juego",
+      bio: "Encargado del desarrollo del cliente y de implementar la lógica de juego.",
     },
     {
       name: "Alejandro Solano Barboza",
-      role: "Frontend/Backend",
-      bio: "XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX",
+      role: "Diseño / QA / Coordinación",
+      bio: "Encargado del diseño, las pruebas de calidad y la coordinación del proyecto.",
     },
     {
       name: "Geiner Montoya Barrientos",
-      role: "Backend",
-      bio: "XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXX",
+      role: "Frontend / Maquetado",
+      bio: "Encargado del desarrollo frontend y del maquetado de la interfaz.",
     },
   ];
 
