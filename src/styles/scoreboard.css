@@ -2,15 +2,13 @@
    Galactic Squadrons - Scoreboard Styles
    ========================================================================== */
 
-:root {
+#scoreboard {
     --color-background: #0b0f19;
     --color-text: #f3f4f6;
     --dialog-surface: #111827;
     --dialog-metal-mid: #4b5563;
     --dialog-metal-light: #9ca3af;
     --dialog-metal-dark: #1f2937;
-    --button-border-mid: #374151;
-    --button-border-dark: #1f2937;
     --dialog-header-top: #1e3a8a;
     --dialog-header-bottom: #0f172a;
     --font-main: "Axion RX 14", system-ui, sans-serif;
