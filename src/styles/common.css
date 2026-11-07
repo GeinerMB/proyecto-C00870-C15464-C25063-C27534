@@ -117,8 +117,7 @@ a {
 /* Tipografía de los títulos y botones de navegación */
 h1,
 h2,
-h3,
-.navigation-button {
+h3 {
   font-family: var(--font-main);
   font-weight: 400;
 }
