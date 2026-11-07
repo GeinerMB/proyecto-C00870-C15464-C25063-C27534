@@ -2,8 +2,32 @@
 	Galactic Squadrons - Lobby Styles
 	========================================================================== */
 
-:root {
+.lobby {
   --player-card-max-height: 40rem;
+
+  --text-dark: #9ca3af;
+  --text-light-gray: #ced9e6;
+
+  --button-ready-top: #159910;
+  --button-ready-bottom: #029e02;
+  --button-ready-dark: #038518;
+  --button-ready-edge: #83ff83;
+
+  --button-abandon-top: #d30a0a;
+  --button-abandon-bottom: #9b1212;
+  --button-abandon-dark: #8b0303;
+  --button-abandon-edge: #fc6d6d;
+
+  --lobby-box-border-light: #91a7be;
+  --lobby-box-border-mid: #1f2937;
+  --previews-border: #3c495c;
+  --select-role-border: #a9b8c8;
+
+  --lobby-backgrounds: #111827;
+  --headers-top: #080e24;
+  --headers-bottom: #13336b;
+
+  --lock-close-icon: url(../../assets/lock-close.svg);
 }
 
 /* --------------------------------------------------------------------------
@@ -68,7 +92,7 @@
 
 .lobby-room_occupancy {
   margin: 0;
-  color: var(--dialog-metal-light);
+  color: var(--text-light-gray);
 }
 
 .lobby-room_footer {
@@ -94,7 +118,7 @@
 }
 
 .lobby-room_detail dt {
-  color: var(--dialog-metal-light);
+  color: var(--text-light-gray);
 }
 
 .lobby-room_detail dd {
@@ -114,8 +138,8 @@
   padding: var(--space-1);
   margin: 0;
 
-  border: 5px solid var(--button-border-mid);
-  background: var(--dialog-surface);
+  border: 5px solid var(--lobby-box-border-light);
+  background: var(--lobby-backgrounds);
   text-align: center;
 }
 
@@ -124,8 +148,8 @@
   padding: 0.75rem 0.5rem;
 
   background: linear-gradient(
-    var(--dialog-header-top),
-    var(--dialog-header-bottom)
+    var(--headers-top),
+    var(--headers-bottom)
   );
 }
 
@@ -149,10 +173,10 @@
   margin: 0;
   padding: 1rem;
   
-  border: 3px solid var(--button-border-dark);
+  border: 3px solid var(--previews-border);
   background: radial-gradient(
-    var(--dialog-header-bottom),
-    var(--dialog-header-top)
+    var(--headers-bottom),
+    var(--headers-top)
   );
 }
 
@@ -188,7 +212,7 @@
 }
 
 .lobby-mission-details dt {
-  color: var(--dialog-metal-light);
+  color: var(--text-dark);
   text-align: right;
 }
 
@@ -260,8 +284,8 @@
   padding-bottom: clamp(1.5rem, 3dvh, 2.5rem);
   border-radius: 0.4rem;
 
-  border: 5px solid var(--button-border-mid);
-  background: var(--dialog-surface);
+  border: 5px solid var(--lobby-box-border-light);
+  background: var(--lobby-backgrounds);
   text-align: center;
 }
 
@@ -271,8 +295,8 @@
   padding: 0.5rem 0.25rem;
 
   background: linear-gradient(
-    var(--dialog-header-top),
-    var(--dialog-header-bottom)
+    var(--headers-top),
+    var(--headers-bottom)
   );
 
   font-size: 1.5rem;
@@ -295,10 +319,10 @@
   margin: 0;
   padding: 0.65rem;
 
-  border: 3px solid var(--button-border-dark);
+  border: 3px solid var(--previews-border);
   background: radial-gradient(
-    var(--dialog-header-bottom),
-    var(--dialog-header-top)
+    var(--headers-bottom),
+    var(--headers-top)
   );
 }
 
@@ -325,7 +349,6 @@
 
 .player-card-role-label {
   font-size: 1.125rem;
-  color: var(--dialog-metal-light);
 }
 
 /* Player role selection dropdown */
@@ -336,8 +359,8 @@
   padding: 0.5rem;
   text-align: center;
 
-  border: 1px solid var(--dialog-metal-mid);
-  background-color: var(--dialog-header-top);
+  border: 1px solid var(--select-role-border);
+  background-color: var(--headers-top);
   color: var(--color-text);
 
   font-family: var(--font-main);
@@ -387,13 +410,13 @@
   flex-direction: column;
   justify-content: center;
 
-  border: 3px dashed var(--button-border-dark);
-  background: var(--dialog-header-top);
+  border: 3px dashed var(--lobby-box-border-mid);
+  background: var(--headers-top);
 }
 
 .player-card-empty > p {
   margin: auto 0 0;
-  color: var(--dialog-metal-light);
+  color: var(--text-light-gray);
 }
 
 .player-card-empty > .player-card-button-invite {
@@ -404,13 +427,79 @@
    3. Buttons
    -------------------------------------------------------------------------- */
 
+.player-card-button-ready::after {
+  background: linear-gradient(
+    to bottom,
+    var(--button-ready-top),
+    var(--button-ready-bottom) 49%,
+    var(--button-ready-dark) 50%,
+    var(--button-ready-bottom)
+  ); ;
+}
 
+.player-card-button-abandon::after {
+  background: linear-gradient(
+    to bottom,
+    var(--button-abandon-top),
+    var(--button-abandon-bottom) 49%,
+    var(--button-abandon-dark) 50%,
+    var(--button-abandon-bottom)
+  ); ;
+}
+
+.player-card-button-expel::after {
+  background: linear-gradient(
+    to bottom,
+    var(--button-abandon-top),
+    var(--button-abandon-bottom) 49%,
+    var(--button-abandon-dark) 50%,
+    var(--button-abandon-bottom)
+  ); ;
+}
+
+.lobby-mission-privacy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.privacy-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-image: var(--lock-close-icon);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  display: inline-block;
+}
 
 /* --------------------------------------------------------------------------
    4. Effects
    -------------------------------------------------------------------------- */
 
+@media (hover: hover) {
+  .player-card-button-ready:hover::after {
+    /* inset | desp horizontal | desp vertical | desenfoque | expansión | color */
+    box-shadow:
+      inset 0 6px 12px -5px var(--button-ready-edge),
+      inset 0 -6px 12px -5px var(--button-ready-edge);
+  }
 
+  .player-card-button-abandon:hover::after {
+    /* inset | desp horizontal | desp vertical | desenfoque | expansión | color */
+    box-shadow:
+      inset 0 6px 12px -5px var(--button-abandon-edge),
+      inset 0 -6px 12px -5px var(--button-abandon-edge);
+  }
+
+  .player-card-button-expel:hover::after {
+    /* inset | desp horizontal | desp vertical | desenfoque | expansión | color */
+    box-shadow:
+      inset 0 6px 12px -5px var(--button-abandon-edge),
+      inset 0 -6px 12px -5px var(--button-abandon-edge);
+  }
+}
 
 /* ==========================================================================
    5. Responsive Design

@@ -231,7 +231,8 @@ export default function Lobby() {
 
           <div className="lobby-mission-actions">
             <button type="button" className="lobby-mission-button lobby-mission-privacy">
-              Privada
+              <span class="privacy-icon" aria-hidden="true"></span>
+              <span>Privada</span>
             </button>  
 
             <button

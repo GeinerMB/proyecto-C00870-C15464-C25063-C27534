@@ -12,8 +12,8 @@
 
   /* Botones */
   --button-border-light: #91a7be;
-  --button-border-mid: #79899b;
-  --button-border-dark: #506174;
+  --button-border-mid: #374151;
+  --button-border-dark: #1f2937;
 
   --button-face-top: #105299;
   --button-face-bottom: #083a8b;
@@ -22,7 +22,7 @@
   --button-edge: #36baff;
 
   /* Modales */
-  --dialog-surface: #1b2535;
+  --dialog-surface: #111827;
 
   --dialog-metal-light: #e4edf7;
   --dialog-metal-mid: #a9b8c8;
