@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint:css:game": "stylelint src/styles/game.css",
-    "palette:game": "node scripts/game-palette.mjs"
+    "lint:css:rules": "stylelint src/styles/rules.css",
+    "palette:game": "node scripts/game-palette.mjs",
+    "palette:rules": "node scripts/rules-palette.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",
