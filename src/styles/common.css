@@ -163,7 +163,8 @@ button {
   display: inline-grid;
   place-items: center;
 
-  width: min(100%, var(--button-width));
+  width: 100%;
+  max-width: var(--button-width);
   min-height: 4rem;
   padding: 1.25rem 2rem;
   margin: 0.75rem 0.5rem;
@@ -305,7 +306,8 @@ dialog::backdrop {
 }
 
 .game-modal__actions > button {
-  width: min(100%, var(--button-width));
+  width: 100%;
+  max-width: var(--button-width);
   margin: 0;
 
   padding-inline: var(--space-2);
