@@ -113,12 +113,13 @@ Las dependencias se registran en `package.json` y sus versiones exactas en
 | `react` | Aplicación | Define los componentes de la interfaz. |
 | `react-dom` | Aplicación | Renderiza los componentes en el navegador. |
 | `react-router` | Aplicación | Gestiona la navegación entre páginas. |
+| `express` | Aplicación | Sirve la aplicación compilada desde el servidor Node.js. |
 | `vite` | Desarrollo | Ejecuta la interfaz localmente y genera la compilación. |
 | `@vitejs/plugin-react` | Desarrollo | Integra React con Vite y habilita la actualización de componentes durante el desarrollo. |
 
-No es necesario instalar estos paquetes individualmente: el
-comando `npm ci` instala las dependencias del proyecto usando el archivo de
-bloqueo.
+No es necesario instalar estos paquetes individualmente: `npm install` instala
+las dependencias del proyecto. Para reproducir las versiones exactas del archivo
+de bloqueo después de obtener cambios del equipo, se puede utilizar `npm ci`.
 
 ## Instalación y ejecución local
 
@@ -132,43 +133,66 @@ bloqueo.
 2. Instalar las dependencias desde la raíz, donde se encuentra `package.json`:
 
    ```bash
-   npm ci
+   npm install
    ```
 
-3. Ejecutar la interfaz durante el desarrollo:
+3. Compilar la aplicación:
 
    ```bash
-   npm run dev
+   npm run build
    ```
 
-4. Abrir en el navegador la URL indicada por la terminal, normalmente
-   `http://localhost:5173/`. Para detener la ejecución, presionar `Ctrl + C`.
+4. Iniciar el servidor Express:
 
-Vite proporciona un servidor local de desarrollo para visualizar la interfaz.
-La implementación del servidor multijugador corresponde a una entrega posterior.
+   ```bash
+   npm start
+   ```
+
+5. Abrir [http://localhost:3000/](http://localhost:3000/). El servidor redirige
+   al camino base del proyecto y entrega los archivos de `dist/`. Para detenerlo,
+   presionar `Ctrl + C` en la terminal.
+
+Durante el desarrollo de la interfaz, utilizar Vite como alternativa:
+
+```bash
+npm run dev
+```
+
+Abrir la URL indicada por la terminal. Vite actualiza la interfaz al guardar
+cambios; este comando no inicia Express y no requiere una compilación previa.
+Para detenerlo, presionar `Ctrl + C`.
+
+Express sirve la última compilación disponible: después de modificar la interfaz,
+ejecutar nuevamente `npm run build` y recargar el navegador para ver los cambios
+desde el puerto 3000. El servidor básico ya está implementado; la sincronización
+multijugador corresponde a una entrega posterior.
 
 ## Comandos disponibles
 
 | Comando | Función |
 | --- | --- |
+| `npm install` | Instala las dependencias del proyecto. |
 | `npm ci` | Instala las dependencias según `package-lock.json`. |
 | `npm run dev` | Ejecuta la interfaz con actualización automática al guardar cambios. |
 | `npm run build` | Genera la versión compilada en `dist/`. |
+| `npm start` | Inicia Express en el puerto 3000 para servir la aplicación; requiere ejecutar antes `npm run build`. |
+| `npm run dev:server` | Inicia Express y lo reinicia cuando cambia el código del servidor; no recompila la interfaz. |
 | `npm run preview` | Permite revisar localmente la compilación generada con `npm run build`. |
 
 Después de obtener cambios que modifiquen las dependencias, ejecutar nuevamente
-`npm ci` antes de continuar trabajando. Para revisar la compilación:
+`npm ci` antes de continuar trabajando. Para ejecutar la compilación con Express:
 
 ```bash
 npm run build
-npm run preview
+npm start
 ```
 
 ## Archivos de dependencias y compilación
 
 - `package.json` y `package-lock.json` deben mantenerse en el repositorio.
 - `node_modules/` y `dist/` están incluidos en `.gitignore`.
-- `node_modules/` se genera localmente en su computadora mediante `npm ci`.
+- `node_modules/` se genera localmente mediante `npm install` o `npm ci`.
+- `dist/` se genera mediante `npm run build` y contiene los archivos que sirve Express.
 
 ## Validación HTML con W3C
 
