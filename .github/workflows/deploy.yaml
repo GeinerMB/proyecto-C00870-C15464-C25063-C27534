@@ -2,7 +2,7 @@ name: Deploy Vite React App to GitHub Pages
 
 on:
   push:
-    branches: ["dev03-HTML-maquetado"]
+    branches: ["dev04-CSS-estilosydiseño"]
 
 permissions:
   contents: read
