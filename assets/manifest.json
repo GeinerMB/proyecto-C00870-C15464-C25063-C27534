@@ -1,0 +1,756 @@
+{
+  "assets": {
+    "obstacles/asteroid_rock_small.png": {
+      "path": "assets/obstacles/asteroid_rock_small.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_iron_small.png": {
+      "path": "assets/obstacles/asteroid_iron_small.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_ice_small.png": {
+      "path": "assets/obstacles/asteroid_ice_small.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_rock_medium.png": {
+      "path": "assets/obstacles/asteroid_rock_medium.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_iron_medium.png": {
+      "path": "assets/obstacles/asteroid_iron_medium.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_ice_medium.png": {
+      "path": "assets/obstacles/asteroid_ice_medium.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_rock_large.png": {
+      "path": "assets/obstacles/asteroid_rock_large.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_iron_large.png": {
+      "path": "assets/obstacles/asteroid_iron_large.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/asteroid_ice_large.png": {
+      "path": "assets/obstacles/asteroid_ice_large.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle",
+      "notes": "Sprite estatico. Colision circular aproximada, ajustar al tamano visible."
+    },
+    "obstacles/debris_solar_panel.png": {
+      "path": "assets/obstacles/debris_solar_panel.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle"
+    },
+    "obstacles/debris_hull.png": {
+      "path": "assets/obstacles/debris_hull.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle"
+    },
+    "obstacles/debris_station_ring.png": {
+      "path": "assets/obstacles/debris_station_ring.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "obstacle"
+    },
+    "items/medkit.png": {
+      "path": "assets/items/medkit.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item",
+      "notes": "Botiquin del rol Apoyo."
+    },
+    "items/powerup_speed.png": {
+      "path": "assets/items/powerup_speed.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item"
+    },
+    "items/powerup_fire_rate.png": {
+      "path": "assets/items/powerup_fire_rate.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item"
+    },
+    "items/powerup_shield.png": {
+      "path": "assets/items/powerup_shield.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item"
+    },
+    "items/powerup_points.png": {
+      "path": "assets/items/powerup_points.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item"
+    },
+    "items/powerup_health.png": {
+      "path": "assets/items/powerup_health.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "item"
+    },
+    "ui/icons/role_furtivo.png": {
+      "path": "assets/ui/icons/role_furtivo.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/role_tanque.png": {
+      "path": "assets/ui/icons/role_tanque.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/role_apoyo.png": {
+      "path": "assets/ui/icons/role_apoyo.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_eliminated.png": {
+      "path": "assets/ui/icons/status_eliminated.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_player.png": {
+      "path": "assets/ui/icons/status_player.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_energy.png": {
+      "path": "assets/ui/icons/status_energy.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_health.png": {
+      "path": "assets/ui/icons/status_health.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_points.png": {
+      "path": "assets/ui/icons/status_points.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "ui/icons/status_shield.png": {
+      "path": "assets/ui/icons/status_shield.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "icon"
+    },
+    "effects/explosion_small.png": {
+      "path": "assets/effects/explosion_small.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 8,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 14,
+      "loop": false,
+      "category": "effect"
+    },
+    "effects/explosion_large.png": {
+      "path": "assets/effects/explosion_large.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 10,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 14,
+      "loop": false,
+      "category": "effect"
+    },
+    "effects/laser_impact.png": {
+      "path": "assets/effects/laser_impact.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 18,
+      "loop": false,
+      "category": "effect"
+    },
+    "effects/collision_sparks.png": {
+      "path": "assets/effects/collision_sparks.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 20,
+      "loop": false,
+      "category": "effect"
+    },
+    "effects/item_pickup.png": {
+      "path": "assets/effects/item_pickup.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 18,
+      "loop": false,
+      "category": "effect"
+    },
+    "player/effects/player_hit.png": {
+      "path": "assets/player/effects/player_hit.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 15,
+      "loop": false,
+      "category": "effect",
+      "notes": "Efecto superpuesto a la nave; no incluye nave. Centrar en el jugador."
+    },
+    "player/effects/player_destruction.png": {
+      "path": "assets/player/effects/player_destruction.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 10,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 14,
+      "loop": false,
+      "category": "effect",
+      "notes": "Usar al eliminar un jugador; no incluye nave."
+    },
+    "player/effects/engine_thrust.png": {
+      "path": "assets/player/effects/engine_thrust.png",
+      "frameWidth": 48,
+      "frameHeight": 64,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 12,
+      "loop": true,
+      "category": "effect",
+      "notes": "Alinear borde superior del frame con borde superior de la nave 48x48, dibujar por detras."
+    },
+    "player/effects/muzzle_flash.png": {
+      "path": "assets/player/effects/muzzle_flash.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 22,
+      "loop": false,
+      "category": "effect"
+    },
+    "player/effects/healing_aura.png": {
+      "path": "assets/player/effects/healing_aura.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 12,
+      "loop": true,
+      "category": "effect"
+    },
+    "player/effects/shield_activation.png": {
+      "path": "assets/player/effects/shield_activation.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 12,
+      "loop": false,
+      "category": "effect"
+    },
+    "player/effects/speed_boost.png": {
+      "path": "assets/player/effects/speed_boost.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 12,
+      "loop": true,
+      "category": "effect"
+    },
+    "player/effects/rapid_fire.png": {
+      "path": "assets/player/effects/rapid_fire.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 14,
+      "loop": true,
+      "category": "effect"
+    },
+    "planets/earth_damage.png": {
+      "path": "assets/planets/earth_damage.png",
+      "frameWidth": 200,
+      "frameHeight": 200,
+      "frames": 5,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 7,
+      "loop": false,
+      "category": "planet",
+      "notes": "Reutiliza la Tierra original. 5 fases de daño; no corresponde a puntos de vida exactos."
+    },
+    "planets/earth_destruction.png": {
+      "path": "assets/planets/earth_destruction.png",
+      "frameWidth": 200,
+      "frameHeight": 200,
+      "frames": 10,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 12,
+      "loop": false,
+      "category": "planet",
+      "notes": "Fases 0 a 3 conservan la Tierra; fases 4 a 9 explosión. Efecto de derrota del planeta."
+    },
+    "ui/bars/player_health_frame.png": {
+      "path": "assets/ui/bars/player_health_frame.png",
+      "frameWidth": 192,
+      "frameHeight": 24,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar relleno a x+5 y+5, ancho proporcional a vida; luego dibujar marco encima."
+    },
+    "ui/bars/player_energy_frame.png": {
+      "path": "assets/ui/bars/player_energy_frame.png",
+      "frameWidth": 192,
+      "frameHeight": 24,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar relleno a x+5 y+5, ancho proporcional a vida; luego dibujar marco encima."
+    },
+    "ui/bars/planet_health_frame.png": {
+      "path": "assets/ui/bars/planet_health_frame.png",
+      "frameWidth": 224,
+      "frameHeight": 24,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar relleno a x+5 y+5, ancho proporcional a vida; luego dibujar marco encima."
+    },
+    "ui/bars/boss_health_frame.png": {
+      "path": "assets/ui/bars/boss_health_frame.png",
+      "frameWidth": 320,
+      "frameHeight": 30,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar relleno a x+5 y+5, ancho proporcional a vida; luego dibujar marco encima."
+    },
+    "ui/bars/health_fill.png": {
+      "path": "assets/ui/bars/health_fill.png",
+      "frameWidth": 8,
+      "frameHeight": 14,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar con ancho variable entre 0 y (ancho del marco - 10)."
+    },
+    "ui/bars/energy_fill.png": {
+      "path": "assets/ui/bars/energy_fill.png",
+      "frameWidth": 8,
+      "frameHeight": 14,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar con ancho variable entre 0 y (ancho del marco - 10)."
+    },
+    "ui/bars/planet_fill.png": {
+      "path": "assets/ui/bars/planet_fill.png",
+      "frameWidth": 8,
+      "frameHeight": 14,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar con ancho variable entre 0 y (ancho del marco - 10)."
+    },
+    "ui/bars/boss_fill.png": {
+      "path": "assets/ui/bars/boss_fill.png",
+      "frameWidth": 8,
+      "frameHeight": 14,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Dibujar con ancho variable entre 0 y (ancho del marco - 10)."
+    },
+    "ui/player_tags/p1_active.png": {
+      "path": "assets/ui/player_tags/p1_active.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p1_eliminated.png": {
+      "path": "assets/ui/player_tags/p1_eliminated.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p2_active.png": {
+      "path": "assets/ui/player_tags/p2_active.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p2_eliminated.png": {
+      "path": "assets/ui/player_tags/p2_eliminated.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p3_active.png": {
+      "path": "assets/ui/player_tags/p3_active.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p3_eliminated.png": {
+      "path": "assets/ui/player_tags/p3_eliminated.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p4_active.png": {
+      "path": "assets/ui/player_tags/p4_active.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/player_tags/p4_eliminated.png": {
+      "path": "assets/ui/player_tags/p4_eliminated.png",
+      "frameWidth": 64,
+      "frameHeight": 28,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui"
+    },
+    "ui/panels/level_panel.png": {
+      "path": "assets/ui/panels/level_panel.png",
+      "frameWidth": 300,
+      "frameHeight": 72,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Marco sin texto: incluir texto y resultados dinamicos con React/CSS o Canvas."
+    },
+    "ui/panels/boss_panel.png": {
+      "path": "assets/ui/panels/boss_panel.png",
+      "frameWidth": 300,
+      "frameHeight": 72,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Marco sin texto: incluir texto y resultados dinamicos con React/CSS o Canvas."
+    },
+    "ui/panels/victory_panel.png": {
+      "path": "assets/ui/panels/victory_panel.png",
+      "frameWidth": 512,
+      "frameHeight": 240,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Marco sin texto: incluir texto y resultados dinamicos con React/CSS o Canvas."
+    },
+    "ui/panels/defeat_panel.png": {
+      "path": "assets/ui/panels/defeat_panel.png",
+      "frameWidth": 512,
+      "frameHeight": 240,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Marco sin texto: incluir texto y resultados dinamicos con React/CSS o Canvas."
+    },
+    "ui/panels/player_eliminated_panel.png": {
+      "path": "assets/ui/panels/player_eliminated_panel.png",
+      "frameWidth": 300,
+      "frameHeight": 72,
+      "frames": 1,
+      "format": "PNG",
+      "transparent": true,
+      "category": "ui",
+      "notes": "Marco sin texto: incluir texto y resultados dinamicos con React/CSS o Canvas."
+    },
+    "ui/effects/boss_alert.png": {
+      "path": "assets/ui/effects/boss_alert.png",
+      "frameWidth": 48,
+      "frameHeight": 48,
+      "frames": 6,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 6,
+      "loop": true,
+      "category": "ui"
+    },
+    "ui/effects/cooldown_wheel.png": {
+      "path": "assets/ui/effects/cooldown_wheel.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frames": 12,
+      "format": "PNG",
+      "transparent": true,
+      "fps": 10,
+      "loop": false,
+      "category": "ui",
+      "notes": "12 fotogramas ilustrativos de progreso, o dibujar fraccion dinamica por Canvas."
+    },
+    "sfx/laser.mp3": {
+      "path": "assets/sfx/laser.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/enemy_laser.mp3": {
+      "path": "assets/sfx/enemy_laser.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/hit.mp3": {
+      "path": "assets/sfx/hit.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/collision.mp3": {
+      "path": "assets/sfx/collision.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/ship_explosion.mp3": {
+      "path": "assets/sfx/ship_explosion.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/planet_explosion.mp3": {
+      "path": "assets/sfx/planet_explosion.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/heal.mp3": {
+      "path": "assets/sfx/heal.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/shield.mp3": {
+      "path": "assets/sfx/shield.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/pickup.mp3": {
+      "path": "assets/sfx/pickup.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/boss.mp3": {
+      "path": "assets/sfx/boss.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/victory.mp3": {
+      "path": "assets/sfx/victory.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/defeat.mp3": {
+      "path": "assets/sfx/defeat.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    },
+    "sfx/level_up.mp3": {
+      "path": "assets/sfx/level_up.mp3",
+      "format": "MP3",
+      "category": "audio",
+      "channels": 1,
+      "sampleRate": 22050,
+      "notes": "Efecto sintetizado original para navegador web."
+    }
+  }
+}
