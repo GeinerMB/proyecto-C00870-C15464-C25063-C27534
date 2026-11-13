@@ -1,0 +1,337 @@
+/* ==========================================================================
+	Galactic Squadrons - Common Styles
+	========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Generales
+   -------------------------------------------------------------------------- */
+
+/* Fuentes de la interfaz */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+@font-face {
+  font-family: "Axion RX 14";
+  src: url("https://db.onlinewebfonts.com/t/1b6eebb4270d7d02694b68fb7c5a94d9.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+  font-family: var(--font-body);
+
+
+  /* Prueba de fondo con imagen. */
+  background-image: var(--main-background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El contenido crece para mantener el pie al final. */
+#root > main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: var(--space-1);
+}
+
+footer {
+  margin-block-start: var(--space-1);
+}
+
+footer p {
+  margin: 0.5rem 0;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Pie general definido en App.jsx. */
+#root > footer {
+  padding: .50rem;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   2. Márgenes del contenido
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+figure {
+  margin-block-start: 0;
+  margin-block-end: var(--space-1);
+}
+
+ul,
+ol {
+  padding-inline-start: 1.5rem;
+}
+
+figure {
+  margin-inline: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. Enlaces
+   -------------------------------------------------------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Controles y ventanas de diálogo
+   -------------------------------------------------------------------------- */
+
+/* Tipografía de los títulos y botones de navegación */
+h1,
+h2,
+h3 {
+  font-family: var(--font-main);
+  font-weight: 400;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+dialog {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   5. Foco visible para navegación por teclado
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Listas
+   -------------------------------------------------------------------------- */
+
+ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* ==========================================================================
+   7. Botones
+   -------------------------------------------------------------------------- */
+
+button {
+  position: relative;
+  isolation: isolate; /* Para que los pseudo-elementos no se mezclen con el contenido del botón. */
+
+  display: inline-grid;
+  place-items: center;
+
+  width: 100%;
+  max-width: var(--button-width);
+  min-height: 4rem;
+  padding: 1.25rem 2rem;
+  margin: 0.75rem 0.5rem;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+
+  font-family: var(--font-main);
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Borde del botón */
+button::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: var(--button-border-shape);
+
+  z-index: -2;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    /* Reflejo superior */
+    var(--button-border-light) 0%,
+    var(--button-border-mid) 10%,
+
+    /* Cara superior del bisel */
+    var(--button-border-dark) 15%,
+    var(--button-border-dark) 49%,
+
+    /* Cambio de luz en la mitad del marco */
+    var(--button-border-light) 50%,
+    var(--button-border-mid) 60%,
+
+    /* Sombra y reflejo inferior */
+    var(--button-border-dark) 90%,
+    var(--button-border-dark) 100%
+  );
+}
+
+/* Cara del botón */
+button::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  clip-path: var(--button-shape);
+
+  z-index: -1;
+  inset: 0.6rem 0.6rem;
+
+  background: linear-gradient(
+    to bottom,
+    var(--button-face-top),
+    var(--button-face-bottom) 49%,
+    var(--button-face-dark) 50%,
+    var(--button-face-bottom)
+  ); 
+}
+
+/* ==========================================================================
+   8. Modales
+   -------------------------------------------------------------------------- */
+
+dialog {
+  width: min(var(--dialog-width), calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+
+  padding: var(--dialog-frame);
+  border: 0;
+  color: var(--color-text);
+
+  clip-path: var(--dialog-shape);
+}
+
+dialog::backdrop {
+  background: var(--dialog-backdrop);
+}
+
+/* Estilos del componente GameModal */
+.game-modal {
+  background: linear-gradient(
+    120deg,
+    var(--dialog-metal-light),
+    var(--dialog-metal-mid) 20%,
+    var(--dialog-metal-dark) 49%,
+    var(--dialog-metal-light) 72%,
+    var(--dialog-metal-mid)
+  );
+}
+
+/* Ventana interior: cubre el centro y deja visible el marco. */
+.game-modal__window {
+  overflow: hidden;
+  background: var(--dialog-surface);
+  clip-path: var(--dialog-shape);
+}
+
+/* Cabecera azul y separación metálica. */
+.game-modal__header {
+  padding: var(--space-3);
+  text-align: center;
+
+  border-bottom: 3px solid var(--dialog-metal-mid);
+
+  background: linear-gradient(
+    var(--dialog-header-top),
+    var(--dialog-header-bottom)
+  );
+}
+
+.game-modal__header h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  overflow-wrap: anywhere;
+}
+
+/* Interior liso. */
+.game-modal__body {
+  position: relative;
+  isolation: isolate;
+  padding: 1.75rem;
+  background: var(--dialog-surface);
+  text-align: center;
+}
+
+/* Distribución de los botones dentro del modal. */
+.game-modal__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+}
+
+.game-modal__actions > button {
+  width: 100%;
+  max-width: var(--button-width);
+  margin: 0;
+
+  padding-inline: var(--space-2);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   9. Efectos y transiciones
+   -------------------------------------------------------------------------- */
+
+@media (hover: hover) {
+  button:hover {
+    transform: translateY(-2px);
+  }
+
+  button:hover::after {
+    /* inset | desp horizontal | desp vertical | desenfoque | expansión | color */
+    box-shadow:
+      inset 0 6px 12px -5px var(--button-edge),
+      inset 0 -6px 12px -5px var(--button-edge);
+  }
+}
+
+button:active:not(:disabled) {
+  transform: translateY(2px);
+}
