@@ -27,7 +27,7 @@
   --headers-top: #080e24;
   --headers-bottom: #1d458a;
 
-  --lock-close-icon: url(../../assets/lock-close.svg);
+  --lock-close-icon: url(../assets/lock-close.svg);
 }
 
 /* --------------------------------------------------------------------------

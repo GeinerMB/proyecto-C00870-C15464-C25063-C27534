@@ -11,8 +11,8 @@
   --game-frame: 3px;
   --game-radius: 0.4rem;
   --game-transition: 180ms;
-  --game-asteroid-image: url("../../assets/obstacles/asteroid_rock_large.png");
-  --game-medkit-image: url("../../assets/items/medkit.png");
+  --game-asteroid-image: url("../assets/obstacles/asteroid_rock_large.png");
+  --game-medkit-image: url("../assets/items/medkit.png");
   --game-planet-size: clamp(5rem, min(35vw, 48dvh), 26rem);
 
   display: grid;

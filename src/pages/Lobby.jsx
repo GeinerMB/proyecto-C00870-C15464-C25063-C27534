@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import fighterShip from "../../assets/player/fighter_ship.svg";
-import planetImage from "../../assets/planets/planet_earth.png";
+import fighterShip from "../assets/player/fighter_ship.svg";
 
 import GameModal from "../components/GameModal.jsx";
 import "../styles/lobby.css";

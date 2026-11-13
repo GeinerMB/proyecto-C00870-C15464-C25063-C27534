@@ -179,7 +179,7 @@
   position: absolute;
   width: 18px;
   height: 24px;
-  background: url("../../assets/player/effects/engine_thrust.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/player/effects/engine_thrust.png") 0 0 / auto 100% no-repeat;
   image-rendering: pixelated;
   transform: translate(-50%, -50%) rotate(-90deg);
 }
@@ -381,7 +381,7 @@
   left: 65%;
   width: 32px;
   height: 32px;
-  background: url("../../assets/effects/explosion_small.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/effects/explosion_small.png") 0 0 / auto 100% no-repeat;
   image-rendering: pixelated;
   transform: translate(-50%, -50%);
   animation: rules-scout-explosion 3.5s ease-out infinite;
@@ -506,7 +506,7 @@
   right: 18%;
   width: 28px;
   height: 28px;
-  background: url("../../assets/effects/laser_impact.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/effects/laser_impact.png") 0 0 / auto 100% no-repeat;
   image-rendering: pixelated;
   transform: translate(50%, -50%);
   animation: rules-boss-impact-flash var(--rules-boss-cycle-duration) ease-out infinite;
@@ -644,7 +644,7 @@
 .rules-end-planet-destroyed {
   width: clamp(65px, 10vw, 85px);
   height: clamp(65px, 10vw, 85px);
-  background: url("../../assets/planets/earth_damage.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/planets/earth_damage.png") 0 0 / auto 100% no-repeat;
   image-rendering: pixelated;
   animation: rules-earth-damage-quake 2.5s ease-in-out infinite;
 }
@@ -652,7 +652,7 @@
 .rules-end-boss-destroyed {
   width: clamp(65px, 10vw, 85px);
   height: clamp(65px, 10vw, 85px);
-  background: url("../../assets/enemies/destruction/dreadnought_destruction.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/enemies/destruction/dreadnought_destruction.png") 0 0 / auto 100% no-repeat;
   image-rendering: pixelated;
   transform: rotate(-90deg);
   animation: rules-boss-destruction-burn 2.5s ease-in-out infinite;

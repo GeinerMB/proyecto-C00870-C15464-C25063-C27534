@@ -1,9 +1,9 @@
 ﻿import { Link } from "react-router";
-import fighterShip from "../../assets/player/fighter_ship.svg";
-import shieldShip from "../../assets/player/shield_ship.svg";
-import medicShip from "../../assets/player/medic_ship.svg";
-import healthIcon from "../../assets/ui/icons/status_health.png";
-import energyIcon from "../../assets/ui/icons/status_energy.png";
+import fighterShip from "../assets/player/fighter_ship.svg";
+import shieldShip from "../assets/player/shield_ship.svg";
+import medicShip from "../assets/player/medic_ship.svg";
+import healthIcon from "../assets/ui/icons/status_health.png";
+import energyIcon from "../assets/ui/icons/status_energy.png";
 import "../styles/game.css";
 
 const squad = [

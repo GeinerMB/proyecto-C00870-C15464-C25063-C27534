@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import fighterShip from "../../assets/player/fighter_ship.svg"; // O la ruta de imagen que prefieran usar
+import fighterShip from "../assets/player/fighter_ship.svg"; // O la ruta de imagen que prefieran usar
 import "../styles/aboutUs.css";
 
 export default function AboutUs() {
