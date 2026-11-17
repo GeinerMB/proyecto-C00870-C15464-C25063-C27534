@@ -123,8 +123,7 @@ export default function Lobby() {
 
                   <button 
                     type="button"
-                    className="player-card-button player-card-button-expel"
-                    aria-label="expel-player-two">
+                    className="player-card-button player-card-button-expel">
                     Expulsar
                   </button>                  
                 </div>
@@ -169,8 +168,7 @@ export default function Lobby() {
 
                   <button 
                     type="button" 
-                    className="player-card-button player-card-button-expel"
-                    aria-label="expel-player-three">
+                    className="player-card-button player-card-button-expel">
                     Expulsar
                   </button>                
                 </div>
