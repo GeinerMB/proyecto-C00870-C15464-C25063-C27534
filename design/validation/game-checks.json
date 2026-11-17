@@ -1,0 +1,638 @@
+{
+  "layouts": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "scrollWidth": 1920,
+      "scrollHeight": 1080,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 1904,
+        "height": 969,
+        "bottom": 977,
+        "right": 1912
+      },
+      "squad": {
+        "x": 8,
+        "y": 983,
+        "width": 1904,
+        "height": 89,
+        "bottom": 1072,
+        "right": 1912
+      },
+      "planet": {
+        "x": -147.078125,
+        "y": 188.1875,
+        "width": 416,
+        "height": 416,
+        "bottom": 604.1875,
+        "right": 268.921875
+      },
+      "planetHealth": {
+        "x": 35.953125,
+        "y": 616.1875,
+        "width": 270.390625,
+        "height": 30,
+        "bottom": 646.1875,
+        "right": 306.34375
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "scrollWidth": 1440,
+      "scrollHeight": 900,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 1424,
+        "height": 789,
+        "bottom": 797,
+        "right": 1432
+      },
+      "squad": {
+        "x": 8,
+        "y": 803,
+        "width": 1424,
+        "height": 89,
+        "bottom": 892,
+        "right": 1432
+      },
+      "planet": {
+        "x": -147.078125,
+        "y": 116.1875,
+        "width": 416,
+        "height": 416,
+        "bottom": 532.1875,
+        "right": 268.921875
+      },
+      "planetHealth": {
+        "x": 35.953125,
+        "y": 544.1875,
+        "width": 270.390625,
+        "height": 30,
+        "bottom": 574.1875,
+        "right": 306.34375
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1280,
+      "scrollHeight": 720,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 1264,
+        "height": 610.609375,
+        "bottom": 618.609375,
+        "right": 1272
+      },
+      "squad": {
+        "x": 8,
+        "y": 624.609375,
+        "width": 1264,
+        "height": 87.390625,
+        "bottom": 712,
+        "right": 1272
+      },
+      "planet": {
+        "x": -120.3125,
+        "y": 80.046875,
+        "width": 345.59375,
+        "height": 345.59375,
+        "bottom": 425.640625,
+        "right": 225.28125
+      },
+      "planetHealth": {
+        "x": 31.734375,
+        "y": 437.640625,
+        "width": 224.625,
+        "height": 30,
+        "bottom": 467.640625,
+        "right": 256.359375
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "scrollWidth": 1024,
+      "scrollHeight": 768,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 1008,
+        "height": 660,
+        "bottom": 668,
+        "right": 1016
+      },
+      "squad": {
+        "x": 8,
+        "y": 674,
+        "width": 1008,
+        "height": 86,
+        "bottom": 760,
+        "right": 1016
+      },
+      "planet": {
+        "x": -125.1875,
+        "y": 93.3984375,
+        "width": 358.390625,
+        "height": 358.390625,
+        "bottom": 451.7890625,
+        "right": 233.203125
+      },
+      "planetHealth": {
+        "x": 32.5,
+        "y": 463.7890625,
+        "width": 232.953125,
+        "height": 30,
+        "bottom": 493.7890625,
+        "right": 265.453125
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "scrollWidth": 768,
+      "scrollHeight": 1024,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 752,
+        "height": 916,
+        "bottom": 924,
+        "right": 760
+      },
+      "squad": {
+        "x": 8,
+        "y": 930,
+        "width": 752,
+        "height": 86,
+        "bottom": 1016,
+        "right": 760
+      },
+      "planet": {
+        "x": -91.140625,
+        "y": 240.6015625,
+        "width": 268.796875,
+        "height": 268.796875,
+        "bottom": 509.3984375,
+        "right": 177.65625
+      },
+      "planetHealth": {
+        "x": 27.125,
+        "y": 521.3984375,
+        "width": 174.703125,
+        "height": 30,
+        "bottom": 551.3984375,
+        "right": 201.828125
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 640,
+      "height": 900,
+      "scrollWidth": 640,
+      "scrollHeight": 900,
+      "columns": 2,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 624,
+        "height": 700,
+        "bottom": 708,
+        "right": 632
+      },
+      "squad": {
+        "x": 8,
+        "y": 714,
+        "width": 624,
+        "height": 178,
+        "bottom": 892,
+        "right": 632
+      },
+      "planet": {
+        "x": -74.109375,
+        "y": 176.59375,
+        "width": 224,
+        "height": 224,
+        "bottom": 400.59375,
+        "right": 149.890625
+      },
+      "planetHealth": {
+        "x": 24.4375,
+        "y": 412.59375,
+        "width": 145.59375,
+        "height": 30,
+        "bottom": 442.59375,
+        "right": 170.03125
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "scrollHeight": 844,
+      "columns": 2,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 374,
+        "height": 644,
+        "bottom": 652,
+        "right": 382
+      },
+      "squad": {
+        "x": 8,
+        "y": 658,
+        "width": 374,
+        "height": 178,
+        "bottom": 836,
+        "right": 382
+      },
+      "planet": {
+        "x": -40.859375,
+        "y": 197.9375,
+        "width": 136.5,
+        "height": 136.5,
+        "bottom": 334.4375,
+        "right": 95.640625
+      },
+      "planetHealth": {
+        "x": 19.1875,
+        "y": 346.4375,
+        "width": 88.71875,
+        "height": 30,
+        "bottom": 376.4375,
+        "right": 107.90625
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320,
+      "scrollHeight": 568,
+      "columns": 2,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 304,
+        "height": 368,
+        "bottom": 376,
+        "right": 312
+      },
+      "squad": {
+        "x": 8,
+        "y": 382,
+        "width": 304,
+        "height": 178,
+        "bottom": 560,
+        "right": 312
+      },
+      "planet": {
+        "x": -31.546875,
+        "y": 99.796875,
+        "width": 112,
+        "height": 112,
+        "bottom": 211.796875,
+        "right": 80.453125
+      },
+      "planetHealth": {
+        "x": 17.71875,
+        "y": 223.796875,
+        "width": 80,
+        "height": 30,
+        "bottom": 253.796875,
+        "right": 97.71875
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "scrollWidth": 844,
+      "scrollHeight": 390,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 828,
+        "height": 282,
+        "bottom": 290,
+        "right": 836
+      },
+      "squad": {
+        "x": 8,
+        "y": 296,
+        "width": 828,
+        "height": 86,
+        "bottom": 382,
+        "right": 836
+      },
+      "planet": {
+        "x": -60.125,
+        "y": 27.796875,
+        "width": 187.1875,
+        "height": 187.1875,
+        "bottom": 214.984375,
+        "right": 127.0625
+      },
+      "planetHealth": {
+        "x": 22.234375,
+        "y": 226.984375,
+        "width": 121.671875,
+        "height": 30,
+        "bottom": 256.984375,
+        "right": 143.90625
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    },
+    {
+      "width": 568,
+      "height": 320,
+      "scrollWidth": 568,
+      "scrollHeight": 320,
+      "columns": 4,
+      "board": {
+        "x": 8,
+        "y": 8,
+        "width": 552,
+        "height": 212,
+        "bottom": 220,
+        "right": 560
+      },
+      "squad": {
+        "x": 8,
+        "y": 226,
+        "width": 552,
+        "height": 86,
+        "bottom": 312,
+        "right": 560
+      },
+      "planet": {
+        "x": -47.359375,
+        "y": 16.59375,
+        "width": 153.59375,
+        "height": 153.59375,
+        "bottom": 170.1875,
+        "right": 106.234375
+      },
+      "planetHealth": {
+        "x": 20.21875,
+        "y": 182.1875,
+        "width": 99.828125,
+        "height": 30,
+        "bottom": 212.1875,
+        "right": 120.046875
+      },
+      "meterCount": 9,
+      "meterNames": [
+        "Vida del planeta Tierra",
+        "Vida del jugador 1",
+        "Energía del jugador 1",
+        "Vida del jugador 2",
+        "Energía del jugador 2",
+        "Vida del jugador 3",
+        "Energía del jugador 3",
+        "Vida del jugador 4",
+        "Energía del jugador 4"
+      ],
+      "clipped": [],
+      "imagesLoaded": true,
+      "footerCount": 0,
+      "allMetersVisible": true,
+      "warningOverlapsShips": false
+    }
+  ],
+  "keyboard": {
+    "menuOpens": true,
+    "linksReachable": true,
+    "rulesNavigation": true,
+    "focus": {
+      "outlineStyle": "solid",
+      "outlineWidth": "3px"
+    }
+  },
+  "otherRoutes": {
+    "footerPreserved": true,
+    "scrollingPreserved": true
+  },
+  "motion": {
+    "normal": {
+      "name": "game-formation-entry",
+      "duration": "3s",
+      "iterations": "1"
+    },
+    "reduced": "none"
+  },
+  "contrast": [
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-surface",
+      "colors": [
+        "#fff",
+        "#111827"
+      ],
+      "ratio": 17.74,
+      "aa": true
+    },
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-header-top",
+      "colors": [
+        "#fff",
+        "#080e24"
+      ],
+      "ratio": 19.11,
+      "aa": true
+    },
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-header-bottom",
+      "colors": [
+        "#fff",
+        "#13336b"
+      ],
+      "ratio": 12.26,
+      "aa": true
+    },
+    {
+      "foreground": "--color-text",
+      "background": "--button-face-top",
+      "colors": [
+        "#fff",
+        "#105299"
+      ],
+      "ratio": 7.81,
+      "aa": true
+    },
+    {
+      "foreground": "--game-warning",
+      "background": "--dialog-header-top",
+      "colors": [
+        "#ffd580",
+        "#080e24"
+      ],
+      "ratio": 13.73,
+      "aa": true
+    }
+  ],
+  "pageErrors": []
+}

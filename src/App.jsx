@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router";
+import { Route, Routes, useMatch } from "react-router";
 import Home from "./pages/Home.jsx";
 import Lobby from "./pages/Lobby.jsx";
 import Rules from "./pages/Rules.jsx";
@@ -7,6 +7,8 @@ import Scoreboard from "./pages/Scoreboard.jsx";
 import AboutUs from "./pages/About-us.jsx";
 
 export default function App() {
+  const isGame = useMatch("/game") !== null;
+
   return (
     <>
       <main>
@@ -20,9 +22,11 @@ export default function App() {
         </Routes>
       </main>
 
-      <footer>
-        <p>Galactic Squadrons — Proyecto académico.</p>
-      </footer>
+      {!isGame && (
+        <footer>
+          <p>Galactic Squadrons — Proyecto académico.</p>
+        </footer>
+      )}
     </>
   );
 }

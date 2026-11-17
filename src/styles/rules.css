@@ -1,0 +1,963 @@
+/* ==========================================================================
+   Galactic Squadrons - Rules & Instructions Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Variables de diseño específicas de la página de instrucciones
+   -------------------------------------------------------------------------- */
+
+#rules {
+  --rules-panel-bg: #111827;
+  --rules-stage-bg: #060913;
+  --rules-subcard-bg: #151f32;
+  --rules-border-light: #91a7be;
+  --rules-border-mid: #4b5563;
+  --rules-border-dark: #1f2937;
+  --rules-header-top: #080e24;
+  --rules-header-bottom: #13336b;
+  --rules-text-muted: #ced9e6;
+  --rules-accent: #36baff;
+  --rules-warning: #fc6d6d;
+  --rules-success: #83ff83;
+  --rules-amber: #ffd580;
+  --rules-key-bg: #1a2638;
+  --rules-key-border: #475a75;
+  --rules-cycle-duration: 4s;
+  --rules-boss-cycle-duration: 5s;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+   2. Cabecera principal
+   -------------------------------------------------------------------------- */
+
+.rules-header {
+  width: 100%;
+  padding: var(--space-3);
+  border: 4px solid var(--rules-border-mid);
+  background: var(--rules-panel-bg);
+  box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 35%);
+  text-align: center;
+}
+
+.rules-title {
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   3. Cuadrícula de tarjetas de instrucciones (2 columnas por fila)
+   -------------------------------------------------------------------------- */
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rules-item {
+  display: flex;
+  min-width: 0;
+}
+
+.rules-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 1rem;
+  border: 4px solid var(--rules-border-mid);
+  background: var(--rules-panel-bg);
+  box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 35%);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.rules-card:hover {
+  border-color: var(--rules-border-light);
+  transform: translateY(-2px);
+}
+
+.rules-card-header {
+  width: 100%;
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  background: linear-gradient(
+    to bottom,
+    var(--rules-header-top),
+    var(--rules-header-bottom)
+  );
+  border-bottom: 2px solid var(--rules-border-mid);
+}
+
+.rules-card-title {
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   4. Escenario de animación (Stage)
+   -------------------------------------------------------------------------- */
+
+.rules-stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: clamp(150px, 22vw, 210px);
+  margin: 0;
+  overflow: hidden;
+  border: 2px solid var(--rules-border-mid);
+  background-color: var(--rules-stage-bg);
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, rgb(0 0 0 / 0%)),
+    radial-gradient(1px 1px at 75px 120px, #fff, rgb(0 0 0 / 0%)),
+    radial-gradient(1.5px 1.5px at 160px 45px, var(--rules-accent), rgb(0 0 0 / 0%)),
+    radial-gradient(1px 1px at 240px 90px, #fff, rgb(0 0 0 / 0%)),
+    radial-gradient(1.5px 1.5px at 320px 140px, #fff, rgb(0 0 0 / 0%)),
+    radial-gradient(1px 1px at 410px 60px, var(--rules-accent), rgb(0 0 0 / 0%));
+  background-size: 450px 200px;
+}
+
+.rules-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rules-stage-caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Elementos de sprites reutilizables
+   -------------------------------------------------------------------------- */
+
+.rules-player {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: var(--player-ship-fighter) center / contain no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.rules-bullet {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--player-bullet) 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.rules-thrust {
+  position: absolute;
+  width: 18px;
+  height: 24px;
+  background: url("../../assets/player/effects/engine_thrust.png") 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.rules-planet-earth {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  width: clamp(90px, 15vw, 130px);
+  height: clamp(90px, 15vw, 130px);
+  background: var(--earth-image) center / contain no-repeat;
+  image-rendering: pixelated;
+  transform: translateY(-50%);
+}
+
+.rules-enemy-scout {
+  position: absolute;
+  width: 48px;
+  height: 28px;
+  background: var(--enemy-scout) 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.rules-enemy-fighter {
+  position: absolute;
+  width: 48px;
+  height: 33px;
+  background: var(--enemy-fighter) 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.rules-boss-ship {
+  position: absolute;
+  top: 50%;
+  right: 6%;
+  width: clamp(75px, 13vw, 105px);
+  aspect-ratio: 128 / 97;
+  background: var(--enemy-dreadnought) 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translateY(-50%) rotate(-90deg);
+  animation: rules-boss-float var(--rules-boss-cycle-duration) ease-in-out infinite;
+}
+
+.rules-boss-laser {
+  position: absolute;
+  top: 50%;
+  right: 28%;
+  height: 12px;
+  background: linear-gradient(
+    to left,
+    var(--rules-warning),
+    #f36 50%,
+    rgb(255 51 102 / 0%)
+  );
+  transform: translateY(-50%);
+  border-radius: 6px;
+  animation: rules-boss-laser-beam var(--rules-boss-cycle-duration) ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   6. Animaciones: Cuadro 1 (Controles)
+   -------------------------------------------------------------------------- */
+
+.rules-player-controls {
+  animation: rules-pilot-movement var(--rules-cycle-duration) ease-in-out infinite;
+}
+
+.rules-thrust-controls {
+  animation: rules-pilot-thrust var(--rules-cycle-duration) ease-in-out infinite;
+}
+
+.rules-bullet-controls {
+  animation: rules-bullet-shot var(--rules-cycle-duration) linear infinite;
+}
+
+@keyframes rules-pilot-movement {
+  0%, 100% {
+    top: 50%;
+    left: 28%;
+  }
+
+  /* Movimiento Arriba (W) */
+  15%, 25% {
+    top: 26%;
+    left: 28%;
+  }
+
+  /* Movimiento Abajo (S) */
+  40%, 50% {
+    top: 74%;
+    left: 28%;
+  }
+
+  /* Movimiento Derecha (D) */
+  60%, 70% {
+    top: 50%;
+    left: 45%;
+  }
+
+  /* Retroceso y disparo (Espacio) */
+  80%, 92% {
+    top: 50%;
+    left: 26%;
+  }
+}
+
+@keyframes rules-pilot-thrust {
+  0%, 100% {
+    top: 50%;
+    left: 20%;
+    opacity: 0.7;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(0.9);
+  }
+
+  15%, 25% {
+    top: 26%;
+    left: 20%;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(1.1);
+  }
+
+  40%, 50% {
+    top: 74%;
+    left: 20%;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(1.1);
+  }
+
+  60%, 70% {
+    top: 50%;
+    left: 37%;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(1.2);
+  }
+
+  80%, 92% {
+    top: 50%;
+    left: 18%;
+    opacity: 0.8;
+  }
+}
+
+@keyframes rules-bullet-shot {
+  0%, 78% {
+    top: 50%;
+    left: 30%;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg) scale(0.6);
+  }
+
+  80% {
+    top: 50%;
+    left: 32%;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(90deg) scale(1);
+  }
+
+  92% {
+    top: 50%;
+    left: 92%;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(90deg) scale(1.1);
+  }
+
+  93%, 100% {
+    top: 50%;
+    left: 95%;
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Animaciones: Cuadro 2 (Defender)
+   -------------------------------------------------------------------------- */
+
+.rules-player-defend {
+  animation: rules-defend-patrol 3.5s ease-in-out infinite;
+}
+
+.rules-bullet-defend {
+  animation: rules-defend-fire 3.5s linear infinite;
+}
+
+.rules-scout-lead {
+  top: 36%;
+  animation: rules-scout-invade 3.5s ease-in-out infinite;
+}
+
+.rules-fighter-support {
+  top: 68%;
+  animation: rules-fighter-invade 3.5s ease-in-out infinite;
+}
+
+.rules-hit-scout {
+  position: absolute;
+  top: 36%;
+  left: 65%;
+  width: 32px;
+  height: 32px;
+  background: url("../../assets/effects/explosion_small.png") 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(-50%, -50%);
+  animation: rules-scout-explosion 3.5s ease-out infinite;
+}
+
+@keyframes rules-defend-patrol {
+  0%, 100% {
+    top: 34%;
+    left: 38%;
+  }
+
+  50% {
+    top: 66%;
+    left: 40%;
+  }
+}
+
+@keyframes rules-defend-fire {
+  0%, 35% {
+    top: 36%;
+    left: 42%;
+    opacity: 0;
+  }
+
+  40% {
+    top: 36%;
+    left: 44%;
+    opacity: 1;
+  }
+
+  58% {
+    top: 36%;
+    left: 65%;
+    opacity: 1;
+  }
+
+  60%, 100% {
+    top: 36%;
+    left: 65%;
+    opacity: 0;
+  }
+}
+
+@keyframes rules-scout-invade {
+  0% {
+    left: 92%;
+    opacity: 1;
+  }
+
+  55% {
+    left: 66%;
+    opacity: 1;
+  }
+
+  58% {
+    left: 65%;
+    opacity: 1;
+  }
+
+  60%, 85% {
+    left: 65%;
+    opacity: 0;
+  }
+
+  90%, 100% {
+    left: 95%;
+    opacity: 0;
+  }
+}
+
+@keyframes rules-fighter-invade {
+  0%, 100% {
+    left: 88%;
+  }
+
+  50% {
+    left: 72%;
+  }
+}
+
+@keyframes rules-scout-explosion {
+  0%, 57% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  59% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  68% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  72%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Animaciones: Cuadro 3 (Derrotar al Jefe)
+   -------------------------------------------------------------------------- */
+
+.rules-player-boss {
+  animation: rules-boss-fight-player var(--rules-boss-cycle-duration) ease-in-out infinite;
+}
+
+.rules-bullet-boss-1 {
+  animation: rules-boss-counterattack var(--rules-boss-cycle-duration) linear infinite;
+}
+
+.rules-bullet-boss-2 {
+  animation: rules-boss-counterattack var(--rules-boss-cycle-duration) linear infinite 0.2s;
+}
+
+.rules-boss-impact {
+  position: absolute;
+  top: 50%;
+  right: 18%;
+  width: 28px;
+  height: 28px;
+  background: url("../../assets/effects/laser_impact.png") 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: translate(50%, -50%);
+  animation: rules-boss-impact-flash var(--rules-boss-cycle-duration) ease-out infinite;
+}
+
+@keyframes rules-boss-float {
+  0%, 100% {
+    transform: translateY(-50%) rotate(-90deg);
+  }
+
+  50% {
+    transform: translateY(-58%) rotate(-90deg);
+  }
+}
+
+@keyframes rules-boss-fight-player {
+  0%, 25% {
+    top: 50%;
+    left: 24%;
+  }
+
+  /* Esquiva hacia abajo cuando el jefe dispara el rayo */
+  35%, 65% {
+    top: 76%;
+    left: 28%;
+  }
+
+  /* Retoma posición frontal */
+  78%, 100% {
+    top: 50%;
+    left: 24%;
+  }
+}
+
+@keyframes rules-boss-laser-beam {
+  0%, 30% {
+    width: 0;
+    opacity: 0;
+  }
+
+  34% {
+    width: 45%;
+    opacity: 0.6;
+  }
+
+  40%, 55% {
+    width: 58%;
+    opacity: 1;
+  }
+
+  62% {
+    width: 58%;
+    opacity: 0.3;
+  }
+
+  65%, 100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes rules-boss-counterattack {
+  0%, 48% {
+    top: 76%;
+    left: 32%;
+    opacity: 0;
+  }
+
+  50% {
+    top: 76%;
+    left: 34%;
+    opacity: 1;
+  }
+
+  72% {
+    top: 52%;
+    left: 80%;
+    opacity: 1;
+  }
+
+  74%, 100% {
+    top: 52%;
+    left: 82%;
+    opacity: 0;
+  }
+}
+
+@keyframes rules-boss-impact-flash {
+  0%, 68% {
+    opacity: 0;
+    transform: translate(50%, -50%) scale(0.5);
+  }
+
+  71%, 76% {
+    opacity: 1;
+    transform: translate(50%, -50%) scale(1.3);
+  }
+
+  80%, 100% {
+    opacity: 0;
+    transform: translate(50%, -50%) scale(0.8);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Animaciones: Cuadro 4 (Fin de la Partida)
+   -------------------------------------------------------------------------- */
+
+.rules-scene-end {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.rules-end-half {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+}
+
+.rules-end-separator {
+  width: 2px;
+  height: 80%;
+  background: var(--rules-border-mid);
+}
+
+.rules-end-planet-destroyed {
+  width: clamp(65px, 10vw, 85px);
+  height: clamp(65px, 10vw, 85px);
+  background: url("../../assets/planets/earth_damage.png") 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  animation: rules-earth-damage-quake 2.5s ease-in-out infinite;
+}
+
+.rules-end-boss-destroyed {
+  width: clamp(65px, 10vw, 85px);
+  height: clamp(65px, 10vw, 85px);
+  background: url("../../assets/enemies/destruction/dreadnought_destruction.png") 0 0 / auto 100% no-repeat;
+  image-rendering: pixelated;
+  transform: rotate(-90deg);
+  animation: rules-boss-destruction-burn 2.5s ease-in-out infinite;
+}
+
+.rules-end-label {
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+}
+
+.rules-label-defeat {
+  border: 1px solid var(--rules-warning);
+  background: rgb(252 109 109 / 15%);
+  color: var(--rules-warning);
+}
+
+.rules-label-victory {
+  border: 1px solid var(--rules-success);
+  background: rgb(131 255 131 / 15%);
+  color: var(--rules-success);
+}
+
+@keyframes rules-earth-damage-quake {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(-2px, 2px) scale(0.98);
+  }
+
+  50% {
+    transform: translate(2px, -1px) scale(1);
+  }
+
+  75% {
+    transform: translate(-1px, -2px) scale(0.99);
+  }
+}
+
+@keyframes rules-boss-destruction-burn {
+  0%, 100% {
+    opacity: 0.8;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Sub-columnas internas de cada cuadro (2 columnas por cuadro)
+   -------------------------------------------------------------------------- */
+
+.rules-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.rules-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--rules-border-dark);
+  background-color: var(--rules-subcard-bg);
+  text-align: center;
+}
+
+.rules-column-heading {
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.rules-column-text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--rules-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   11. Teclas y estados interactivos
+   -------------------------------------------------------------------------- */
+
+.rules-keys-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-block: 0.25rem;
+}
+
+.rules-keys-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.rules-key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: 0.4rem;
+  border: 1px solid var(--rules-key-border);
+  border-radius: 4px;
+  background-color: var(--rules-key-bg);
+  box-shadow: 0 2px 0 var(--rules-border-dark);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 700;
+  user-select: none;
+}
+
+.rules-key-space {
+  min-width: 5.5rem;
+}
+
+/* Distintivos informativos y de accesibilidad */
+.rules-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rules-status-badge-info {
+  border: 1px solid var(--rules-accent);
+  background-color: rgb(54 186 255 / 15%);
+  color: var(--rules-accent);
+}
+
+.rules-status-badge-amber {
+  border: 1px solid var(--rules-amber);
+  background-color: rgb(255 213 128 / 15%);
+  color: var(--rules-amber);
+}
+
+.rules-status-badge-danger {
+  border: 1px solid var(--rules-warning);
+  background-color: rgb(252 109 109 / 15%);
+  color: var(--rules-warning);
+}
+
+.rules-status-badge-accent {
+  border: 1px solid var(--rules-accent);
+  background-color: rgb(54 186 255 / 15%);
+  color: var(--rules-accent);
+}
+
+.rules-status-badge-defeat {
+  border: 1px solid var(--rules-warning);
+  background-color: rgb(252 109 109 / 15%);
+  color: var(--rules-warning);
+}
+
+.rules-status-badge-victory {
+  border: 1px solid var(--rules-success);
+  background-color: rgb(131 255 131 / 15%);
+  color: var(--rules-success);
+}
+
+/* --------------------------------------------------------------------------
+   12. Botones de navegación inferiores
+   -------------------------------------------------------------------------- */
+
+.rules-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.rules-back-button {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. Accesibilidad y Foco Visible
+   -------------------------------------------------------------------------- */
+
+.rules-back-button:focus-visible {
+  outline: 3px solid var(--rules-accent);
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   14. Responsividad
+   -------------------------------------------------------------------------- */
+
+@media (width <= 960px) {
+  .rules-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (width <= 560px) {
+  .rules-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-card {
+    padding: 0.75rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. Preferencia de Movimiento Reducido
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .rules-card {
+    transition: none;
+  }
+
+  .rules-player-controls,
+  .rules-thrust-controls,
+  .rules-bullet-controls,
+  .rules-player-defend,
+  .rules-bullet-defend,
+  .rules-scout-lead,
+  .rules-fighter-support,
+  .rules-hit-scout,
+  .rules-player-boss,
+  .rules-boss-ship,
+  .rules-boss-laser,
+  .rules-bullet-boss-1,
+  .rules-bullet-boss-2,
+  .rules-boss-impact,
+  .rules-earth-damage-quake,
+  .rules-boss-destruction-burn {
+    animation: none;
+  }
+
+  /* Posiciones estáticas claras para lectura accesible */
+  .rules-player-controls {
+    top: 50%;
+    left: 28%;
+  }
+
+  .rules-bullet-controls {
+    display: none;
+  }
+
+  .rules-thrust-controls {
+    top: 50%;
+    left: 20%;
+    opacity: 0.8;
+  }
+
+  .rules-player-defend {
+    top: 45%;
+    left: 38%;
+  }
+
+  .rules-bullet-defend {
+    display: none;
+  }
+
+  .rules-scout-lead {
+    left: 70%;
+  }
+
+  .rules-fighter-support {
+    left: 80%;
+  }
+
+  .rules-hit-scout {
+    display: none;
+  }
+
+  .rules-player-boss {
+    top: 50%;
+    left: 24%;
+  }
+
+  .rules-boss-ship {
+    transform: translateY(-50%) rotate(-90deg);
+  }
+
+  .rules-boss-laser {
+    display: none;
+  }
+
+  .rules-bullet-boss-1,
+  .rules-bullet-boss-2,
+  .rules-boss-impact {
+    display: none;
+  }
+}

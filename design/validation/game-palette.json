@@ -1,0 +1,118 @@
+{
+  "palette": [
+    {
+      "label": "Fondo",
+      "token": "--dialog-header-top",
+      "hex": "#080e24"
+    },
+    {
+      "label": "Panel",
+      "token": "--dialog-surface",
+      "hex": "#111827"
+    },
+    {
+      "label": "Cabecera",
+      "token": "--dialog-header-bottom",
+      "hex": "#13336b"
+    },
+    {
+      "label": "Texto",
+      "token": "--color-text",
+      "hex": "#ffffff"
+    },
+    {
+      "label": "Texto secundario",
+      "token": "--game-text-muted",
+      "hex": "#ced9e6"
+    },
+    {
+      "label": "Energía",
+      "token": "--game-energy",
+      "hex": "#36baff"
+    },
+    {
+      "label": "Vida",
+      "token": "--game-health",
+      "hex": "#83ff83"
+    },
+    {
+      "label": "Aviso y foco",
+      "token": "--game-warning",
+      "hex": "#ffd580"
+    }
+  ],
+  "contrast": [
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-header-top",
+      "ratio": 19.11,
+      "aa": true
+    },
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-surface",
+      "ratio": 17.74,
+      "aa": true
+    },
+    {
+      "foreground": "--color-text",
+      "background": "--dialog-header-bottom",
+      "ratio": 12.26,
+      "aa": true
+    },
+    {
+      "foreground": "--game-text-muted",
+      "background": "--dialog-header-top",
+      "ratio": 13.37,
+      "aa": true
+    },
+    {
+      "foreground": "--game-text-muted",
+      "background": "--dialog-surface",
+      "ratio": 12.41,
+      "aa": true
+    },
+    {
+      "foreground": "--game-text-muted",
+      "background": "--dialog-header-bottom",
+      "ratio": 8.57,
+      "aa": true
+    },
+    {
+      "foreground": "--game-energy",
+      "background": "--dialog-header-top",
+      "ratio": 8.76,
+      "aa": true
+    },
+    {
+      "foreground": "--game-energy",
+      "background": "--dialog-surface",
+      "ratio": 8.13,
+      "aa": true
+    },
+    {
+      "foreground": "--game-energy",
+      "background": "--dialog-header-bottom",
+      "ratio": 5.62,
+      "aa": true
+    },
+    {
+      "foreground": "--game-warning",
+      "background": "--dialog-header-top",
+      "ratio": 13.73,
+      "aa": true
+    },
+    {
+      "foreground": "--game-warning",
+      "background": "--dialog-surface",
+      "ratio": 12.74,
+      "aa": true
+    },
+    {
+      "foreground": "--game-warning",
+      "background": "--dialog-header-bottom",
+      "ratio": 8.8,
+      "aa": true
+    }
+  ]
+}

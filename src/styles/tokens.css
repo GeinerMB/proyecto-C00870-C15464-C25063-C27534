@@ -1,0 +1,203 @@
+/* ==========================================================================
+	Galactic Squadrons - C00870 - C15464 - C25063 - C27534
+	Paleta de colores y tokens de diseño
+	========================================================================== */
+
+:root {
+	/* --------------------------------------------------------------------------
+		1. Colores
+		-------------------------------------------------------------------------- */
+	--color-background: #0b0c10;
+	--color-text: #ffffff;
+
+  /* Botones */
+  --button-border-light: #91a7be;
+  --button-border-mid: #374151;
+  --button-border-dark: #1f2937;
+
+  --button-face-top: #105299;
+  --button-face-bottom: #083a8b;
+  --button-face-dark: #002a74;
+  --button-face-hover: #1a67b8;
+  --button-edge: #36baff;
+
+  /* Modales */
+  --dialog-surface: #111827;
+
+  --dialog-metal-light: #e4edf7;
+  --dialog-metal-mid: #a9b8c8;
+  --dialog-metal-dark: #7b8b9d;
+
+  --dialog-header-top: #080e24;
+  --dialog-header-bottom: #13336b;
+  --dialog-header-glow: #2266b7;
+
+  --dialog-backdrop: rgb(0 0 0 / 70%);  
+
+	/* --------------------------------------------------------------------------
+		2. Espaciado
+		-------------------------------------------------------------------------- */
+	--space-1: 1rem;
+  --space-2: 1.25rem;
+  --space-3: 1.5rem;
+  --space-4: 1.75rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
+
+	/* --------------------------------------------------------------------------
+		3. Tamaños
+		-------------------------------------------------------------------------- */
+	--content-width: 72rem;
+
+  /* Botones */
+  --button-width: 18rem;
+
+  /* Modales*/
+  --dialog-width: 35rem;
+  --dialog-frame: 6px;
+  --dialog-corner: 28px;
+
+  /* Home - Page */
+  --home-unit: clamp(0.5rem, 2dvh, 1rem);
+
+  
+	/* --------------------------------------------------------------------------
+		4. Tipografías
+		-------------------------------------------------------------------------- */
+	--font-main: "Axion RX 14", Arial, sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
+
+	/* --------------------------------------------------------------------------
+		5. Formas
+		-------------------------------------------------------------------------- */
+	--button-shape: polygon(
+    6% 0, /* Esquina superior izquierda */
+    94% 0, /* Esquina superior derecha */
+    100% 50%, /* Punto medio derecho */
+    94% 100%, /* Esquina inferior derecha */
+    6% 100%, /* Esquina inferior izquierda */
+    0 50% /* Punto medio izquierdo */
+  );
+
+  --button-border-shape: polygon(
+    7% 0, /* Esquina superior izquierda */
+    93% 0, /* Esquina superior derecha */
+    100% 50%, /* Punto medio derecho */
+    93% 100%, /* Esquina inferior derecha */
+    7% 100%, /* Esquina inferior izquierda */
+    0 50% /* Punto medio izquierdo */
+  );
+
+  --dialog-shape: polygon(
+    var(--dialog-corner) 0,
+    calc(100% - var(--dialog-corner)) 0,
+    100% var(--dialog-corner),
+    100% calc(100% - var(--dialog-corner)),
+    calc(100% - var(--dialog-corner)) 100%,
+    var(--dialog-corner) 100%,
+    0 calc(100% - var(--dialog-corner)),
+    0 var(--dialog-corner)
+  );
+
+  /* --------------------------------------------------------------------------
+    6. Links to assets
+    -------------------------------------------------------------------------- */
+  
+  /* Backgrounds */
+  --main-background-image: url("../../assets/background/space_background_002.png");
+
+  /* Planetas */
+  --earth-image: url("../../assets/planets/planet_earth.png");
+  --earth-sprite: url("../../assets/planets/planet_earth_sprites.png");
+
+  /* Enemy ships */
+  --enemy-scout: url("../../assets/enemies/enemy_sprites/enemy_scout.png");
+  --enemy-fighter: url("../../assets/enemies/enemy_sprites/enemy_fighter.png");
+  --enemy-bomber: url("../../assets/enemies/enemy_sprites/enemy_bomber.png");
+  
+  /* Enemy bosses */
+  --enemy-frigate: url("../../assets/enemies/enemy_sprites/enemy_frigate.png");
+  --enemy-battlecruiser: url("../../assets/enemies/enemy_sprites/enemy_battlecruiser.png");
+  --enemy-dreadnought: url("../../assets/enemies/enemy_sprites/enemy_dreadnought.png");
+
+  /* Enemies destroyed */
+  --enemy-scout-destroyed: url("../../assets/enemies/destruction/scout_destruction.png");
+  --enemy-fighter-destroyed: url("../../assets/enemies/destruction/fighter_destruction.png");
+  --enemy-bomber-destroyed: url("../../assets/enemies/destruction/bomber_destruction.png");
+  --enemy-frigate-destroyed: url("../../assets/enemies/destruction/frigate_destruction.png");
+  --enemy-battlecruiser-destroyed: url("../../assets/enemies/destruction/battlecruiser_destruction.png");
+  --enemy-dreadnought-destroyed: url("../../assets/enemies/destruction/dreadnought_destruction.png");
+
+  /* Player ships */
+  --player-ship-fighter: url("../../assets/player/fighter_ship.svg");
+  --player-ship-shield: url("../../assets/player/shield_ship.svg");
+  --player-ship-medic: url("../../assets/player/medic_ship.svg");
+
+  /* Weapons */
+  --player-bullet: url("../../assets/player/player_bullet.png");
+  --player-shield: url("../../assets/player/ship_shield_effect.png");
+  /* espacio para botiquín */
+
+  --enemy-wave: url("../../assets/enemies/weapons/enemy_wave.png");
+  --enemy-bullet: url("../../assets/enemies/weapons/enemy_spinning_bullet.png");
+  --enemy-bomb: url("../../assets/enemies/weapons/enemy_bomb.png");
+
+  --dreadnought-laser: url("../../assets/enemies/weapons/dreadnought_beam.png");
+  --dreadnought-shield: url("../../assets/enemies/weapons/dreadnought_shield.png");
+  --battlecruiser-shield: url("../../assets/enemies/weapons/battlecruiser_missile.png");
+
+  --battlecruiser-shoot: url("../../assets/enemies/weapons/battlecruiser_shooting.png");
+  --dreadnought-shoot: url("../../assets/enemies/weapons/dreadnought_shooting.png");
+
+  /* Other assets */
+
+
+  /* --------------------------------------------------------------------------
+    7. Home - Animations
+    -------------------------------------------------------------------------- */
+  --scene-duration: 24s;
+
+  --outside-left: -160px;
+  --outside-right: calc(100vw + 160px);
+
+  --sprite-factor: 1;
+
+  /* JUGADOR: posición de combate, tamaño y origen de los disparos. */
+  --player-x: 18vw;
+  --player-size: clamp(40px, 5vw, 72px);
+  --shot-origin-x: calc(var(--player-x) + var(--player-size) / 2);
+
+  --scout-scale: calc(2 * var(--sprite-factor));
+  --bullet-scale: calc(1.5 * var(--sprite-factor));
+
+  --impact-offset: calc(48px * var(--sprite-factor));
+
+  /* ENEMIGO 1: altura de vuelo y posición donde recibe el impacto. */
+  --enemy-one-y: 22vh;
+  --enemy-one-hit-x: 70vw;
+
+  /* ENEMIGO 2: altura de vuelo y posición donde recibe el impacto. */
+  --enemy-two-y: 78vh;
+  --enemy-two-hit-x: 66vw;
+
+  /* DISPAROS FALLIDOS: alturas distintas a las de los enemigos.
+     El jugador también utiliza estos valores para colocarse al disparar. */
+  --miss-one-y: 36vh;
+  --miss-two-y: 44vh;
+  --miss-three-y: 64vh;
+  --miss-four-y: 56vh;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sprite-factor: 0.8;
+  }
+}
+
+/* Pantallas pequeñas: sprites al 60%.
+   Esta regla va después para prevalecer cuando se cumplen ambas. */
+@media (max-width: 600px) {
+  :root {
+    --sprite-factor: 0.6;
+  }
+}

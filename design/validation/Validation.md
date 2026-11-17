@@ -1,10 +1,14 @@
-# Evidencias de validación HTML
+# Evidencias de validación
 
-Esta carpeta reúne evidencias del maquetado semántico de **Galactic Squadrons**. Como el proyecto utiliza React, la validación se realiza sobre el HTML renderizado en el navegador para cada página.
+Esta carpeta reúne evidencias del maquetado semántico y los estilos de **Galactic Squadrons**. Como el proyecto utiliza React, la validación HTML se realiza sobre el documento renderizado en el navegador para cada página.
 
 ## Archivos de evidencia
 - **`*.html`:** copias del documento HTML renderizado de cada página, incluyendo `<!DOCTYPE html>`.
 - **`*-w3c.json`:** resultados del W3C Nu HTML Checker en formato JSON.
+- **`*-css-w3c.json`:** resultados del validador CSS del W3C.
+- **`*-stylelint.json`:** resultados de Stylelint.
+- **`*-checks.json`:** comprobaciones realizadas en el navegador.
+- **`*-palette.json`:** colores de las variables CSS y sus contrastes.
 
 ## Resultados disponibles del validador W3C
 
@@ -18,7 +22,9 @@ Esta carpeta reúne evidencias del maquetado semántico de **Galactic Squadrons*
 | Lobby | [lobby.html](lobby.html) | [lobby-w3c.json](lobby-w3c.json) | 0 | 0 |
 
 
-Los 6 reportes contienen la siguiente respuesta:
+Los 6 reportes contienen un arreglo `messages` vacío. El juego se volvió a
+validar el 8 de noviembre de 2026 con la versión `26.11.4`; los otros reportes
+conservan la versión `26.10.12`. Ejemplo de respuesta:
 
 ```json
 {
@@ -30,6 +36,69 @@ Los 6 reportes contienen la siguiente respuesta:
 `version` identifica la versión del validador, no la versión del proyecto. El arreglo `messages` vacío indica que no se reportaron errores ni advertencias para los documentos enviados en esas comprobaciones.
 
 Estos resultados corresponden a las copias HTML guardadas. Si cambia el contenido renderizado, se deben regenerar las evidencias.
+
+## Estilos de la pantalla de juego
+
+La pantalla reutiliza los tokens y controles comunes sin modificar variables
+existentes. La hoja propia es `src/styles/game.css`; las variables nuevas tienen
+el prefijo `--game-`. El escenario y las tarjetas ocupan una única pantalla sin
+desplazamiento horizontal ni vertical. No se muestran cabeceras de misión, títulos
+de sección ni pies de página en la ruta del juego; las demás páginas conservan
+su pie y su desplazamiento habituales.
+
+La vida del planeta aparece debajo de la Tierra. Cada tarjeta muestra el nombre
+del jugador, la nave, la puntuación y barras compactas con iconos. Los títulos,
+las etiquetas de recursos y los valores permanecen disponibles para lectores
+de pantalla. La presentación sigue siendo una vista previa: la lógica de
+movimiento, combate y pausa queda pendiente.
+
+| Comprobación | Resultado | Evidencia |
+| --- | --- | --- |
+| Stylelint, configuración estándar | 0 errores y 0 advertencias en `game.css` | [game-stylelint.json](game-stylelint.json) |
+| W3C CSS, perfil `css3svg` | Válido, 0 errores y 21 advertencias sobre variables dinámicas | [game-css-w3c.json](game-css-w3c.json) |
+| Diseño responsive | Una sola pantalla sin desplazamiento en diez tamaños; nueve barras visibles | [game-checks.json](game-checks.json) |
+| Teclado | Foco visible de 3 px, menú con Enter, enlaces con Tab y navegación a controles | [game-checks.json](game-checks.json) |
+| Movimiento reducido | Animación desactivada con `prefers-reduced-motion: reduce` | [game-checks.json](game-checks.json) |
+| Paleta y contraste | 12 combinaciones superan 4,5:1 | [game-palette.json](game-palette.json) |
+
+Las comprobaciones del navegador se realizaron con Chrome y Playwright sobre la
+versión compilada. Los tamaños revisados son 1920×1080, 1440×900, 1280×720,
+1024×768, 768×1024, 640×900, 390×844, 320×568, 844×390 y 568×320. Las tarjetas
+usan dos filas en móviles estrechos en vertical y una franja en horizontal.
+Se comprobó que la barra de vida queda debajo del planeta, que el aviso no tapa
+las naves y que el juego no muestra el pie general, incluso con la ruta `#/game/`.
+El contraste mínimo en los pares de texto y fondo evaluados en el navegador es
+7,81:1. Los iconos distinguen vida y energía además del color; las barras exponen
+su nombre y valor mediante atributos ARIA, sin títulos ni números visibles.
+
+El W3C avisa que no puede comprobar estáticamente las variables CSS. Sus valores
+calculados se revisaron en el navegador. Stylelint se ejecutó sobre la hoja del
+juego; las hojas de otras páginas no se incluyeron en esa revisión.
+
+Para repetir las comprobaciones de código y generar el reporte JSON de la paleta:
+
+```powershell
+npm.cmd run lint:css:game
+npm.cmd run palette:game
+npm.cmd run build
+```
+
+La herramienta `scripts/game-palette.mjs` obtiene los colores de las variables
+reales y calcula el contraste mediante luminancia relativa sRGB. No genera imágenes.
+
+Para renovar la validación CSS desde PowerShell:
+
+```powershell
+curl.exe --silent --show-error --fail --max-time 30 `
+  --form "file=@src/styles/game.css;type=text/css" `
+  --form "output=json" --form "profile=css3svg" --form "warning=0" `
+  --output design/validation/game-css-w3c.json `
+  https://jigsaw.w3.org/css-validator/validator
+```
+
+La compilación finaliza correctamente y mantiene una advertencia previa en
+`tokens.css`: no existe `assets/enemies/weapons/battlecruiser_missile.png`.
+La pantalla del juego no utiliza esa variable y se conserva su definición original.
 
 ## ¿Cómo se hizo validación?
 

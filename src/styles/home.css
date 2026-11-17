@@ -1,0 +1,496 @@
+/* ==========================================================================
+	Galactic Squadrons - Home Styles
+	========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Home
+   -------------------------------------------------------------------------- */
+#root > main:has(> .home) {
+  display: grid;
+  place-items: center;
+}
+
+.home {
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  text-align: center;
+}
+
+.home_title {
+  margin: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   2. Background
+   -------------------------------------------------------------------------- */
+
+.home_background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;          /* Detrás del contenido */
+  overflow: hidden;
+  pointer-events: none; /* Permite hacer clic en el menú */
+}
+
+.home_player,
+.home_enemy_scout,
+.home_player_bullet {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  animation-duration: var(--scene-duration);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.home_player::before,
+.home_player_bullet::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+
+  transform:
+    translate(-50%, -50%) /* Centra la nave en su posición */
+    rotate(90deg) /* Apunta hacia la derecha */
+    scale(1); /* Duplica el tamaño de la nave */
+}
+
+/* Player ship */
+.home_player {
+  width: clamp(40px, 5vw, 72px);
+  height: clamp(40px, 5vw, 72px);
+
+  animation-name: home-player-flight;
+}
+
+.home_player::before {
+  background: var(--player-ship-fighter) center / contain no-repeat;
+}
+
+/* Enemy ships */
+.home_enemy_scout {
+  width: 64px;
+  height: 37px;
+  opacity: 0;  
+}
+
+.home_enemy_scout::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+
+  transform:
+    translate(-50%, -50%) /* Centra la nave en su posición */
+    rotate(-90deg) /* Apunta hacia la derecha */
+    scale(var(--scout-scale)); /* Duplica el tamaño de la nave */
+
+  background: var(--enemy-scout) no-repeat;
+  background-size: 512px 37px;
+
+  animation: home-enemy-frames 0.8s steps(8) infinite;
+}
+
+.home_enemy_scout--one {
+  top: var(--enemy-one-y);
+  animation-name: home-enemy-one-flight;
+}
+
+.home_enemy_scout--two {
+  top: var(--enemy-two-y);
+  animation-name: home-enemy-two-flight;
+}
+
+/* Player bullets */
+.home_player_bullet {
+  /* Por defecto, la bala continúa hasta salir de la pantalla. */
+  --shot-end-x: var(--outside-right);
+
+  left: var(--shot-origin-x);
+  top: var(--shot-y);
+  width: 32px;
+  height: 32px;
+
+  /* Permanece oculta mientras espera su primer disparo. */
+  opacity: 0;
+
+  animation-name: home-shot-miss;
+  animation-delay: calc(var(--scene-duration) * var(--shot-at));
+}
+
+.home_player_bullet::before {
+  background: var(--player-bullet) no-repeat;
+  background-size: 128px 32px;
+
+  transform: 
+    translate(-50%, -50%)
+    rotate(90deg)
+    scale(var(--bullet-scale));
+
+  animation: home-bullet-frames 0.4s steps(4) infinite;
+}
+
+/*  DISPAROS CONTRA EL ENEMIGO 1 */
+
+/* Primer fallo: sale cuando el jugador pasa por esta altura al 30%. */
+.home_player_bullet--miss-one {
+  --shot-at: 0.30;
+  --shot-y: var(--miss-one-y);
+}
+
+/* Segundo fallo: sale al 36%. */
+.home_player_bullet--miss-two {
+  --shot-at: 0.36;
+  --shot-y: var(--miss-two-y);
+}
+
+/* Acierto: sale al 42% y tarda otro 8% del ciclo.
+   42% + 8% = 50%: coincide con la desaparición del enemigo 1. */
+.home_player_bullet--hit-one {
+  --shot-at: 0.42;
+  --shot-y: var(--enemy-one-y);
+  --shot-end-x: calc(
+    var(--enemy-one-hit-x) - var(--impact-offset));
+
+  animation-name: home-shot-hit;
+}
+
+/* DISPAROS CONTRA EL ENEMIGO 2 */
+
+/* Primer fallo: sale al 56%. */
+.home_player_bullet--miss-three {
+  --shot-at: 0.56;
+  --shot-y: var(--miss-three-y);
+}
+
+/* Segundo fallo: sale al 62%. */
+.home_player_bullet--miss-four {
+  --shot-at: 0.62;
+  --shot-y: var(--miss-four-y);
+}
+
+/* Acierto: 68% + 8% = 76%, cuando desaparece el enemigo 2. */
+.home_player_bullet--hit-two {
+  --shot-at: 0.68;
+  --shot-y: var(--enemy-two-y);
+  --shot-end-x: calc(
+    var(--enemy-two-hit-x) - var(--impact-offset));
+
+  animation-name: home-shot-hit;
+}
+
+/* Enemy explosions */
+.home_enemy_explosion {
+  /* Esta hoja tiene más espacio transparente que el scout normal.
+     El desplazamiento alinea la nave de su primer fotograma. */
+  --explosion-align-x: calc(-7.5px * var(--scout-scale));
+
+  position: absolute;
+  left: calc(var(--explosion-x) + var(--explosion-align-x));
+  top: var(--explosion-y);
+
+  /* Cada fotograma de destrucción mide 64 × 64 px. */
+  width: 64px;
+  height: 64px;
+
+  background: var(--enemy-scout-destroyed) no-repeat;
+  background-size: 576px 64px;
+  image-rendering: pixelated;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-90deg)
+    scale(var(--scout-scale));
+
+  /* Oculta durante la espera inicial. */
+  opacity: 0;
+
+  /* Una animación cambia los fotogramas.
+     La otra controla cuándo se ve la destrucción. */
+  animation:
+    home-explosion-frames
+      var(--scene-duration) linear infinite,
+    home-explosion-visible
+      var(--scene-duration) steps(1, end) infinite;
+
+  /* Este retraso se aplica a las dos animaciones anteriores. */
+  animation-delay:
+    calc(var(--scene-duration) * var(--explosion-at));
+}
+
+.home_enemy_explosion--one {
+  --explosion-x: var(--enemy-one-hit-x);
+  --explosion-y: var(--enemy-one-y);
+  --explosion-at: 0.49;
+}
+
+.home_enemy_explosion--two {
+  --explosion-x: var(--enemy-two-hit-x);
+  --explosion-y: var(--enemy-two-y);
+  --explosion-at: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   3. Responsive adjustments
+   -------------------------------------------------------------------------- */
+
+/* Evita que el fondo se corte en pantallas pequeñas */
+@media (max-height: 728px) {
+  #root:has(> main > .home) {
+    min-height: 100dvh;
+  }
+
+  #root > main:has(> .home) {
+    padding: var(--home-unit);
+  }
+
+  .home {
+    font-size: var(--home-unit);
+  }
+
+  .home_title {
+    font-size: calc(var(--home-unit) * 2.5);
+    margin: calc(2 * var(--home-unit));
+    overflow-wrap: anywhere;
+  }
+
+  .home_navigation {
+    margin-block-end: var(--home-unit);
+  }
+
+  .home_menu_button {
+    width: min(
+        calc(100% - var(--home-unit)),
+        calc(18 * var(--home-unit)));
+
+    min-height: calc(4 * var(--home-unit));
+
+    padding:
+        calc(1.25 * var(--home-unit))
+        calc(2 * var(--home-unit));
+
+    margin:
+        calc(0.75 * var(--home-unit))
+        calc(0.5 * var(--home-unit));
+
+    font-size: calc(1.3 * var(--home-unit));
+    line-height: 1.3;
+  }
+
+  .home_menu_button::after {
+    inset: calc(0.6 * var(--home-unit));
+  }
+
+  #root:has(> main > .home) > footer {
+    margin-block-start: var(--home-unit);
+    padding: calc(0.5 * var(--home-unit));
+  }
+
+  #root:has(> main > .home) > footer p {
+    margin: calc(0.5 * var(--home-unit)) 0;
+
+    font-size: calc(0.8125 * var(--home-unit));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes home-player-flight {
+  /* Comienza completamente fuera del borde izquierdo. */
+  0% {
+    transform: translate(var(--outside-left), 50vh);
+  }
+
+  /* Entra y ocupa su posición de combate. */
+  12% {
+    transform: translate(var(--player-x), 50vh);
+  }
+
+  /* Primero sube y después baja. */
+  18% {
+    transform: translate(var(--player-x), var(--enemy-one-y));
+  }
+
+  24% {
+    transform: translate(var(--player-x), var(--enemy-two-y));
+  }
+
+  /* Dos disparos fallidos contra el primer enemigo. */
+  30% {
+    transform: translate(var(--player-x), var(--miss-one-y));
+  }
+
+  36% {
+    transform: translate(var(--player-x), var(--miss-two-y));
+  }
+
+  /* Apunta al primer enemigo.
+     Dispara al 42%; el impacto ocurre al 50%. */
+  42%, 52% {
+    transform: translate(var(--player-x), var(--enemy-one-y));
+  }
+
+  /* Dos disparos fallidos contra el segundo enemigo. */
+  56% {
+    transform: translate(var(--player-x), var(--miss-three-y));
+  }
+
+  62% {
+    transform: translate(var(--player-x), var(--miss-four-y));
+  }
+
+  /* Apunta al segundo enemigo.
+     Dispara al 68%; el impacto ocurre al 76%. */
+  68%, 80% {
+    transform: translate(var(--player-x), var(--enemy-two-y));
+  }
+
+  /* Regresa al centro antes de acelerar. */
+  84% {
+    transform: translate(var(--player-x), 50vh);
+  }
+
+  /* Cruza rápidamente hacia la derecha.
+     Permanece fuera hasta que comienza el siguiente ciclo. */
+  92%, 100% {
+    transform: translate(var(--outside-right), 50vh);
+  }
+}
+
+/* Enemy ship animations */
+@keyframes home-enemy-frames {
+  from { background-position: 0 0; }
+  to   { background-position: -512px 0; }
+}
+
+@keyframes home-enemy-one-flight {
+  /* Espera fuera de la pantalla. */
+  0%, 28.99% {
+    opacity: 0;
+    transform: translateX(var(--outside-right));
+  }
+
+  /* Comienza su acercamiento. */
+  29% {
+    opacity: 1;
+    transform: translateX(var(--outside-right));
+  }
+
+  /* Permanece visible hasta el impacto. */
+  48.99% {
+    opacity: 1;
+  }
+
+  /* Desaparece cuando comienza su destrucción. */
+  49%, 100% {
+    opacity: 0;
+    transform: translateX(var(--enemy-one-hit-x));
+  }
+}
+
+@keyframes home-enemy-two-flight {
+  0%, 54.99% {
+    opacity: 0;
+    transform: translateX(var(--outside-right));
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateX(var(--outside-right));
+  }
+
+  74.99% {
+    opacity: 1;
+  }
+
+  75%, 100% {
+    opacity: 0;
+    transform: translateX(var(--enemy-two-hit-x));
+  }
+}
+
+/* Player bullet animations */
+@keyframes home-bullet-frames {
+  from { background-position: 0 0; }
+  to   { background-position: -128px 0; }
+}
+
+/* Estos porcentajes se cuentan DESDE el disparo, después de su delay.
+   La distancia es: posición final menos posición inicial. */
+
+@keyframes home-shot-miss {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Tarda el 12% del ciclo en salir completamente de la pantalla. */
+  12% {
+    opacity: 1;
+    transform: translateX(
+      calc(var(--shot-end-x) - var(--shot-origin-x))
+    );
+  }
+
+  /* Espera oculta hasta su disparo en el siguiente ciclo. */
+  12.01%, 100% {
+    opacity: 0;
+    transform: translateX(
+      calc(var(--shot-end-x) - var(--shot-origin-x))
+    );
+  }
+}
+
+@keyframes home-shot-hit {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  6.99% {
+    opacity: 1;
+  }
+
+  /* Alcanza el frente del enemigo y desaparece. */
+  7%, 100% {
+    opacity: 0;
+    transform: translateX(
+      calc(var(--shot-end-x) - var(--shot-origin-x))
+    );
+  }
+}
+
+@keyframes home-explosion-frames {
+  0% {
+    background-position: 0 0;
+
+    /* Reparte los nueve fotogramas durante el siguiente tramo: 0%–4%. */
+    animation-timing-function: steps(9, end);
+  }
+
+  /* La reproducción ocupa el 4% del ciclo:
+     24s × 0.04 = 0.96 segundos. */
+  4%, 100% {
+    background-position: -576px 0;
+  }
+}
+
+/* steps(1, end) mantiene la opacidad en 1 hasta llegar al 4%.
+   Después cambia directamente a 0, sin desvanecerse poco a poco. */
+@keyframes home-explosion-visible {
+  0% {
+    opacity: 1;
+  }
+
+  4%, 100% {
+    opacity: 0;
+  }
+}

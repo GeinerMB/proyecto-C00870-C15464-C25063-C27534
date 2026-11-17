@@ -1,0 +1,409 @@
+﻿/* ==========================================================================
+   Galactic Squadrons - Juego en una pantalla, sin redefinir tokens compartidos.
+   ========================================================================== */
+
+.game {
+  --game-text-muted: #ced9e6;
+  --game-health: #83ff83;
+  --game-energy: var(--button-edge);
+  --game-warning: #ffd580;
+  --game-shadow: rgb(0 0 0 / 35%);
+  --game-frame: 3px;
+  --game-radius: 0.4rem;
+  --game-transition: 180ms;
+  --game-asteroid-image: url("../../assets/obstacles/asteroid_rock_large.png");
+  --game-medkit-image: url("../../assets/items/medkit.png");
+  --game-planet-size: clamp(5rem, min(35vw, 48dvh), 26rem);
+
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.375rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0.5rem;
+  background: var(--dialog-header-top);
+  color: var(--color-text);
+}
+
+/* 1. El alto disponible se reparte entre el escenario y el escuadrón.
+   Estas reglas se aplican únicamente mientras se muestra el juego. */
+body:has(.game) {
+  overflow: hidden;
+}
+
+#root:has(> main > .game) {
+  height: 100dvh;
+  min-height: 0;
+}
+
+#root > main:has(> .game) {
+  flex: 1;
+  max-width: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Escenario flexible: no impone una altura mínima mayor que la pantalla. */
+.game-board {
+  position: relative;
+  isolation: isolate;
+  min-height: 0;
+  overflow: hidden;
+  border: var(--game-frame) solid var(--button-border-light);
+  border-radius: var(--game-radius);
+  background-color: var(--color-background);
+  background-image: var(--main-background-image);
+  background-position: center;
+  background-size: cover;
+  box-shadow: inset 0 0 4rem var(--game-shadow);
+}
+
+#game-board {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.game-board-notice {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  padding: 0.5rem var(--space-1);
+  border: 2px solid var(--game-warning);
+  background: var(--dialog-header-top);
+  color: var(--game-warning);
+  font-family: var(--font-main);
+  font-size: clamp(0.75rem, 1.5vw, 1.125rem);
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.game-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* El planeta y su medidor se desplazan y escalan como una unidad. */
+.game-planet {
+  position: absolute;
+  top: 40%;
+  left: calc(var(--game-planet-size) * -0.38);
+  width: var(--game-planet-size);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+}
+
+.game-scene-earth {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--earth-image) center / contain no-repeat;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 1.5rem var(--button-edge));
+}
+
+.game-planet-health {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: 44%;
+  width: 65%;
+  min-width: 5rem;
+  padding: 0.375rem;
+  border: 1px solid var(--button-border-light);
+  border-radius: var(--game-radius);
+  background: var(--dialog-header-top);
+}
+
+.game-scene-ally {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  width: clamp(1.25rem, min(4.5vw, 9dvh), 3.5rem);
+  animation: game-formation-entry 3s ease-out both;
+}
+
+.game-scene-ally img {
+  width: 100%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 0.4rem var(--button-edge));
+  transform: rotate(90deg);
+}
+
+.game-scene-ally > span {
+  padding: 0 0.3rem;
+  border: 1px solid var(--button-border-light);
+  background: var(--dialog-header-top);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.game-scene-ally-1 {
+  top: 27%;
+  left: 28%;
+}
+
+.game-scene-ally-2 {
+  top: 43%;
+  left: 37%;
+}
+
+.game-scene-ally-3 {
+  top: 61%;
+  left: 46%;
+}
+
+.game-scene-ally-4 {
+  top: 73%;
+  left: 24%;
+}
+
+.game-scene-boss {
+  position: absolute;
+  top: 39%;
+  right: 11%;
+  width: clamp(3rem, min(13vw, 26dvh), 10rem);
+  aspect-ratio: 128 / 97;
+  background-image: var(--enemy-dreadnought);
+  background-size: 800% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 1rem var(--game-shadow));
+}
+
+.game-scene-asteroid {
+  position: absolute;
+  width: clamp(1.25rem, min(4vw, 8dvh), 3rem);
+  aspect-ratio: 1;
+  background: var(--game-asteroid-image) center / contain no-repeat;
+  image-rendering: pixelated;
+}
+
+.game-scene-asteroid-one {
+  top: 25%;
+  left: 57%;
+  transform: rotate(25deg);
+}
+
+.game-scene-asteroid-two {
+  right: 27%;
+  bottom: 13%;
+  transform: scale(0.65) rotate(-35deg);
+}
+
+.game-scene-medkit {
+  position: absolute;
+  top: 59%;
+  left: 60%;
+  width: clamp(1rem, 2.5vw, 2rem);
+  aspect-ratio: 1;
+  background: var(--game-medkit-image) center / contain no-repeat;
+  image-rendering: pixelated;
+}
+
+/* 3. Menú nativo accesible con teclado. */
+.game-menu {
+  position: absolute;
+  z-index: 3;
+  top: 0.75rem;
+  right: 0.75rem;
+  max-width: calc(100% - 1.5rem);
+  max-height: calc(100% - 1.5rem);
+  overflow: auto;
+  border: 1px solid var(--button-border-light);
+  border-radius: var(--game-radius);
+  background: var(--dialog-surface);
+  box-shadow: 0 0.5rem 1rem var(--game-shadow);
+}
+
+.game-menu summary {
+  min-height: 2.75rem;
+  padding: 0.625rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.game-menu nav {
+  display: grid;
+  padding: 0.25rem;
+  border-top: 1px solid var(--button-border-light);
+}
+
+.game-menu a {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  transition: background-color var(--game-transition) ease;
+}
+
+.game-menu :focus-visible {
+  outline: 3px solid var(--game-warning);
+  outline-offset: -3px;
+}
+
+/* 4. Franja compacta: nombre y puntos, nave y dos recursos con iconos. */
+.game-squad,
+.game-squad-list > li {
+  min-width: 0;
+  min-height: 0;
+}
+
+.game-squad-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin: 0;
+}
+
+.game-player {
+  height: 100%;
+  border: var(--game-frame) solid var(--button-border-light);
+  border-radius: var(--game-radius);
+  background: var(--dialog-surface);
+}
+
+.game-player-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--button-border-light);
+  background: linear-gradient(var(--dialog-header-top), var(--dialog-header-bottom));
+}
+
+.game-player-header h3 {
+  margin: 0;
+  font-size: clamp(0.75rem, 1.1vw, 0.875rem);
+}
+
+.game-player-score {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.game-player-body {
+  display: grid;
+  grid-template-columns: clamp(1.5rem, 3vw, 2.5rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+}
+
+.game-player-ship {
+  display: block;
+  width: 100%;
+  image-rendering: pixelated;
+}
+
+.game-player-resources {
+  display: grid;
+  gap: 0.375rem;
+}
+
+/* Formas e iconos distintos, además del color; etiquetas disponibles para lectores. */
+.game-meter {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.game-meter img {
+  display: block;
+  width: 1rem;
+  image-rendering: pixelated;
+}
+
+.game-meter-track {
+  display: block;
+  height: 0.625rem;
+  padding: 2px;
+  border: 1px solid var(--button-border-light);
+  background: var(--dialog-header-top);
+}
+
+.game-meter-fill {
+  display: block;
+  height: 100%;
+}
+
+.game-meter-health .game-meter-fill {
+  background: var(--game-health);
+}
+
+.game-meter-energy .game-meter-fill {
+  background: var(--game-energy);
+}
+
+/* Conserva la jerarquía de títulos y los puntos sin ocupar espacio visual. */
+.game-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* 5. Efectos breves y preferencia de movimiento reducido. */
+@media (hover: hover) {
+  .game-menu a:hover {
+    background-color: var(--button-face-top);
+  }
+}
+
+@keyframes game-formation-entry {
+  from {
+    opacity: 0;
+    translate: -1rem 0;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* 6. En retrato estrecho, dos filas; en horizontal se conserva una sola franja. */
+@media (width <= 40rem) and (orientation: portrait) {
+  .game-squad-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-scene-ally-1 {
+    top: 32%;
+  }
+}
+
+@media (width <= 48rem) and (orientation: portrait), (width <= 30rem) {
+  .game-board-notice {
+    top: 4.25rem;
+    max-width: calc(100% - 1.5rem);
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-scene-ally {
+    animation: none;
+  }
+
+  .game-menu a {
+    transition: none;
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "cssvalidation" : {
+     "uri"       : "game.css",
+     "checkedby" : "http://www.w3.org/2005/07/css-validator",
+     "csslevel"  : "css3",
+     "date"      : "2026-11-08T07:51:05Z",
+     "timestamp" : "1794124265824",
+     "validity"  : true,
+     "result"    : {
+		"errorcount"   : 0,
+		"warningcount" : 21
+                   }
+       ,
+     "warnings"   : [
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 25,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 54,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 57,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 81,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 83,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 85,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 112,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 124,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 126,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 147,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 148,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 179,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 225,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 227,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 241,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 271,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 273,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 282,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 336,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 337,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/game.css",
+         "line"    : 350,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+                     ]
+    }
+}
