@@ -1,0 +1,103 @@
+[
+    {
+        "name":  "game",
+        "route":  "/game",
+        "heading":  "Defiende la Tierra",
+        "mainCount":  1,
+        "links":  [
+                      "#/",
+                      "#/lobby",
+                      "#/rules",
+                      "#/game",
+                      "#/scoreboard",
+                      "#/about-us"
+                  ],
+        "styles":  0,
+        "missingAriaLabels":  [
+
+                              ],
+        "brokenImages":  [
+
+                         ],
+        "favicon":  [
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-DFrfsJ06.svg",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-BAHaW_FC.png",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/favicon.ico"
+                    ],
+        "canvas":  {
+                       "width":  960,
+                       "height":  540,
+                       "fallback":  "Tu navegador no admite canvas. El escenario de Galactic Squadrons necesita un navegador compatible para mostrar la partida."
+                   },
+        "players":  4,
+        "scores":  0,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "name":  "scoreboard",
+        "route":  "/scoreboard",
+        "heading":  "Marcadores",
+        "mainCount":  1,
+        "links":  [
+                      "#/",
+                      "#/lobby",
+                      "#/rules",
+                      "#/game",
+                      "#/scoreboard",
+                      "#/about-us"
+                  ],
+        "styles":  0,
+        "missingAriaLabels":  [
+
+                              ],
+        "brokenImages":  [
+
+                         ],
+        "favicon":  [
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-DFrfsJ06.svg",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-BAHaW_FC.png",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/favicon.ico"
+                    ],
+        "canvas":  null,
+        "players":  0,
+        "scores":  5,
+        "failures":  [
+
+                     ]
+    },
+    {
+        "name":  "about-us",
+        "route":  "/about-us",
+        "heading":  "Quiénes somos",
+        "mainCount":  1,
+        "links":  [
+                      "#/",
+                      "#/lobby",
+                      "#/rules",
+                      "#/game",
+                      "#/scoreboard",
+                      "#/about-us"
+                  ],
+        "styles":  0,
+        "missingAriaLabels":  [
+
+                              ],
+        "brokenImages":  [
+
+                         ],
+        "favicon":  [
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-DFrfsJ06.svg",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/assets/fighter_ship-BAHaW_FC.png",
+                        "http://127.0.0.1:4173/proyecto-C00870-C15464-C25063-C27534/favicon.ico"
+                    ],
+        "canvas":  null,
+        "players":  0,
+        "scores":  0,
+        "team":  "Josué Badilla ParedesWerner Naranjo NavarroAlejandro Solano BarbozaGeiner Montoya Barrientos",
+        "failures":  [
+
+                     ]
+    }
+]
