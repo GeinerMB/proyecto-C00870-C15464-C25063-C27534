@@ -1,4 +1,8 @@
-﻿import { Link } from "react-router";
+﻿import { Link } from "react-router"; 
+import { useEffect, useRef } from "react";
+
+import { createPlayerShip, moveShip } from "../game/movement.js";
+
 import fighterShip from "../assets/player/fighter_ship.svg";
 import shieldShip from "../assets/player/shield_ship.svg";
 import medicShip from "../assets/player/medic_ship.svg";
@@ -58,6 +62,81 @@ function PlayerCard({ player }) {
 }
 
 export default function Game() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    const playerShip = createPlayerShip();
+    const sprite = new Image();
+    sprite.src = fighterShip;
+
+    const pressedKeys = new Set();
+    const movementKeys = [
+      "KeyW", "KeyA", "KeyS", "KeyD",
+      "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+    ];
+
+    function handleKeyDown(event) {
+      if (!movementKeys.includes(event.code)) return;
+
+      event.preventDefault();
+      pressedKeys.add(event.code);
+    }
+
+    function handleKeyUp(event) {
+      pressedKeys.delete(event.code);
+    }
+
+    function clearKeys() {
+      pressedKeys.clear();
+    }
+
+    let prevTime = null;
+    let frameId;
+
+    function frame(time) {
+      const deltaTime = prevTime === null ? 0 : Math.min((time - prevTime) / 1000, 0.5);
+      prevTime = time;
+
+      moveShip(playerShip, {
+        arriba: pressedKeys.has("KeyW") || pressedKeys.has("ArrowUp"),
+        abajo: pressedKeys.has("KeyS") || pressedKeys.has("ArrowDown"),
+        izquierda: pressedKeys.has("KeyA") || pressedKeys.has("ArrowLeft"),
+        derecha: pressedKeys.has("KeyD") || pressedKeys.has("ArrowRight"),
+      }, deltaTime);
+      
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (sprite.complete && sprite.naturalWidth > 0) {
+        context.save();
+        context.translate(playerShip.x + playerShip.width / 2, playerShip.y + playerShip.height / 2);
+        context.rotate(Math.PI / 2);
+        context.drawImage(sprite, -playerShip.width / 2, -playerShip.height / 2, playerShip.width, playerShip.height);
+        context.restore();
+      }
+
+      frameId = requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener("keydown", handleKeyDown);
+    canvas.addEventListener("keyup", handleKeyUp);
+    canvas.addEventListener("blur", clearKeys);
+    window.addEventListener("blur", clearKeys);
+
+    frameId = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      canvas.removeEventListener("keydown", handleKeyDown);
+      canvas.removeEventListener("keyup", handleKeyUp);
+      canvas.removeEventListener("blur", clearKeys);
+      window.removeEventListener("blur", clearKeys);
+    };
+  }, []);
+
   return (
     <section id="game" className="game" aria-labelledby="game-title">
       <h1 id="game-title" className="game-visually-hidden">Defiende la Tierra</h1>
@@ -80,7 +159,7 @@ export default function Game() {
         </details>
 
         {/* Composición decorativa; el canvas queda disponible para la lógica de juego. */}
-        <div className="game-scene" aria-hidden="true">
+        {/* <div className="game-scene" aria-hidden="true">
           {squad.map((player) => (
             <span key={player.id} className={`game-scene-ally game-scene-ally-${player.number}`}>
               <img src={player.ship} alt="" width="48" height="48" />
@@ -91,7 +170,8 @@ export default function Game() {
           <span className="game-scene-asteroid game-scene-asteroid-one" />
           <span className="game-scene-asteroid game-scene-asteroid-two" />
           <span className="game-scene-medkit" />
-        </div>
+        </div> */}
+        
         <div className="game-planet">
           <span className="game-scene-earth" aria-hidden="true" />
           <div className="game-planet-health">
@@ -99,15 +179,17 @@ export default function Game() {
           </div>
         </div>
         <canvas
+          ref={canvasRef}
           id="game-board"
-          width="960"
-          height="540"
+          width="1280" // 960 original
+          height="720" // 540 original
+          tabIndex={0}
+          onPointerDown={(event) => event.currentTarget.focus()}
           aria-labelledby="game-board-title"
           aria-describedby="game-board-description"
         >
           <p>
-            Tu navegador no admite canvas. El escenario de Galactic Squadrons
-            necesita un navegador compatible para mostrar la partida.
+            Enfoca el tablero y usa WASD o las flechas para mover tu nave
           </p>
         </canvas>
       </section>
