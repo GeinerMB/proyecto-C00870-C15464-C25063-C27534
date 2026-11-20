@@ -69,6 +69,8 @@ export default function Game() {
     const context = canvas.getContext("2d");
     if (!context) return;
 
+    canvas.focus();
+
     const playerShip = createPlayerShip();
     const sprite = new Image();
     sprite.src = fighterShip;
@@ -81,6 +83,7 @@ export default function Game() {
 
     function handleKeyDown(event) {
       if (!movementKeys.includes(event.code)) return;
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
 
       event.preventDefault();
       pressedKeys.add(event.code);
@@ -111,28 +114,54 @@ export default function Game() {
       context.clearRect(0, 0, canvas.width, canvas.height);
 
       if (sprite.complete && sprite.naturalWidth > 0) {
-        context.save();
-        context.translate(playerShip.x + playerShip.width / 2, playerShip.y + playerShip.height / 2);
-        context.rotate(Math.PI / 2);
-        context.drawImage(sprite, -playerShip.width / 2, -playerShip.height / 2, playerShip.width, playerShip.height);
-        context.restore();
+        const viewWidth = canvas.clientWidth;
+        const viewHeight = canvas.clientHeight;
+
+        if (viewWidth > 0 && viewHeight > 0) {
+          // Qué fracción del recorrido lógico ha completado la nave en cada eje.
+          const progressX = playerShip.x / (canvas.width - playerShip.width);
+          const progressY = playerShip.y / (canvas.height - playerShip.height);
+
+          // Posición equivalente en el tablero visible, dejando espacio para la nave.
+          const drawX = progressX * (viewWidth - playerShip.width);
+          const drawY = progressY * (viewHeight - playerShip.height);
+
+          context.save();
+
+          // Compensa el estiramiento de CSS para dibujar en píxeles visibles.
+          context.scale(canvas.width / viewWidth, canvas.height / viewHeight);
+
+          context.translate(
+            drawX + playerShip.width / 2,
+            drawY + playerShip.height / 2,
+          );
+          context.rotate(Math.PI / 2);
+          context.drawImage(
+            sprite,
+            -playerShip.width / 2,
+            -playerShip.height / 2,
+            playerShip.width,
+            playerShip.height,
+          );
+
+          context.restore();
+        }
       }
 
       frameId = requestAnimationFrame(frame);
     }
 
-    canvas.addEventListener("keydown", handleKeyDown);
-    canvas.addEventListener("keyup", handleKeyUp);
-    canvas.addEventListener("blur", clearKeys);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
     window.addEventListener("blur", clearKeys);
 
+    // canvas.focus({ preventScroll: true }); // Activa el teclado al entrar a /game
     frameId = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(frameId);
-      canvas.removeEventListener("keydown", handleKeyDown);
-      canvas.removeEventListener("keyup", handleKeyUp);
-      canvas.removeEventListener("blur", clearKeys);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("blur", clearKeys);
     };
   }, []);

@@ -61,7 +61,7 @@ body:has(.game) {
 }
 
 #game-board {
-  object-fit: contain;
+  object-fit: fill;
   position: absolute;
   inset: 0;
   width: 100%;
