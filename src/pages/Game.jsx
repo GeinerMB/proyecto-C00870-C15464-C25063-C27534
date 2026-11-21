@@ -1,8 +1,7 @@
 ﻿import { Link } from "react-router"; 
 import { useEffect, useRef } from "react";
 
-import { startGame } from "../game/gameLoop.js";
-// import { createPlayerShip, moveShip } from "../game/movement.js";
+import { startGame } from "../js/game/gameLoop.js";
 
 import fighterShip from "../assets/player/fighter_ship.svg";
 import shieldShip from "../assets/player/shield_ship.svg";
