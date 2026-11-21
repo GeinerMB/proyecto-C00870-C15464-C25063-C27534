@@ -1,7 +1,8 @@
 ﻿import { Link } from "react-router"; 
 import { useEffect, useRef } from "react";
 
-import { createPlayerShip, moveShip } from "../game/movement.js";
+import { startGame } from "../game/gameLoop.js";
+// import { createPlayerShip, moveShip } from "../game/movement.js";
 
 import fighterShip from "../assets/player/fighter_ship.svg";
 import shieldShip from "../assets/player/shield_ship.svg";
@@ -65,105 +66,8 @@ export default function Game() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-
-    canvas.focus();
-
-    const playerShip = createPlayerShip();
-    const sprite = new Image();
-    sprite.src = fighterShip;
-
-    const pressedKeys = new Set();
-    const movementKeys = [
-      "KeyW", "KeyA", "KeyS", "KeyD",
-      "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
-    ];
-
-    function handleKeyDown(event) {
-      if (!movementKeys.includes(event.code)) return;
-      if (event.altKey || event.ctrlKey || event.metaKey) return;
-
-      event.preventDefault();
-      pressedKeys.add(event.code);
-    }
-
-    function handleKeyUp(event) {
-      pressedKeys.delete(event.code);
-    }
-
-    function clearKeys() {
-      pressedKeys.clear();
-    }
-
-    let prevTime = null;
-    let frameId;
-
-    function frame(time) {
-      const deltaTime = prevTime === null ? 0 : Math.min((time - prevTime) / 1000, 0.5);
-      prevTime = time;
-
-      moveShip(playerShip, {
-        arriba: pressedKeys.has("KeyW") || pressedKeys.has("ArrowUp"),
-        abajo: pressedKeys.has("KeyS") || pressedKeys.has("ArrowDown"),
-        izquierda: pressedKeys.has("KeyA") || pressedKeys.has("ArrowLeft"),
-        derecha: pressedKeys.has("KeyD") || pressedKeys.has("ArrowRight"),
-      }, deltaTime);
-      
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (sprite.complete && sprite.naturalWidth > 0) {
-        const viewWidth = canvas.clientWidth;
-        const viewHeight = canvas.clientHeight;
-
-        if (viewWidth > 0 && viewHeight > 0) {
-          // Qué fracción del recorrido lógico ha completado la nave en cada eje.
-          const progressX = playerShip.x / (canvas.width - playerShip.width);
-          const progressY = playerShip.y / (canvas.height - playerShip.height);
-
-          // Posición equivalente en el tablero visible, dejando espacio para la nave.
-          const drawX = progressX * (viewWidth - playerShip.width);
-          const drawY = progressY * (viewHeight - playerShip.height);
-
-          context.save();
-
-          // Compensa el estiramiento de CSS para dibujar en píxeles visibles.
-          context.scale(canvas.width / viewWidth, canvas.height / viewHeight);
-
-          context.translate(
-            drawX + playerShip.width / 2,
-            drawY + playerShip.height / 2,
-          );
-          context.rotate(Math.PI / 2);
-          context.drawImage(
-            sprite,
-            -playerShip.width / 2,
-            -playerShip.height / 2,
-            playerShip.width,
-            playerShip.height,
-          );
-
-          context.restore();
-        }
-      }
-
-      frameId = requestAnimationFrame(frame);
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    window.addEventListener("blur", clearKeys);
-
-    // canvas.focus({ preventScroll: true }); // Activa el teclado al entrar a /game
-    frameId = requestAnimationFrame(frame);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-      window.removeEventListener("blur", clearKeys);
-    };
+    const stopGame = startGame(canvasRef.current, fighterShip);
+    return stopGame;
   }, []);
 
   return (
