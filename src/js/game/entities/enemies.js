@@ -35,31 +35,42 @@ export function isEnemyOnCourse(enemy) {
   return enemy.x + halfWidth > 0;
 }
 
-export function drawEnemy(context, enemy, image) {
-  if (!image.complete || image.naturalWidth === 0) return;
+export function updateEnemies(enemies, deltaTime) {
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const enemy = enemies[i];
+    updateEnemy(enemy, deltaTime);
 
-  const config = enemyTypes[enemy.type];
-  const { frameWidth, frameHeight } = config;
-  const frame = Math.floor(enemy.age * config.framesPerSecond) % config.frameCount;
-
-  const canvas = context.canvas;
-    const scaleX = canvas.clientWidth / canvas.width;
-    const scaleY = canvas.clientHeight / canvas.height;
-    if (scaleX === 0 || scaleY === 0) return;
-
-    // Mismo criterio que el jugador: reducir uniformemente y limitar la escala a 1.
-    const spriteScale = Math.min(1, scaleX, scaleY);
-
-    context.save();
-    context.translate(enemy.x, enemy.y);
-    context.scale(spriteScale / scaleX, spriteScale / scaleY);
-    context.rotate(config.rotation);
-
-    context.drawImage(
-    image,
-    frame * frameWidth, 0, frameWidth, frameHeight,
-    -frameWidth / 2, -frameHeight / 2, frameWidth, frameHeight,
-    );
-
-    context.restore();
+    if (!isEnemyOnCourse(enemy)) {
+      enemies.splice(i, 1);
+    }
+  }
 }
+
+// export function drawEnemy(context, enemy, image) {
+//   if (!image.complete || image.naturalWidth === 0) return;
+
+//   const config = enemyTypes[enemy.type];
+//   const { frameWidth, frameHeight } = config;
+//   const frame = Math.floor(enemy.age * config.framesPerSecond) % config.frameCount;
+
+//   const canvas = context.canvas;
+//     const scaleX = canvas.clientWidth / canvas.width;
+//     const scaleY = canvas.clientHeight / canvas.height;
+//     if (scaleX === 0 || scaleY === 0) return;
+
+//     // Mismo criterio que el jugador: reducir uniformemente y limitar la escala a 1.
+//     const spriteScale = Math.min(1, scaleX, scaleY);
+
+//     context.save();
+//     context.translate(enemy.x, enemy.y);
+//     context.scale(spriteScale / scaleX, spriteScale / scaleY);
+//     context.rotate(config.rotation);
+
+//     context.drawImage(
+//     image,
+//     frame * frameWidth, 0, frameWidth, frameHeight,
+//     -frameWidth / 2, -frameHeight / 2, frameWidth, frameHeight,
+//     );
+
+//     context.restore();
+// }
