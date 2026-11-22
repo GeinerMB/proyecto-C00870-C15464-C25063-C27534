@@ -1,7 +1,12 @@
 import { createPlayerShip, moveShip } from "./movement.js";
+import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
+import { enemyTypes, createEnemy, updateEnemy, isEnemyOnCourse, drawEnemy } from "./entities/enemies.js";
+
+import { levels } from "./levels.js"
+const PLAYER_SPRITE_SCALE = 0.75;
 
 // Inicializa el juego con el elemento canvas y la imagen del jugador.
-export function startGame(canvas, playerSpriteUrl) {
+export function startGame(canvas, playerSpriteUrl, levelId = 1) {
   const context = canvas.getContext("2d");
   if (!context) return;
   
@@ -41,7 +46,13 @@ export function startGame(canvas, playerSpriteUrl) {
   
   let prevTime = null;
   let frameId;
-  
+
+  const scoutImage = new Image();
+  scoutImage.src = enemyTypes.scout.spriteUrl;
+
+  // const enemies = [createEnemy("scout", canvas.width, 70)];
+  const enemies = [];
+  const spawners = createSpawners(levels[levelId].spawners);
 
   // Ejecuta un fotograma
   function frame(time) {
@@ -59,40 +70,49 @@ export function startGame(canvas, playerSpriteUrl) {
     // Borra el fotograma anterior antes de dibujar el nuevo.
     context.clearRect(0, 0, canvas.width, canvas.height);
   
+    
+
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      const enemy = enemies[i];
+      updateEnemy(enemy, deltaTime);
+
+      if (isEnemyOnCourse(enemy)) {
+        drawEnemy(context, enemy, scoutImage);
+      } else {
+        enemies.splice(i, 1);
+      }
+    }
+
+    updateSpawners(spawners, enemies, deltaTime);
+
     if (sprite.complete && sprite.naturalWidth > 0) {
       // Obtiene las dimensiones visibles del canvas.
       const viewWidth = canvas.clientWidth;
       const viewHeight = canvas.clientHeight;
   
       if (viewWidth > 0 && viewHeight > 0) {
-        // Qué fracción del recorrido lógico ha completado la nave en cada eje.
+        const shipScale = Math.min(
+          1,
+          viewWidth / canvas.width,
+          viewHeight / canvas.height,
+        ) * PLAYER_SPRITE_SCALE;
+
+        const drawWidth = playerShip.width * shipScale;
+        const drawHeight = playerShip.height * shipScale;
+
+        // Posición del jugador dentro de su recorrido lógico.
         const progressX = playerShip.x / (canvas.width - playerShip.width);
         const progressY = playerShip.y / (canvas.height - playerShip.height);
-  
-        // Posición equivalente en el tablero visible, dejando espacio para la nave.
-        const drawX = progressX * (viewWidth - playerShip.width);
-        const drawY = progressY * (viewHeight - playerShip.height);
-  
-        // Guarda el estado
+
+        // Usa el tamaño visible para que la nave siga llegando a los bordes.
+        const drawX = progressX * (viewWidth - drawWidth);
+        const drawY = progressY * (viewHeight - drawHeight);
+
         context.save();
-  
-        // Compensa el estiramiento de CSS para dibujar en píxeles visibles.
         context.scale(canvas.width / viewWidth, canvas.height / viewHeight);
-  
-        // Centra la nave, la gira 90 grados y la dibuja.
-        context.translate(
-          drawX + playerShip.width / 2,
-          drawY + playerShip.height / 2,
-        );
+        context.translate(drawX + drawWidth / 2, drawY + drawHeight / 2);
         context.rotate(Math.PI / 2);
-        context.drawImage(
-          sprite,
-          -playerShip.width / 2,
-          -playerShip.height / 2,
-          playerShip.width,
-          playerShip.height,
-        );
-  
+        context.drawImage(sprite, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
         context.restore();
       }
     }
