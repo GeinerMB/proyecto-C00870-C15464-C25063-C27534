@@ -4,12 +4,21 @@ const movementKeys = new Set([
   "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
 ]);
 
-export function createInput() {
+export function createInput(canvas) {
   // Guarda las teclas actualmente presionadas
   const pressedKeys = new Set();
+  let pendingShots = 0;
 
   // Registra una tecla de movimiento mientras no se usen combinaciones especiales.
   function handleKeyDown(event) {
+    if (event.code === "Space") {
+      if (event.target !== canvas || event.altKey || event.ctrlKey || event.metaKey) return;
+
+      event.preventDefault();
+      if (!event.repeat) pendingShots++;
+      return;
+    }
+    
     if (!movementKeys.has(event.code)) return;
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
@@ -25,6 +34,7 @@ export function createInput() {
   // Limpia todas las teclas al perder el foco de la ventana.
   function clearKeys() {
     pressedKeys.clear();
+    pendingShots = 0;
   }
 
   window.addEventListener("keydown", handleKeyDown);
@@ -40,11 +50,17 @@ export function createInput() {
     };
   }
 
+  function consumeShots() {
+    const shots = pendingShots;
+    pendingShots = 0;
+    return shots;
+  }
+
   function dispose() {
     window.removeEventListener("keydown", handleKeyDown);
     window.removeEventListener("keyup", handleKeyUp);
     window.removeEventListener("blur", clearKeys);
   }
 
-  return { readMovement, dispose };
+  return { readMovement, consumeShots, dispose };
 }

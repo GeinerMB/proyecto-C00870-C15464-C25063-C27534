@@ -8,7 +8,7 @@ export function createPlayerShip() {
     y: 300, // Initial y-coordinate of the ship
     width: 64, // Width of the ship asset
     height: 64, // Height of the ship asset
-    speed: 220, // Base speed of the ship
+    speed: 230, // Base speed of the ship
   }
 }
 
