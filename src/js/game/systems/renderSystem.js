@@ -1,4 +1,5 @@
 import { enemyTypes } from "../entities/enemies.js";
+import { planetTypes } from "../entities/planet.js";
 import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
 
 const PLAYER_SPRITE_SCALE = 0.75;
@@ -184,7 +185,45 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
   };
 }
 
-export function createRenderer(context, playerSpriteUrl) {
+function getPlanetLayout(canvas) {
+  const viewWidth = canvas.clientWidth;
+  const viewHeight = canvas.clientHeight;
+  if (!viewWidth || !viewHeight) return null;
+
+  // Modifica el tamaño del planeta
+  const diameter = Math.min(viewHeight * 0.85, viewWidth * 0.90);
+
+  const scaleX = viewWidth / canvas.width;
+  const scaleY = viewHeight / canvas.height;
+
+  return {
+    x: (-0.45 * diameter) / scaleX, // Modifica su ubicación en x
+    y: ((viewHeight - diameter) / 2) / scaleY,
+    width: diameter / scaleX,
+    height: diameter / scaleY,
+  };
+}
+
+function drawPlanet(context, planet, image, board = context.canvas) {
+  if (!image.complete || !image.naturalWidth) return;
+
+  const layout = getPlanetLayout(board);
+  if (!layout) return;
+
+  const frameSize = 200;
+  const frameCount = 80;
+  const rotationSeconds = 20; // Velocidad de la animación
+  const frame = Math.floor(planet.age * frameCount / rotationSeconds) % frameCount;
+
+  context.drawImage(
+    image,
+    frame * frameSize, 0, frameSize, frameSize,
+    layout.x, layout.y, layout.width, layout.height,
+  );
+}
+
+export function createRenderer(context, playerSpriteUrl, planet) {
+  const planetImage = loadImage(planetTypes[planet.type].spriteUrl);
   const playerImage = loadImage(playerSpriteUrl);
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
   const enemyImages = new Map();
@@ -196,6 +235,7 @@ export function createRenderer(context, playerSpriteUrl) {
   function render(playerShip, enemies, playerBullets) {
     const canvas = context.canvas;
     context.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlanet(context, planet, planetImage);
 
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];

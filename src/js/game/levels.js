@@ -4,6 +4,7 @@ export const levels = {
       { type: "scout", x: 1280, y: 70,  interval: 3.5, maxEnemies: 20 },
       { type: "scout", x: 1280, y: 626, interval: 3.5, maxEnemies: 20 },
     ],
+    planetType: "mars",
   },
 //   2: {
 //     spawners: [

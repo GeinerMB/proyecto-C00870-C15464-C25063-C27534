@@ -11,8 +11,8 @@ export const enemyTypes = {
     velocityX: -40, // Velocidad horizontal hacia la izquierda
     rotation: -Math.PI / 2,
     widthOnBoard: 37, // Ancho horizontal después del giro.
-    maxHp: 1,
-    points: 1,
+    maxHp: 2, // Cantidad de impactos que resiste este enemigo
+    points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
   },
 };
 

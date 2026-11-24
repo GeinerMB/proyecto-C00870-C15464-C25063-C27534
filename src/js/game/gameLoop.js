@@ -1,4 +1,5 @@
 import { createPlayerShip, moveShip } from "./entities/player.js";
+import { createPlanet } from "./entities/planet.js";
 import { updateEnemies } from "./entities/enemies.js";
 import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet.js";
 import { createInput } from "./systems/inputSystem.js";
@@ -13,13 +14,14 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange =
 
   canvas.focus();
 
+  const planet = createPlanet(levels[levelId].planetType)
   const playerShip = createPlayerShip();
   const players = new Map([[playerShip.id, playerShip]]);
   const contacts = new Map();
   const projectiles = []
   const enemies = [];
   const spawners = createSpawners(levels[levelId].spawners);
-  const { render, hitsEnemy } = createRenderer(context, playerSpriteUrl);
+  const { render, hitsEnemy } = createRenderer(context, playerSpriteUrl, planet);
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -30,10 +32,7 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange =
       ? 0
       : Math.min((time - previousTime) / 1000, 0.5);
     previousTime = time;
-
-    // moveShip(playerShip, input.readMovement(), deltaTime);
-    // updateEnemies(enemies, deltaTime);
-    // updatePlayerBullets(projectiles, deltaTime, canvas.width);
+    planet.age += deltaTime;
 
     const shots = input.consumeShots();
     const oldHp = playerShip.hp;

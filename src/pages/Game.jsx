@@ -105,7 +105,6 @@ export default function Game() {
         </div> */}
         
         <div className="game-planet">
-          <span className="game-scene-earth" aria-hidden="true" />
           <div className="game-planet-health">
             <ResourceMeter label="Vida del planeta Tierra" value={100} variant="health" icon={healthIcon} />
           </div>
