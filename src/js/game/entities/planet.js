@@ -6,7 +6,7 @@ import islandUrl from "../../../assets/planets/planet_island_sprites.png"
 
 export const planetTypes = {
   earth:  { name: "Tierra", spriteUrl: earthUrl,  maxHp: 100 },
-  mars:   { name: "Marte",  spriteUrl: marsUrl,   maxHp: 100 },
+  mars:   { name: "Marte",  spriteUrl: marsUrl,   maxHp: 1 },
   ice:    { name: "Hielo",  spriteUrl: iceUrl,    maxHp: 100 },
   gas:    { name: "Gaseoso", spriteUrl: gasUrl,   maxHp: 100 },
   island: { name: "Islas",  spriteUrl: islandUrl, maxHp: 100 },
@@ -14,5 +14,5 @@ export const planetTypes = {
 
 export function createPlanet(type) {
   const { maxHp } = planetTypes[type];
-  return { type, hp: maxHp, maxHp, age: 0 };
+  return { kind: "planet", type, hp: maxHp, maxHp, age: 0 };aw
 }

@@ -56,7 +56,7 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange =
       updateEnemies(enemies, dt);
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
-      resolveHits(players, enemies, projectiles, hitsEnemy, contacts);
+      resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
     }
 
     if (playerShip.hp !== oldHp || playerShip.score !== oldScore) {

@@ -1,4 +1,4 @@
-export function resolveHits(players, enemies, bullets, hitsEnemy, contacts) {
+export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, planet) {
   // Resolver los disparos primero. Una baja ya no puede embestir en este paso.
   for (let i = bullets.length - 1; i >= 0; i--) {
     const bullet = bullets[i];
@@ -13,6 +13,14 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts) {
       enemies.splice(index, 1);
       players.get(bullet.ownerId).score += enemy.points;
     }
+  }
+
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const enemy = enemies[i];
+    if (!hitsEnemy(planet, enemy)) continue;
+
+    planet.hp = Math.max(0, planet.hp - enemy.planetDamage);
+    enemies.splice(i, 1);
   }
 
   for (const ship of players.values()) {

@@ -113,7 +113,7 @@ function drawPlayerBullet(context, playerBullet, image) {
   context.restore();
 }
 
-function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
+function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planetImage) {
   const mask = document.createElement("canvas");
   const ctx = mask.getContext("2d", { willReadFrequently: true });
 
@@ -123,7 +123,11 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
     if (!sx || !sy) return false;
 
     const isBullet = entity.kind === "bullet";
-    const image = isBullet ? bulletImage : playerImage;
+    const isPlanet = entity.kind === "planet";
+    let image = playerImage;
+    if (isBullet) image = bulletImage;
+    if (isPlanet) image = planetImage;
+
     const enemyImage = enemyImages.get(enemy.type);
     if (!image.complete || !image.naturalWidth ||
         !enemyImage?.complete || !enemyImage.naturalWidth) return false;
@@ -134,7 +138,16 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
     let halfW = entity.size / 2;
     let halfH = halfW;
 
-    if (!isBullet) {
+    if (isPlanet) {
+      const layout = getPlanetLayout(board);
+      if (!layout) return false;
+
+      halfW = layout.width / 2;
+      halfH = layout.height / 2;
+      x = layout.x + halfW;
+      y = layout.y + halfH;
+
+    } else if (!isBullet) {
       const layout = getPlayerLayout(board, entity);
       x = layout.centerX / sx;
       y = layout.centerY / sy;
@@ -167,7 +180,9 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
     ctx.save();
     ctx.translate(-left, -top);
 
-    if (isBullet) {
+    if (isPlanet) {
+      drawPlanet(ctx, entity, planetImage, board);
+    } else if (isBullet) {
       drawPlayerBullet(ctx, entity, bulletImage);
     } else {
       drawPlayer(ctx, entity, playerImage, board);
@@ -205,6 +220,7 @@ function getPlanetLayout(canvas) {
 }
 
 function drawPlanet(context, planet, image, board = context.canvas) {
+  if (planet.hp <= 0) return;
   if (!image.complete || !image.naturalWidth) return;
 
   const layout = getPlanetLayout(board);
@@ -253,6 +269,6 @@ export function createRenderer(context, playerSpriteUrl, planet) {
 
   return {
     render,
-    hitsEnemy: createEnemyHitTest(context.canvas, playerImage, playerBulletImage, enemyImages),
+    hitsEnemy: createEnemyHitTest(context.canvas, playerImage, playerBulletImage, enemyImages, planetImage,),
   };
 }

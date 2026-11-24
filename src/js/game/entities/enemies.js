@@ -13,6 +13,7 @@ export const enemyTypes = {
     widthOnBoard: 37, // Ancho horizontal después del giro.
     maxHp: 2, // Cantidad de impactos que resiste este enemigo
     points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
+    planetDamage: 5, // Cantidad de daño que hace al planeta
   },
 };
 
@@ -28,6 +29,7 @@ export function createEnemy(type, spawnX, spawnY) {
     hp: config.maxHp,
     maxHp: config.maxHp,
     points: config.points,
+    planetDamage: config.planetDamage,
   };
 }
 

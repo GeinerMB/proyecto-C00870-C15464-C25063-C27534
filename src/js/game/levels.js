@@ -1,8 +1,8 @@
 export const levels = {
   1: {
     spawners: [
-      { type: "scout", x: 1280, y: 70,  interval: 3.5, maxEnemies: 20 },
-      { type: "scout", x: 1280, y: 626, interval: 3.5, maxEnemies: 20 },
+      { type: "scout", x: 1280, y: 70,  interval: 3.5, maxEnemies: 2 },
+      { type: "scout", x: 1280, y: 626, interval: 3.5, maxEnemies: 2 },
     ],
     planetType: "mars",
   },
