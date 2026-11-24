@@ -2,8 +2,13 @@ const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
 
 // Defines function to create a player ship object with initial position, size, and speed
-export function createPlayerShip() {
+export function createPlayerShip(id = "one", maxHp = 1) {
   return {
+    id,
+    kind: "player",
+    maxHp,
+    hp: maxHp,
+    score: 0,
     x: 400, // Initial x-coordinate of the ship
     y: 300, // Initial y-coordinate of the ship
     width: 64, // Width of the ship asset

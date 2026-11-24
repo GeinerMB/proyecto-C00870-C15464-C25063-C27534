@@ -4,19 +4,22 @@ import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet
 import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
 import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
+import { resolveHits } from "./systems/collisionSystem.js";
 import { levels } from "./levels.js";
 
-export function startGame(canvas, playerSpriteUrl, levelId = 1) {
+export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange = () => {}) {
   const context = canvas.getContext("2d");
   if (!context) return;
 
   canvas.focus();
 
   const playerShip = createPlayerShip();
+  const players = new Map([[playerShip.id, playerShip]]);
+  const contacts = new Map();
   const projectiles = []
   const enemies = [];
   const spawners = createSpawners(levels[levelId].spawners);
-  const render = createRenderer(context, playerSpriteUrl);
+  const { render, hitsEnemy } = createRenderer(context, playerSpriteUrl);
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -28,25 +31,45 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1) {
       : Math.min((time - previousTime) / 1000, 0.5);
     previousTime = time;
 
-    moveShip(playerShip, input.readMovement(), deltaTime);
-    updateEnemies(enemies, deltaTime);
-    updatePlayerBullets(projectiles, deltaTime, canvas.width);
+    // moveShip(playerShip, input.readMovement(), deltaTime);
+    // updateEnemies(enemies, deltaTime);
+    // updatePlayerBullets(projectiles, deltaTime, canvas.width);
 
     const shots = input.consumeShots();
+    const oldHp = playerShip.hp;
+    const oldScore = playerShip.score;
+    const movement = input.readMovement();
 
-    if (shots > 0) {
+    if (playerShip.hp > 0 && shots > 0) {
       const muzzle = getPlayerMuzzle(canvas, playerShip);
-
       if (muzzle) {
         for (let i = 0; i < shots; i++) {
-          projectiles.push(createPlayerBullet(muzzle));
+          projectiles.push(createPlayerBullet(muzzle, playerShip.id));
         }
       }
     }
 
-    render(playerShip, enemies, projectiles);
-    updateSpawners(spawners, enemies, deltaTime);
+    const steps = Math.max(1, Math.ceil(deltaTime * 120));
+    const dt = deltaTime / steps;
 
+    for (let i = 0; i < steps; i++) {
+      if (playerShip.hp > 0) moveShip(playerShip, movement, dt);
+      updateEnemies(enemies, dt);
+      updatePlayerBullets(projectiles, dt, canvas.width);
+      updateSpawners(spawners, enemies, dt);
+      resolveHits(players, enemies, projectiles, hitsEnemy, contacts);
+    }
+
+    if (playerShip.hp !== oldHp || playerShip.score !== oldScore) {
+      onPlayerChange({
+        id: playerShip.id,
+        hp: playerShip.hp,
+        maxHp: playerShip.maxHp,
+        score: playerShip.score,
+      });
+    }
+
+    render(playerShip, enemies, projectiles);
     frameId = requestAnimationFrame(frame);
   }
 

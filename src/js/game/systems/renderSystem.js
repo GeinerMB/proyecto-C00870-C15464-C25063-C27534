@@ -31,10 +31,10 @@ function getPlayerLayout(canvas, ship) {
   return { centerX, centerY, width, height, scaleX, scaleY };
 }
 
-function drawPlayer(context, ship, sprite) {
+function drawPlayer(context, ship, sprite, board = context.canvas) {
   if (!sprite.complete || sprite.naturalWidth === 0) return;
 
-  const layout = getPlayerLayout(context.canvas, ship);
+  const layout = getPlayerLayout(board, ship);
   if (!layout) return;
 
   const { centerX, centerY, width, height, scaleX, scaleY } = layout;
@@ -63,33 +63,33 @@ export function getPlayerMuzzle(canvas, ship) {
   };
 }
 
-function drawEnemy(context, enemy, image) {
+function drawEnemy(context, enemy, image, canvas = context.canvas) {
   if (!image.complete || image.naturalWidth === 0) return;
 
   const config = enemyTypes[enemy.type];
   const { frameWidth, frameHeight } = config;
   const frame = Math.floor(enemy.age * config.framesPerSecond) % config.frameCount;
 
-  const canvas = context.canvas;
-    const scaleX = canvas.clientWidth / canvas.width;
-    const scaleY = canvas.clientHeight / canvas.height;
-    if (scaleX === 0 || scaleY === 0) return;
+  // const canvas = context.canvas;
+  const scaleX = canvas.clientWidth / canvas.width;
+  const scaleY = canvas.clientHeight / canvas.height;
+  if (scaleX === 0 || scaleY === 0) return;
 
-    // Mismo criterio que el jugador: reducir uniformemente y limitar la escala a 1.
-    const spriteScale = Math.min(1, scaleX, scaleY) * ENEMY_SPRITE_SCALE;
+  // Mismo criterio que el jugador: reducir uniformemente y limitar la escala a 1.
+  const spriteScale = Math.min(1, scaleX, scaleY) * ENEMY_SPRITE_SCALE;
 
-    context.save();
-    context.translate(enemy.x, enemy.y);
-    context.scale(spriteScale / scaleX, spriteScale / scaleY);
-    context.rotate(config.rotation);
+  context.save();
+  context.translate(enemy.x, enemy.y);
+  context.scale(spriteScale / scaleX, spriteScale / scaleY);
+  context.rotate(config.rotation);
 
-    context.drawImage(
+  context.drawImage(
     image,
     frame * frameWidth, 0, frameWidth, frameHeight,
     -frameWidth / 2, -frameHeight / 2, frameWidth, frameHeight,
-    );
+  );
 
-    context.restore();
+  context.restore();
 }
 
 function drawPlayerBullet(context, playerBullet, image) {
@@ -112,6 +112,78 @@ function drawPlayerBullet(context, playerBullet, image) {
   context.restore();
 }
 
+function createEnemyHitTest(board, playerImage, bulletImage, enemyImages) {
+  const mask = document.createElement("canvas");
+  const ctx = mask.getContext("2d", { willReadFrequently: true });
+
+  return function hitsEnemy(entity, enemy) {
+    const sx = board.clientWidth / board.width;
+    const sy = board.clientHeight / board.height;
+    if (!sx || !sy) return false;
+
+    const isBullet = entity.kind === "bullet";
+    const image = isBullet ? bulletImage : playerImage;
+    const enemyImage = enemyImages.get(enemy.type);
+    if (!image.complete || !image.naturalWidth ||
+        !enemyImage?.complete || !enemyImage.naturalWidth) return false;
+
+    // Centro y semitamaños en coordenadas internas del tablero.
+    let x = entity.x;
+    let y = entity.y;
+    let halfW = entity.size / 2;
+    let halfH = halfW;
+
+    if (!isBullet) {
+      const layout = getPlayerLayout(board, entity);
+      x = layout.centerX / sx;
+      y = layout.centerY / sy;
+      // El jugador se dibuja girado 90°.
+      halfW = layout.height / (2 * sx);
+      halfH = layout.width / (2 * sy);
+    }
+
+    const config = enemyTypes[enemy.type];
+    const scale = Math.min(1, sx, sy) * ENEMY_SPRITE_SCALE;
+    const cos = Math.abs(Math.cos(config.rotation));
+    const sin = Math.abs(Math.sin(config.rotation));
+    const enemyHalfW = (config.frameWidth * cos + config.frameHeight * sin)
+      * scale / (2 * sx);
+    const enemyHalfH = (config.frameWidth * sin + config.frameHeight * cos)
+      * scale / (2 * sy);
+
+    const left = Math.max(0, Math.floor(Math.max(x - halfW, enemy.x - enemyHalfW)));
+    const top = Math.max(0, Math.floor(Math.max(y - halfH, enemy.y - enemyHalfH)));
+    const right = Math.min(board.width, Math.ceil(Math.min(x + halfW, enemy.x + enemyHalfW)));
+    const bottom = Math.min(board.height, Math.ceil(Math.min(y + halfH, enemy.y + enemyHalfH)));
+    const width = right - left;
+    const height = bottom - top;
+    if (width <= 0 || height <= 0) return false;
+
+    // Reutiliza la superficie entre comprobaciones.
+    if (mask.width < width) mask.width = width;
+    if (mask.height < height) mask.height = height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.save();
+    ctx.translate(-left, -top);
+
+    if (isBullet) {
+      drawPlayerBullet(ctx, entity, bulletImage);
+    } else {
+      drawPlayer(ctx, entity, playerImage, board);
+    }
+
+    ctx.globalCompositeOperation = "source-in";
+    drawEnemy(ctx, enemy, enemyImage, board);
+    ctx.restore();
+
+    const pixels = ctx.getImageData(0, 0, width, height).data;
+    for (let alpha = 3; alpha < pixels.length; alpha += 4) {
+      if (pixels[alpha] > 0) return true;
+    }
+    return false;
+  };
+}
+
 export function createRenderer(context, playerSpriteUrl) {
   const playerImage = loadImage(playerSpriteUrl);
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
@@ -121,7 +193,7 @@ export function createRenderer(context, playerSpriteUrl) {
     enemyImages.set(type, loadImage(config.spriteUrl));
   }
 
-  return function render(playerShip, enemies, playerBullets) {
+  function render(playerShip, enemies, playerBullets) {
     const canvas = context.canvas;
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -134,6 +206,13 @@ export function createRenderer(context, playerSpriteUrl) {
       drawPlayerBullet(context, playerBullet, playerBulletImage);
     }
 
-    drawPlayer(context, playerShip, playerImage);
+    // Valora que la vida del jugador no sea 0
+    if (playerShip.hp > 0) drawPlayer(context, playerShip, playerImage);
+
+  }
+
+  return {
+    render,
+    hitsEnemy: createEnemyHitTest(context.canvas, playerImage, playerBulletImage, enemyImages),
   };
 }

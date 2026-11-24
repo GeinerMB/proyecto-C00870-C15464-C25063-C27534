@@ -11,6 +11,8 @@ export const enemyTypes = {
     velocityX: -40, // Velocidad horizontal hacia la izquierda
     rotation: -Math.PI / 2,
     widthOnBoard: 37, // Ancho horizontal después del giro.
+    maxHp: 1,
+    points: 1,
   },
 };
 
@@ -23,6 +25,9 @@ export function createEnemy(type, spawnX, spawnY) {
     x: spawnX + config.frameWidth / 2, // Centra la posición horizontal usando el ancho del fotograma.
     y: spawnY + config.frameHeight / 2, // Centra la posición vertical usando el alto del fotograma.
     age: 0, // Tiempo que lleva activo el enemigo desde su creación.
+    hp: config.maxHp,
+    maxHp: config.maxHp,
+    points: config.points,
   };
 }
 

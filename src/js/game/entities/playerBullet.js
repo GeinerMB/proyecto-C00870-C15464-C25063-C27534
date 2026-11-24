@@ -2,13 +2,15 @@ const PROJECTILE_SIZE = 32; // Tamaño fijo del bullet
 const PROJECTILE_SPEED = 250; // Velocidad del disparo
 
 // Crea el proyectil a partir de la posición de la punta de la nave.
-export function createPlayerBullet(muzzle) {
+export function createPlayerBullet(muzzle, ownerId) {
   // Calcula la distancia entre el centro del proyectil y su borde trasero.
   // Esta corrección permite que el disparo aparezca correctamente alineado
   // después de aplicar la rotación de la imagen.
   const centerToTail = PROJECTILE_SIZE * (9 / 32);
 
   return {
+    kind: "bullet",
+    ownerId,
     x: muzzle.x + centerToTail, // Posiciona el centro del proyectil ligeramente después de la nave.
     y: muzzle.y, // Mantiene el proyectil a la misma altura que el centro de la nave
     size: PROJECTILE_SIZE,
