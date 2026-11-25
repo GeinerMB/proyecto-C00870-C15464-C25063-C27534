@@ -1,4 +1,6 @@
 import scoutImg from "../../../assets/enemies/enemy_sprites/enemy_scout.png"
+import bomberImg from "../../../assets/enemies/enemy_sprites/enemy_bomber.png"
+import fighterImg from "../../../assets/enemies/enemy_sprites/enemy_fighter.png"
 
 // Tipos de enemigos que se pueden generar
 export const enemyTypes = {
@@ -11,10 +13,36 @@ export const enemyTypes = {
     velocityX: -40, // Velocidad horizontal hacia la izquierda
     rotation: -Math.PI / 2,
     widthOnBoard: 37, // Ancho horizontal después del giro.
+    maxHp: 1, // Cantidad de impactos que resiste este enemigo
+    points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
+    planetDamage: 1, // Cantidad de daño que hace al planeta
+  },
+  bomber: {
+    spriteUrl: bomberImg,
+    frameWidth: 64,
+    frameHeight: 37,
+    frameCount: 6, // Cantidad de fotogramas de la animación.
+    framesPerSecond: 10, // Velocidad de reproducción
+    velocityX: -40, // Velocidad horizontal hacia la izquierda
+    rotation: -Math.PI / 2,
+    widthOnBoard: 37, // Ancho horizontal después del giro.
     maxHp: 2, // Cantidad de impactos que resiste este enemigo
     points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
     planetDamage: 5, // Cantidad de daño que hace al planeta
   },
+  fighter: {
+    spriteUrl: fighterImg,
+    frameWidth: 64,
+    frameHeight: 37,
+    frameCount: 6, // Cantidad de fotogramas de la animación.
+    framesPerSecond: 10, // Velocidad de reproducción
+    velocityX: -60, // Velocidad horizontal hacia la izquierda
+    rotation: -Math.PI / 2,
+    widthOnBoard: 37, // Ancho horizontal después del giro.
+    maxHp: 2, // Cantidad de impactos que resiste este enemigo
+    points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
+    planetDamage: 1, // Cantidad de daño que hace al planeta
+  }
 };
 
 // Crea un enemigo del tipo indicado en la posición de aparición.
