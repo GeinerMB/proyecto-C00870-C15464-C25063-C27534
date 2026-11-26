@@ -6,22 +6,28 @@ import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
 import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
 import { resolveHits } from "./systems/collisionSystem.js";
+import { roles } from "./roles.js";
+import { getHudSnapshot } from "./gameState.js";
 import { levels } from "./levels.js";
 
-export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange = () => {}) {
+export function startGame(canvas, state, onHudChange) {
   const context = canvas.getContext("2d");
   if (!context) return;
 
   canvas.focus();
 
-  const planet = createPlanet(levels[levelId].planetType)
-  const playerShip = createPlayerShip();
-  const players = new Map([[playerShip.id, playerShip]]);
-  const contacts = new Map();
-  const projectiles = []
-  const enemies = [];
-  const spawners = createSpawners(levels[levelId].spawners);
-  const { render, hitsEnemy } = createRenderer(context, playerSpriteUrl, planet);
+  const { players, planet, enemies, projectiles, spawners, contacts } = state;
+  const playerShip = players.get(state.localPlayerId);
+  const spriteUrl = roles[playerShip.role].ship;
+
+  // const planet = createPlanet(levels[levelId].planetType)
+  // const playerShip = createPlayerShip();
+  // const players = new Map([[playerShip.id, playerShip]]);
+  // const contacts = new Map();
+  // const projectiles = []
+  // const enemies = [];
+  // const spawners = createSpawners(levels[levelId].spawners);
+  const { render, hitsEnemy } = createRenderer(context, spriteUrl, planet);
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -37,6 +43,7 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange =
     const shots = input.consumeShots();
     const oldHp = playerShip.hp;
     const oldScore = playerShip.score;
+    const oldPlanetHp = planet.hp;
     const movement = input.readMovement();
 
     if (playerShip.hp > 0 && shots > 0) {
@@ -57,19 +64,28 @@ export function startGame(canvas, playerSpriteUrl, levelId = 1, onPlayerChange =
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
       resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
+
+      if (planet.hp === 0 || playerShip.hp === 0) {
+        state.phase = "defeat";
+        break;
+      }
     }
 
-    if (playerShip.hp !== oldHp || playerShip.score !== oldScore) {
-      onPlayerChange({
-        id: playerShip.id,
-        hp: playerShip.hp,
-        maxHp: playerShip.maxHp,
-        score: playerShip.score,
-      });
+    const hudChanged =
+      playerShip.hp !== oldHp ||
+      playerShip.score !== oldScore ||
+      planet.hp !== oldPlanetHp ||
+      state.phase !== "playing";
+
+    if (hudChanged) {
+      onHudChange(getHudSnapshot(state));
     }
 
     render(playerShip, enemies, projectiles);
-    frameId = requestAnimationFrame(frame);
+
+    if (state.phase === "playing") {
+      frameId = requestAnimationFrame(frame);
+    }
   }
 
   frameId = requestAnimationFrame(frame);

@@ -1,5 +1,7 @@
-﻿import { Link } from "react-router"; 
-import { useEffect, useRef } from "react";
+﻿import { Link, useLocation } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { createGameState, getHudSnapshot } from "../js/game/gameState.js";
+import { roles } from "../js/game/roles.js";
 
 import { startGame } from "../js/game/gameLoop.js";
 
@@ -62,12 +64,24 @@ function PlayerCard({ player }) {
 }
 
 export default function Game() {
+  const location = useLocation();
+
+  return (
+    <LocalGame
+      key={location.key}
+      setup={location.state?.player}
+    />
+  );
+}
+
+function LocalGame({ setup }) {
   const canvasRef = useRef(null);
+  const [gameState] = useState(() => createGameState(setup));
+  const [hud, setHud] = useState(() => getHudSnapshot(gameState));
 
   useEffect(() => {
-    const stopGame = startGame(canvasRef.current, fighterShip);
-    return stopGame;
-  }, []);
+    return startGame(canvasRef.current, gameState, setHud);
+  }, [gameState]);
 
   return (
     <section id="game" className="game" aria-labelledby="game-title">
@@ -89,20 +103,6 @@ export default function Game() {
             <Link to="/scoreboard">Ver marcadores</Link>
           </nav>
         </details>
-
-        {/* Composición decorativa; el canvas queda disponible para la lógica de juego. */}
-        {/* <div className="game-scene" aria-hidden="true">
-          {squad.map((player) => (
-            <span key={player.id} className={`game-scene-ally game-scene-ally-${player.number}`}>
-              <img src={player.ship} alt="" width="48" height="48" />
-              <span>P{player.number}</span>
-            </span>
-          ))}
-          <span className="game-scene-boss" />
-          <span className="game-scene-asteroid game-scene-asteroid-one" />
-          <span className="game-scene-asteroid game-scene-asteroid-two" />
-          <span className="game-scene-medkit" />
-        </div> */}
         
         <div className="game-planet">
           <div className="game-planet-health">

@@ -1,26 +1,15 @@
-import { useState } from "react"; 
-
-import fighterShip from "../assets/player/fighter_ship.svg";
-import shieldShip from "../assets/player/shield_ship.svg";
-import medicShip from "../assets/player/medic_ship.svg";
-
-const roles = {
-  cazador: { label: "Cazador", ship: fighterShip },
-  guardian: { label: "Guardián", ship: shieldShip },
-  especialista: { label: "Especialista", ship: medicShip },
-};
+import { roles } from "../js/game/roles.js";
 
 export default function PlayerCard({
   player,
   isCurrentPlayer,
+  onRoleChange,
   onControls,
   leaveModalId,
 }) {
   const titleId = `${player.id}-title`;
   const roleSelectId = `${player.id}-role`;
-
-	const [selectedRole, setSelectedRole] = useState(player.role);
-	const displayedRole = roles[isCurrentPlayer ? selectedRole : player.role];
+  const displayedRole = roles[player.role];
 
 	return (
     <li>
@@ -56,8 +45,8 @@ export default function PlayerCard({
 								id={roleSelectId}
 								name={roleSelectId}
 								className="player-card-role-select"
-								value={selectedRole}
-								onChange={(event) => setSelectedRole(event.target.value)}
+								value={player.role}
+                onChange={(event) => onRoleChange(event.target.value)}
 							>
 								{Object.entries(roles).map(([value, role]) => (
 									<option key={value} value={value}>

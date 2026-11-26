@@ -1,34 +1,53 @@
 import { Link, useNavigate } from "react-router";
+import { useState } from "react";
 // import fighterShip from "../assets/player/fighter_ship.svg";
 
 import GameModal from "../components/GameModal.jsx";
 import PlayerCard from "../components/PlayerCard.jsx";
 import "../styles/lobby.css";
 
+const initialPlayers = [
+  {
+    id: "player-1",
+    name: "Jugador 1",
+    role: "cazador",
+    ready: false,
+  },
+  {
+    id: "player-2",
+    name: "Jugador 2",
+    role: "cazador",
+    ready: true,
+  },
+  {
+    id: "player-3",
+    name: "Jugador 3",
+    role: "guardian",
+    ready: false,
+  },
+];
+
 export default function Lobby() {
   const navigate = useNavigate();
 
   const currentPlayerId = "player-1";
-  const players = [
-    {
-      id: "player-1",
-      name: "Jugador 1",
-      role: "cazador",
-      ready: false,
-    },
-    {
-      id: "player-2",
-      name: "Jugador 2",
-      role: "cazador",
-      ready: true,
-    },
-    {
-      id: "player-3",
-      name: "Jugador 3",
-      role: "guardian",
-      ready: false,
-    },
-  ];
+  const [players, setPlayers] = useState(initialPlayers);
+
+  function changeCurrentRole(role) {
+    setPlayers((previous) =>
+      previous.map((player) =>
+        player.id === currentPlayerId ? { ...player, role } : player
+      )
+    );
+  }
+
+  function play() {
+    const { id, name, role } = players.find(
+      (player) => player.id === currentPlayerId
+    );
+
+    navigate("/game", { state: { player: { id, name, role } } });
+  }
   
   return (
     <>
@@ -49,6 +68,7 @@ export default function Lobby() {
                 key={player.id}
                 player={player}
                 isCurrentPlayer={player.id === currentPlayerId}
+                onRoleChange={changeCurrentRole}
                 onControls={() => navigate("/rules")}
                 leaveModalId="leave-from-lobby"
               />
@@ -114,7 +134,7 @@ export default function Lobby() {
             <button
               type="button"
               className="lobby-mission-button lobby-mission-play"
-              onClick={() => navigate("/game")}
+              onClick={play}
             >
               Jugar
             </button>  
