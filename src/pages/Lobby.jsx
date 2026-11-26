@@ -1,11 +1,34 @@
 import { Link, useNavigate } from "react-router";
-import fighterShip from "../assets/player/fighter_ship.svg";
+// import fighterShip from "../assets/player/fighter_ship.svg";
 
 import GameModal from "../components/GameModal.jsx";
+import PlayerCard from "../components/PlayerCard.jsx";
 import "../styles/lobby.css";
 
 export default function Lobby() {
   const navigate = useNavigate();
+
+  const currentPlayerId = "player-1";
+  const players = [
+    {
+      id: "player-1",
+      name: "Jugador 1",
+      role: "cazador",
+      ready: false,
+    },
+    {
+      id: "player-2",
+      name: "Jugador 2",
+      role: "cazador",
+      ready: true,
+    },
+    {
+      id: "player-3",
+      name: "Jugador 3",
+      role: "guardian",
+      ready: false,
+    },
+  ];
   
   return (
     <>
@@ -21,171 +44,27 @@ export default function Lobby() {
           </header>
 
           <ul id="players-list" className="players-list" aria-label="squad-players">
+            {players.map((player) => (
+              <PlayerCard
+                key={player.id}
+                player={player}
+                isCurrentPlayer={player.id === currentPlayerId}
+                onControls={() => navigate("/rules")}
+                leaveModalId="leave-from-lobby"
+              />
+            ))}
+
             <li>
-              <article aria-labelledby="player-one-title" className="player-card player-card-host">
-                <h2 id="player-one-title" className="player-card_name">
-                  Jugador 1
-                </h2>
-      
-                <figure className="player-ship-preview">
-                  <img
-                    className="player-card-ship"
-                    src={fighterShip}
-                    alt="Nave del rol Cazador"
-                    width="96"
-                    height="96"
-                  />
-                </figure>
-
-                <div className="player-card-role">
-                  {/* <h3>Rol</h3> */}
-                  <label
-                    className="player-card-role-label"
-                    htmlFor="player-one-role"
-                  >
-                    Rol
-                  </label>
-                  <select
-                    id="player-one-role"
-                    name="player-one-role"
-                    className="player-card-role-select"
-                  >
-                    <option value="cazador">Cazador</option>
-                    <option value="guardian">Guardián</option>
-                    <option value="especialista">Especialista</option>
-                  </select>
-                </div>
-                
-                <div className="player-card-actions">
-                  <button
-                    type="button"
-                    className="player-card-button"
-                    onClick={() => navigate("/rules")}
-                  >
-                    Controles
-                  </button>
-
-                  <button
-                    type="button"
-                    className="player-card-button player-card-button-ready"
-                  >
-                    Listo
-                  </button>
-
-                  <button
-                    type="button"
-                    className="player-card-button player-card-button-abandon"
-                    command="show-modal"
-                    commandfor="leave-from-lobby"
-                  >
-                    Abandonar
-                  </button>
-                </div>
-
-              </article>
-            </li>
-            <li>
-              <article aria-labelledby="player-two-title" className="player-card">
-                <h2 id="player-two-title" className="player-card_name">
-                  Jugador 2
-                </h2>
-
-                <figure className="player-ship-preview">
-                  <img
-                    className="player-card-ship"
-                    src={fighterShip}
-                    alt="Nave del rol Cazador"
-                    width="96"
-                    height="96"
-                  />
-                </figure>
-
-                <div className="player-card-role">
-                  <label
-                    className="player-card-role-label"
-                    htmlFor="player-two-role"
-                  >
-                    Rol
-                  </label>
-                  <select
-                    id="player-two-role"
-                    name="player-two-role"
-                    className="player-card-role-select"
-                  >
-                    <option value="cazador">Cazador</option>
-                    <option value="guardian">Guardián</option>
-                    <option value="especialista">Especialista</option>
-                  </select>
-                </div>
-
-                <div className="player-card-status">
-                  <p>Listo</p>
-
-                  <button 
-                    type="button"
-                    className="player-card-button player-card-button-expel">
-                    Expulsar
-                  </button>                  
-                </div>
-              </article>
-            </li>
-            <li>
-              <article aria-labelledby="player-three-title" className="player-card">
-                <h2 id="player-three-title" className="player-card_name">
-                  Jugador 3
-                </h2>
-                <figure className="player-ship-preview">
-                  <img
-                    className="player-card-ship"
-                    src={fighterShip}
-                    alt="Nave del rol Cazador"
-                    width="96"
-                    height="96"
-                  />
-                </figure>
-
-                <div className="player-card-role">
-                  <label
-                    className="player-card-role-label"
-                    htmlFor="player-three-role"
-                  >
-                    Rol
-                  </label>
-
-                  <select
-                    id="player-three-role"
-                    name="player-three-role"
-                    className="player-card-role-select"
-                  >
-                    <option value="cazador">Cazador</option>
-                    <option value="guardian">Guardián</option>
-                    <option value="especialista">Especialista</option>
-                  </select>
-                </div>
-
-                <div className="player-card-status">
-                  <p>En preparación...</p>
-
-                  <button 
-                    type="button" 
-                    className="player-card-button player-card-button-expel">
-                    Expulsar
-                  </button>                
-                </div>
-              </article>
-            </li>
-            <li>
-              <article aria-labelledby="player-four-title" className="player-card player-card-empty">
-
+              <article className="player-card player-card-empty">
                 <p>Espacio libre</p>
-                <button 
+                <button
                   type="button"
                   className="player-card-button player-card-button-invite"
                 >
                   Invitar
                 </button>
               </article>
-            </li>              
+            </li>             
           </ul>
 
           <footer className="lobby-room_footer">

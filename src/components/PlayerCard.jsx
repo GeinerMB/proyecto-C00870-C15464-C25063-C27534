@@ -1,0 +1,111 @@
+import { useState } from "react"; 
+
+import fighterShip from "../assets/player/fighter_ship.svg";
+import shieldShip from "../assets/player/shield_ship.svg";
+import medicShip from "../assets/player/medic_ship.svg";
+
+const roles = {
+  cazador: { label: "Cazador", ship: fighterShip },
+  guardian: { label: "Guardián", ship: shieldShip },
+  especialista: { label: "Especialista", ship: medicShip },
+};
+
+export default function PlayerCard({
+  player,
+  isCurrentPlayer,
+  onControls,
+  leaveModalId,
+}) {
+  const titleId = `${player.id}-title`;
+  const roleSelectId = `${player.id}-role`;
+
+	const [selectedRole, setSelectedRole] = useState(player.role);
+	const displayedRole = roles[isCurrentPlayer ? selectedRole : player.role];
+
+	return (
+    <li>
+      <article
+        aria-labelledby={titleId}
+        className={`player-card${isCurrentPlayer ? " player-card-host" : ""}`}
+      >
+        <h2 id={titleId} className="player-card_name">
+          {player.name}
+        </h2>
+
+        <figure className="player-ship-preview">
+          <img
+            className="player-card-ship"
+            src={displayedRole.ship}
+  					alt={`Nave del rol ${displayedRole.label}`}
+            width="96"
+            height="96"
+          />
+        </figure>
+
+        {isCurrentPlayer ? (
+          <>
+            <div className="player-card-role">
+              <label
+                className="player-card-role-label"
+                htmlFor={roleSelectId}
+              >
+                Rol
+              </label>
+
+              <select
+								id={roleSelectId}
+								name={roleSelectId}
+								className="player-card-role-select"
+								value={selectedRole}
+								onChange={(event) => setSelectedRole(event.target.value)}
+							>
+								{Object.entries(roles).map(([value, role]) => (
+									<option key={value} value={value}>
+										{role.label}
+									</option>
+								))}
+							</select>
+            </div>
+
+            <div className="player-card-actions">
+              <button
+                type="button"
+                className="player-card-button"
+                onClick={onControls}
+              >
+                Controles
+              </button>
+
+              <button
+                type="button"
+                className="player-card-button player-card-button-ready"
+              >
+                Listo
+              </button>
+
+              <button
+                type="button"
+                className="player-card-button player-card-button-abandon"
+                command="show-modal"
+                commandfor={leaveModalId}
+              >
+                Abandonar
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="player-card-status">
+            <p>{player.ready ? "Listo" : "En preparación"}</p>
+
+            <button
+              type="button"
+              className="player-card-button player-card-button-expel"
+            >
+              Expulsar
+            </button>
+          </div>
+        )}
+      </article>
+    </li>
+  );
+}

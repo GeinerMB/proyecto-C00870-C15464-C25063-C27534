@@ -1,4 +1,8 @@
-﻿import { Link } from "react-router";
+﻿import { Link } from "react-router"; 
+import { useEffect, useRef } from "react";
+
+import { startGame } from "../js/game/gameLoop.js";
+
 import fighterShip from "../assets/player/fighter_ship.svg";
 import shieldShip from "../assets/player/shield_ship.svg";
 import medicShip from "../assets/player/medic_ship.svg";
@@ -58,6 +62,13 @@ function PlayerCard({ player }) {
 }
 
 export default function Game() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const stopGame = startGame(canvasRef.current, fighterShip);
+    return stopGame;
+  }, []);
+
   return (
     <section id="game" className="game" aria-labelledby="game-title">
       <h1 id="game-title" className="game-visually-hidden">Defiende la Tierra</h1>
@@ -80,7 +91,7 @@ export default function Game() {
         </details>
 
         {/* Composición decorativa; el canvas queda disponible para la lógica de juego. */}
-        <div className="game-scene" aria-hidden="true">
+        {/* <div className="game-scene" aria-hidden="true">
           {squad.map((player) => (
             <span key={player.id} className={`game-scene-ally game-scene-ally-${player.number}`}>
               <img src={player.ship} alt="" width="48" height="48" />
@@ -91,23 +102,25 @@ export default function Game() {
           <span className="game-scene-asteroid game-scene-asteroid-one" />
           <span className="game-scene-asteroid game-scene-asteroid-two" />
           <span className="game-scene-medkit" />
-        </div>
+        </div> */}
+        
         <div className="game-planet">
-          <span className="game-scene-earth" aria-hidden="true" />
           <div className="game-planet-health">
             <ResourceMeter label="Vida del planeta Tierra" value={100} variant="health" icon={healthIcon} />
           </div>
         </div>
         <canvas
+          ref={canvasRef}
           id="game-board"
-          width="960"
-          height="540"
+          width="1280" // 960 original
+          height="720" // 540 original
+          tabIndex={0}
+          onPointerDown={(event) => event.currentTarget.focus()}
           aria-labelledby="game-board-title"
           aria-describedby="game-board-description"
         >
           <p>
-            Tu navegador no admite canvas. El escenario de Galactic Squadrons
-            necesita un navegador compatible para mostrar la partida.
+            Enfoca el tablero y usa WASD o las flechas para mover tu nave
           </p>
         </canvas>
       </section>

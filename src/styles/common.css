@@ -10,8 +10,7 @@
 
 @font-face {
   font-family: "Axion RX 14";
-  src: url("https://db.onlinewebfonts.com/t/1b6eebb4270d7d02694b68fb7c5a94d9.woff2")
-    format("woff2");
+  src: url("../assets/fonts/axion-rx-14.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
