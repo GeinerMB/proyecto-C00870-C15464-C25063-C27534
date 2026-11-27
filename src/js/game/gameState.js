@@ -18,6 +18,7 @@ export function createGameState(setup = {}) {
     levelId,
     phase: "playing",
     localPlayerId: player.id,
+    waveCleared: false,
     players: new Map([[player.id, player]]),
     planet: createPlanet(level.planetType),
     enemies: [],

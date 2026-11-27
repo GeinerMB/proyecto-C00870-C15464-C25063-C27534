@@ -1,4 +1,4 @@
-import { enemyTypes } from "../entities/enemies.js";
+import { enemyTypes, shieldTypes } from "../entities/enemies.js";
 import { planetTypes } from "../entities/planet.js";
 import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
 
@@ -64,10 +64,10 @@ export function getPlayerMuzzle(canvas, ship) {
   };
 }
 
-function drawEnemy(context, enemy, image, canvas = context.canvas) {
+function drawEnemy(context, enemy, image, canvas = context.canvas, config = enemyTypes[enemy.type]) {
   if (!image.complete || image.naturalWidth === 0) return;
 
-  const config = enemyTypes[enemy.type];
+  // const config = enemyTypes[enemy.type];
   const { frameWidth, frameHeight } = config;
   const frame = Math.floor(enemy.age * config.framesPerSecond) % config.frameCount;
 
@@ -113,7 +113,7 @@ function drawPlayerBullet(context, playerBullet, image) {
   context.restore();
 }
 
-function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planetImage) {
+function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planetImage, shieldImages) {
   const mask = document.createElement("canvas");
   const ctx = mask.getContext("2d", { willReadFrequently: true });
 
@@ -128,7 +128,17 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
     if (isBullet) image = bulletImage;
     if (isPlanet) image = planetImage;
 
-    const enemyImage = enemyImages.get(enemy.type);
+    // const enemyImage = enemyImages.get(enemy.type);
+    const useShield = isBullet && enemy.shield?.phase === "active";
+
+    const config = useShield
+      ? shieldTypes[enemy.shield.type]
+      : enemyTypes[enemy.type];
+
+    const enemyImage = useShield
+      ? shieldImages.get(enemy.shield.type)
+      : enemyImages.get(enemy.type);
+
     if (!image.complete || !image.naturalWidth ||
         !enemyImage?.complete || !enemyImage.naturalWidth) return false;
 
@@ -156,7 +166,7 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
       halfH = layout.width / (2 * sy);
     }
 
-    const config = enemyTypes[enemy.type];
+    // const config = enemyTypes[enemy.type];
     const scale = Math.min(1, sx, sy) * ENEMY_SPRITE_SCALE;
     const cos = Math.abs(Math.cos(config.rotation));
     const sin = Math.abs(Math.sin(config.rotation));
@@ -189,7 +199,7 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
     }
 
     ctx.globalCompositeOperation = "source-in";
-    drawEnemy(ctx, enemy, enemyImage, board);
+    drawEnemy(ctx, enemy, enemyImage, board, config);
     ctx.restore();
 
     const pixels = ctx.getImageData(0, 0, width, height).data;
@@ -243,9 +253,14 @@ export function createRenderer(context, playerSpriteUrl, planet) {
   const playerImage = loadImage(playerSpriteUrl);
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
   const enemyImages = new Map();
+  const shieldImages = new Map();
 
   for (const [type, config] of Object.entries(enemyTypes)) {
     enemyImages.set(type, loadImage(config.spriteUrl));
+  }
+
+  for (const [type, config] of Object.entries(shieldTypes)) {
+    shieldImages.set(type, loadImage(config.spriteUrl));
   }
 
   function render(playerShip, enemies, playerBullets) {
@@ -256,6 +271,15 @@ export function createRenderer(context, playerSpriteUrl, planet) {
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
       drawEnemy(context, enemy, enemyImages.get(enemy.type));
+
+      if (enemy.shield?.phase === "active") {
+        const type = enemy.shield.type;
+
+        context.save();
+        context.globalAlpha = 0.55;
+        drawEnemy(context, enemy, shieldImages.get(type), canvas, shieldTypes[type]);
+        context.restore();
+      }
     }
 
     for (const playerBullet of playerBullets) {
@@ -269,6 +293,8 @@ export function createRenderer(context, playerSpriteUrl, planet) {
 
   return {
     render,
-    hitsEnemy: createEnemyHitTest(context.canvas, playerImage, playerBulletImage, enemyImages, planetImage,),
+    hitsEnemy: createEnemyHitTest(
+      context.canvas, playerImage, playerBulletImage, enemyImages, planetImage, shieldImages
+    ),
   };
 }

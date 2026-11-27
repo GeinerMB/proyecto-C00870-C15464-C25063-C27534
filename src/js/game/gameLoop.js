@@ -1,6 +1,6 @@
 import { createPlayerShip, moveShip } from "./entities/player.js";
 import { createPlanet } from "./entities/planet.js";
-import { updateEnemies } from "./entities/enemies.js";
+import { createEnemy, enemyTypes, shieldTypes, updateEnemies } from "./entities/enemies.js";
 import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet.js";
 import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
@@ -20,13 +20,6 @@ export function startGame(canvas, state, onHudChange) {
   const playerShip = players.get(state.localPlayerId);
   const spriteUrl = roles[playerShip.role].ship;
 
-  // const planet = createPlanet(levels[levelId].planetType)
-  // const playerShip = createPlayerShip();
-  // const players = new Map([[playerShip.id, playerShip]]);
-  // const contacts = new Map();
-  // const projectiles = []
-  // const enemies = [];
-  // const spawners = createSpawners(levels[levelId].spawners);
   const { render, hitsEnemy } = createRenderer(context, spriteUrl, planet);
   const input = createInput(canvas);
 
@@ -68,6 +61,33 @@ export function startGame(canvas, state, onHudChange) {
       if (planet.hp === 0 || playerShip.hp === 0) {
         state.phase = "defeat";
         break;
+      }
+
+      // Se detecta el final de la oleada una sola vez.
+      if (!state.waveCleared && enemies.length === 0) {
+        const allSpawned = spawners.every(
+          (spawner) => spawner.spawned >= spawner.maxEnemies
+        );
+
+        if (allSpawned) {
+          state.waveCleared = true;
+          console.log("Oleada terminada"); // TODO: Eliminar el console log
+
+          const bossType = levels[state.levelId].bossType;
+          const config = enemyTypes[bossType];
+          const spawnY = (canvas.height - config.frameHeight) / 2;
+          const boss = createEnemy(bossType, canvas.width, spawnY);
+
+          boss.stopX = canvas.width * 0.82;
+          if (config.shieldType) {
+            boss.shield = {
+              type: config.shieldType,
+              hp: shieldTypes[config.shieldType].maxHp,
+              phase: "pending",
+            };
+          }
+          enemies.push(boss);
+        }
       }
     }
 

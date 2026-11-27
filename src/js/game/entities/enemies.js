@@ -1,6 +1,20 @@
 import scoutImg from "../../../assets/enemies/enemy_sprites/enemy_scout.png"
 import bomberImg from "../../../assets/enemies/enemy_sprites/enemy_bomber.png"
 import fighterImg from "../../../assets/enemies/enemy_sprites/enemy_fighter.png"
+import dreadnoughtImg from "../../../assets/enemies/enemy_sprites/enemy_dreadnought.png";
+import roundShieldImg from "../../../assets/enemies/weapons/dreadnought_shield.png";
+
+export const shieldTypes = {
+  round: {
+    spriteUrl: roundShieldImg,
+    maxHp: 4,
+    frameWidth: 128,
+    frameHeight: 128,
+    frameCount: 20,
+    framesPerSecond: 10,
+    rotation: 0,
+  },
+};
 
 // Tipos de enemigos que se pueden generar
 export const enemyTypes = {
@@ -42,7 +56,21 @@ export const enemyTypes = {
     maxHp: 2, // Cantidad de impactos que resiste este enemigo
     points: 1, // Cantidad de puntos que otorga el enemigo al ser destruido
     planetDamage: 1, // Cantidad de daño que hace al planeta
-  }
+  },
+  dreadnought: {
+    spriteUrl: dreadnoughtImg,
+    frameWidth: 128,
+    frameHeight: 97,
+    frameCount: 8,
+    framesPerSecond: 6,
+    velocityX: -90,
+    rotation: -Math.PI / 2,
+    widthOnBoard: 97,
+    maxHp: 12,
+    points: 20,
+    planetDamage: 0,
+    shieldType: "round",
+  },
 };
 
 // Crea un enemigo del tipo indicado en la posición de aparición.
@@ -65,6 +93,16 @@ export function createEnemy(type, spawnX, spawnY) {
 export function updateEnemy(enemy, deltaTime) {
   const config = enemyTypes[enemy.type];
   enemy.x += config.velocityX * deltaTime;
+
+  // Frena solo a los enemies declarados como boss en la posición de parada
+  if (enemy.stopX !== undefined) {
+    enemy.x = Math.max(enemy.x, enemy.stopX);
+
+    if (enemy.x === enemy.stopX && enemy.shield?.phase === "pending") {
+      enemy.shield.phase = "active";
+    }
+  }
+
   enemy.age += deltaTime;
 }
 

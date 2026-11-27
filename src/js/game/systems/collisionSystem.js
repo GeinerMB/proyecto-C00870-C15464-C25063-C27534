@@ -1,3 +1,21 @@
+function damageEnemy(enemy, amount) {
+  const shield = enemy.shield;
+
+  if (shield?.phase === "pending") return;
+
+  if (shield?.phase === "active") {
+    shield.hp = Math.max(0, shield.hp - amount);
+
+    if (shield.hp === 0) {
+      shield.phase = "broken";
+    }
+
+    return;
+  }
+
+  enemy.hp = Math.max(0, enemy.hp - amount);
+}
+
 export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, planet) {
   // Resolver los disparos primero. Una baja ya no puede embestir en este paso.
   for (let i = bullets.length - 1; i >= 0; i--) {
@@ -7,7 +25,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
 
     bullets.splice(i, 1);
     const enemy = enemies[index];
-    enemy.hp = Math.max(0, enemy.hp - 1);
+    damageEnemy(enemy, 1)
 
     if (enemy.hp === 0) {
       enemies.splice(index, 1);
@@ -35,7 +53,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
 
       if (!previous?.has(enemy)) {
         ship.hp = Math.max(0, ship.hp - 1);
-        enemy.hp = Math.max(0, enemy.hp - 1);
+        damageEnemy(enemy, 1);
       }
 
       if (enemy.hp === 0) {

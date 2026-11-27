@@ -6,6 +6,7 @@ export const levels = {
       { type: "bomber", x: 1280, y: 626, interval: 3.5, maxEnemies: 5 },
     ],
     planetType: "mars",
+    bossType: "dreadnought",
   },
 //   2: {
 //     spawners: [
