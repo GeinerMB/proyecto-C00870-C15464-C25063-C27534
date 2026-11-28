@@ -1,8 +1,10 @@
+import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
+import dreadnoughtBeamUrl from "../../../assets/enemies/weapons/dreadnought_beam.png";
+
 import { enemyTypes, shieldTypes, getEnemyBeamBounds } from "../entities/enemies.js";
 import { planetTypes } from "../entities/planet.js";
 import { createPlayerEffects } from "./playerEffects.js";
-import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
-import dreadnoughtBeamUrl from "../../../assets/enemies/weapons/dreadnought_beam.png";
+import { createMedkitView } from "./medkitView.js";
 
 const PLAYER_SPRITE_SCALE = 0.75;
 const ENEMY_SPRITE_SCALE = 1.25;
@@ -313,6 +315,7 @@ export function createRenderer(context, playerSpriteUrl, planet) {
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
   const beamImage = loadImage(dreadnoughtBeamUrl);
   const drawPlayerEffects = createPlayerEffects(loadImage);
+  const medkitView = createMedkitView(context, loadImage, getPlayerLayout);
   const enemyImages = new Map();
   const shieldImages = new Map();
 
@@ -324,10 +327,11 @@ export function createRenderer(context, playerSpriteUrl, planet) {
     shieldImages.set(type, loadImage(config.spriteUrl));
   }
 
-  function render(playerShip, enemies, playerBullets) {
+  function render(playerShip, enemies, playerBullets,  medkits, players) {
     const canvas = context.canvas;
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawPlanet(context, planet, planetImage);
+    medkitView.drawItems(medkits);
 
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
@@ -356,10 +360,12 @@ export function createRenderer(context, playerSpriteUrl, planet) {
     // Valora que la vida del jugador no sea 0
     if (playerShip.hp > 0) drawPlayer(context, playerShip, playerImage);
     drawPlayerEffects(context, playerShip, getPlayerLayout(canvas, playerShip));
+    medkitView.drawAuras(players);
   }
 
   return {
     render,
+    touchesMedkit: medkitView.touchesMedkit,
     hitsEnemy: createEnemyHitTest(
       context.canvas, playerImage, playerBulletImage, enemyImages, planetImage, shieldImages
     ),

@@ -17,6 +17,7 @@ export function createPlayerShip(id = "one", maxHp = 5) {
     height: 64, // Height of the ship asset
     speed: 230, // Base speed of the ship
     ability: { remaining: 0, readyIn: 0 },
+    healFxRemaining: 0
   }
 }
 

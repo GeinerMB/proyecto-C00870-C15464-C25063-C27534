@@ -39,6 +39,16 @@ export function createPlayerEffects(loadImage) {
         image = invincibility;
         frame = (tick - 8) % 10;
       }
+    } else if (ship.role === "guardian" && ship.ability.readyIn > 0) {
+      // Al apagarse el escudo, readyIn empieza a contar los 8 s de recarga.
+      const elapsed = Math.max(0, GUARDIAN_ABILITY.cooldown - ship.ability.readyIn);
+      const exitTick = Math.floor(elapsed * 24);
+      if (exitTick >= 8) return;
+
+      image = shieldActivation;
+      frameSize = 64;
+      effectScale = 1.3;
+      frame = 7 - exitTick; // Recorre la hoja del cuadro 7 al 0.
     } else {
       return;
     }

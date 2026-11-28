@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router";
+﻿import { Link, useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { createGameState, getHudSnapshot } from "../js/game/gameState.js";
 import { roles } from "../js/game/roles.js";
@@ -83,11 +83,10 @@ function PlayerCard({ slot, player }) {
                 variant="health"
                 icon={healthIcon}
               />
-              {Number.isFinite(player.energy) && Number.isFinite(player.maxEnergy) && (
+              {Number.isFinite(player.abilityPercent) && (
                 <ResourceMeter
-                  label={`Energía de ${player.name}`}
-                  value={player.energy}
-                  maxValue={player.maxEnergy}
+                  label={`Carga de la habilidad de ${player.name}`}
+                  value={player.abilityPercent}
                   variant="energy"
                   icon={energyIcon}
                 />
