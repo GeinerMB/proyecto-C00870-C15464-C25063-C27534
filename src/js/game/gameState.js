@@ -20,6 +20,7 @@ export function createGameState(setup = {}) {
     phase: "playing",
     localPlayerId: player.id,
     waveCleared: false,
+    bossIncoming: false,
     players: new Map([[player.id, player]]),
     planet: createPlanet(level.planetType),
     enemies: [],
@@ -38,6 +39,7 @@ export function getHudSnapshot(state) {
   return {
     phase: state.phase,
     levelId: state.levelId,
+    bossIncoming: state.bossIncoming,
     planet: {
       name: planetTypes[planet.type].name,
       hp: planet.hp,

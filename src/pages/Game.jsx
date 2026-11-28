@@ -151,9 +151,21 @@ function LocalGame({ setup }) {
         <p id="game-board-description" className="game-visually-hidden">
           Nivel {hud.levelId}: protege el planeta {hud.planet.name} de las naves enemigas.
         </p>
-        <div className="game-board-notice">
-          <span aria-hidden="true">⚠</span>
-          {hud.boss ? "¡Jefe en combate!" : "¡Jefe en camino!"}
+        {(hud.bossIncoming || hud.boss) && (
+          <div className="game-board-notice" role="status" aria-live="polite">
+            <span aria-hidden="true">⚠</span>
+            {hud.boss ? "¡Jefe en combate!" : "¡Jefe en camino!"}
+          </div>
+        )}
+        <div
+          key={hud.levelId}
+          className="game-level-announcement"
+          role="status"
+          aria-live="polite"
+        >
+          <span>GALACTIC SQUADRONS</span>
+          <strong>NIVEL {hud.levelId}</strong>
+          <span>{hud.planet.name}</span>
         </div>
         {hud.boss && (
           <div className="game-boss-status" aria-label="Estado del jefe">
