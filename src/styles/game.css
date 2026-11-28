@@ -399,6 +399,28 @@ body:has(.game) {
   padding: clamp(1.25rem, 5vw, 2rem);
 }
 
+.game-modal--victory {
+  width: min(32rem, calc(100% - 2rem));
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 65%);
+}
+
+.game-modal--victory .game-modal__header {
+  border-bottom-color: #52d68b;
+  background: linear-gradient(135deg, #164b38, #172f39);
+}
+
+.game-modal--victory .game-modal__header h2 {
+  color: #8dffc0;
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 1rem rgb(82 214 139 / 55%);
+  text-transform: uppercase;
+}
+
+.game-modal--victory .game-modal__body {
+  padding: clamp(1.25rem, 5vw, 2rem);
+}
+
 .game-defeat-icon {
   display: grid;
   width: 4rem;
@@ -413,8 +435,29 @@ body:has(.game) {
   box-shadow: 0 0 1.5rem rgb(239 89 109 / 35%);
 }
 
+.game-victory-icon {
+  display: grid;
+  width: 4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 2px solid #52d68b;
+  border-radius: 50%;
+  color: #8dffc0;
+  font-size: 3rem;
+  line-height: 1;
+  box-shadow: 0 0 1.5rem rgb(82 214 139 / 35%);
+}
+
 .game-defeat-summary {
   margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.game-victory-summary {
+  margin: 0;
+  color: #a7ffd0;
   font-size: 1.125rem;
   font-weight: 700;
 }

@@ -117,6 +117,7 @@ function LocalGame({ setup }) {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
   const defeatDialogRef = useRef(null);
+  const victoryDialogRef = useRef(null);
   const [gameState] = useState(() => createGameState(setup));
   const [hud, setHud] = useState(() => getHudSnapshot(gameState));
   const activePlayer = hud.players.find(({ id }) => id === gameState.localPlayerId);
@@ -135,6 +136,21 @@ function LocalGame({ setup }) {
     if (hud.phase === "defeat" && !dialog.open) {
       dialog.showModal();
     } else if (hud.phase !== "defeat" && dialog.open) {
+      dialog.close();
+    }
+
+    return () => {
+      if (dialog.open) dialog.close();
+    };
+  }, [hud.phase]);
+
+  useEffect(() => {
+    const dialog = victoryDialogRef.current;
+    if (!dialog) return undefined;
+
+    if (hud.phase === "victory" && !dialog.open) {
+      dialog.showModal();
+    } else if (hud.phase !== "victory" && dialog.open) {
       dialog.close();
     }
 
@@ -262,6 +278,32 @@ function LocalGame({ setup }) {
         <div className="game-defeat-content">
           <span className="game-defeat-icon" aria-hidden="true">×</span>
           <p className="game-defeat-summary">La partida ha terminado</p>
+          <p className="game-defeat-score">
+            Puntaje final: <strong>{activePlayer?.score ?? 0}</strong>
+          </p>
+        </div>
+      </GameModal>
+      <GameModal
+        id="game-victory-modal"
+        className="game-modal--victory"
+        dialogRef={victoryDialogRef}
+        onCancel={(event) => event.preventDefault()}
+        title="¡Victoria!"
+        description="Derrotaste al jefe del nivel 3 y salvaste el planeta."
+        actions={
+          <>
+            <button type="button" onClick={() => navigate("/lobby")}>
+              Volver al lobby
+            </button>
+            <button type="button" onClick={() => navigate("/")}>
+              Volver al inicio
+            </button>
+          </>
+        }
+      >
+        <div className="game-victory-content">
+          <span className="game-victory-icon" aria-hidden="true">✓</span>
+          <p className="game-victory-summary">¡El planeta está a salvo!</p>
           <p className="game-defeat-score">
             Puntaje final: <strong>{activePlayer?.score ?? 0}</strong>
           </p>

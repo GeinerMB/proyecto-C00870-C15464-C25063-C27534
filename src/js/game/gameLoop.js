@@ -126,13 +126,18 @@ export function startGame(canvas, state, onHudChange) {
       const nextLevelId = state.levelId + 1;
       const nextLevel = levels[nextLevelId];
 
-      if (bossIsDefeated && nextLevel) {
-        state.levelId = nextLevelId;
-        state.waveCleared = false;
-        state.bossIncoming = false;
-        spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
-        projectiles.length = 0;
-        contacts.clear();
+      if (bossIsDefeated) {
+        if (nextLevel) {
+          state.levelId = nextLevelId;
+          state.waveCleared = false;
+          state.bossIncoming = false;
+          spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
+          projectiles.length = 0;
+          contacts.clear();
+        } else {
+          state.phase = "victory";
+          break;
+        }
       }
     }
 
