@@ -1,16 +1,11 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import { getHighScores } from "../js/game/highScores.js";
 import "../styles/scoreboard.css";
 
 export default function Scoreboard() {
   const navigate = useNavigate();
 
-  const scores = [
-    { rank: "1.", name: "AAA", points: "9000" },
-    { rank: "2.", name: "BBB", points: "8000" },
-    { rank: "3.", name: "CCC", points: "7000" },
-    { rank: "4.", name: "DDD", points: "6000" },
-    { rank: "5.", name: "EEE", points: "5000" },
-  ];
+  const scores = getHighScores();
 
   return (
     <section id="scoreboard" aria-labelledby="scoreboard-title">
@@ -26,6 +21,7 @@ export default function Scoreboard() {
       </header>
 
       <section className="scoreboard-content">
+        <p>Los 5 mejores resultados guardados en este navegador.</p>
         <table className="scoreboard-table">
           <caption className="sr-only">Tabla de mejores puntuaciones</caption>
           <thead>
@@ -35,12 +31,15 @@ export default function Scoreboard() {
           </thead>
           <tbody>
             {scores.map((item, index) => (
-              <tr key={index}>
-                <td className="score-rank">{item.rank}</td>
+              <tr key={`${item.attemptId}-${item.playerId}`}>
+                <td className="score-rank">{index + 1}.</td>
                 <th scope="row" className="score-name">{item.name}</th>
                 <td className="score-points">{item.points}</td>
               </tr>
             ))}
+            {scores.length === 0 && (
+              <tr><td colSpan="3">Todavía no hay puntajes. Completa una partida para registrar tu resultado.</td></tr>
+            )}
           </tbody>
         </table>
       </section>
