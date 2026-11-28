@@ -47,6 +47,13 @@ export function startGame(canvas, state, onHudChange) {
     const oldHp = playerShip.hp;
     const oldScore = playerShip.score;
     const oldPlanetHp = planet.hp;
+    const oldLevelId = state.levelId;
+    const oldBossIncoming = state.bossIncoming;
+    const bossType = levels[state.levelId]?.bossType;
+    const oldBoss = enemies.find((enemy) => enemy.type === bossType);
+    const oldBossHp = oldBoss?.hp;
+    const oldBossShieldHp = oldBoss?.shield?.hp;
+    const oldBossShieldPhase = oldBoss?.shield?.phase;
     const movement = input.readMovement();
 
     if (playerShip.hp > 0 && shots > 0 && !isGuardianActive(playerShip)) {
@@ -72,6 +79,13 @@ export function startGame(canvas, state, onHudChange) {
       resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
       resolveBeamHits(players, enemies, beamTouchesPlayer);
 
+      const allSpawned = spawners.every(
+        (spawner) => spawner.spawned >= spawner.maxEnemies
+      );
+      if (!state.waveCleared && allSpawned && enemies.length > 0) {
+        state.bossIncoming = true;
+      }
+
       if (planet.hp === 0 || playerShip.hp === 0) {
         state.phase = "defeat";
         break;
@@ -85,6 +99,7 @@ export function startGame(canvas, state, onHudChange) {
 
         if (allSpawned) {
           state.waveCleared = true;
+          state.bossIncoming = false;
           console.log("Oleada terminada"); // TODO: Eliminar el console log
 
           const bossType = levels[state.levelId].bossType;
@@ -117,12 +132,39 @@ export function startGame(canvas, state, onHudChange) {
           enemies.push(boss);
         }
       }
+
+      const activeBossType = levels[state.levelId]?.bossType;
+      const bossIsDefeated = state.waveCleared
+        && activeBossType
+        && !enemies.some((enemy) => enemy.type === activeBossType);
+      const nextLevelId = state.levelId + 1;
+      const nextLevel = levels[nextLevelId];
+
+      if (bossIsDefeated) {
+        if (nextLevel) {
+          state.levelId = nextLevelId;
+          state.waveCleared = false;
+          state.bossIncoming = false;
+          spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
+          projectiles.length = 0;
+          contacts.clear();
+        } else {
+          state.phase = "victory";
+          break;
+        }
+      }
     }
 
+    const currentBoss = enemies.find((enemy) => enemy.type === bossType);
     const hudChanged =
       playerShip.hp !== oldHp ||
       playerShip.score !== oldScore ||
       planet.hp !== oldPlanetHp ||
+      state.levelId !== oldLevelId ||
+      state.bossIncoming !== oldBossIncoming ||
+      oldBossHp !== currentBoss?.hp ||
+      oldBossShieldHp !== currentBoss?.shield?.hp ||
+      oldBossShieldPhase !== currentBoss?.shield?.phase ||
       state.phase !== "playing";
 
     if (hudChanged) {

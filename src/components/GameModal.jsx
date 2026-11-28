@@ -14,12 +14,22 @@ export default function GameModal({
   description,
   children,
   actions,
+  className = "",
+  dialogRef,
+  onCancel,
 }) {
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
 
   return (
-    <dialog id={id} className="game-modal" aria-labelledby={titleId} aria-describedby={description ? descriptionId : undefined}>
+    <dialog
+      ref={dialogRef}
+      id={id}
+      className={`game-modal ${className}`}
+      aria-labelledby={titleId}
+      aria-describedby={description ? descriptionId : undefined}
+      onCancel={onCancel}
+    >
       <div className="game-modal__window">
         <header className="game-modal__header">
           <h2 id={titleId}>{title}</h2>
