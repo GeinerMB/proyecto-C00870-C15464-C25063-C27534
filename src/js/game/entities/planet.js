@@ -14,5 +14,5 @@ export const planetTypes = {
 
 export function createPlanet(type) {
   const { maxHp } = planetTypes[type];
-  return { kind: "planet", type, hp: maxHp, maxHp, age: 0 };aw
+  return { kind: "planet", type, hp: maxHp, maxHp, age: 0 };
 }
