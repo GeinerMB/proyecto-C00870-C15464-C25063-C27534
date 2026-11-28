@@ -1,11 +1,10 @@
-import { createPlayerShip, moveShip } from "./entities/player.js";
-import { createPlanet } from "./entities/planet.js";
+import { moveShip } from "./entities/player.js";
 import { dropMedkit, resolveMedkits } from "./entities/medkit.js";
 import { createEnemy, enemyTypes, shieldTypes, updateEnemies } from "./entities/enemies.js";
 import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet.js";
 import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
-import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
+import { updateSpawners } from "./systems/spawnersSystem.js";
 import { resolveHits, resolveBeamHits } from "./systems/collisionSystem.js";
 import { roles } from "./roles.js";
 import { getHudSnapshot } from "./gameState.js";
@@ -39,6 +38,8 @@ export function startGame(canvas, state, onHudChange) {
   let frameId;
 
   function frame(time) {
+    if (state.phase !== "playing") return;
+
     const deltaTime = previousTime === null
       ? 0
       : Math.min((time - previousTime) / 1000, 0.5);
@@ -49,7 +50,7 @@ export function startGame(canvas, state, onHudChange) {
     const oldHp = playerShip.hp;
     let pickupChangedHud = false;
 
-    // Si E y espacio llegan en el mismo fotograma, el disparo ya recibe la mejora
+    // Apply the ability before processing shots from the same frame.
     if (input.consumeAbility() && activateAbility(playerShip)) {
       if (playerShip.role === "especialista") {
         dropMedkit(playerShip, medkits, SPECIALIST_ABILITY.dropHealFraction);
@@ -124,7 +125,6 @@ export function startGame(canvas, state, onHudChange) {
         if (allSpawned) {
           state.waveCleared = true;
           state.bossIncoming = false;
-          console.log("Oleada terminada"); // TODO: Eliminar el console log
 
           const bossType = levels[state.levelId].bossType;
           const config = enemyTypes[bossType];
@@ -161,22 +161,9 @@ export function startGame(canvas, state, onHudChange) {
       const bossIsDefeated = state.waveCleared
         && activeBossType
         && !enemies.some((enemy) => enemy.type === activeBossType);
-      const nextLevelId = state.levelId + 1;
-      const nextLevel = levels[nextLevelId];
-
       if (bossIsDefeated) {
-        if (nextLevel) {
-          state.levelId = nextLevelId;
-          state.waveCleared = false;
-          state.bossIncoming = false;
-          spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
-          projectiles.length = 0;
-          medkits.length = 0
-          contacts.clear();
-        } else {
-          state.phase = "victory";
-          break;
-        }
+        state.phase = levels[state.levelId + 1] ? "level-complete" : "victory";
+        break;
       }
     }
 
@@ -202,13 +189,36 @@ export function startGame(canvas, state, onHudChange) {
 
     if (state.phase === "playing") {
       frameId = requestAnimationFrame(frame);
+    } else {
+      input.setEnabled(false);
     }
   }
 
-  frameId = requestAnimationFrame(frame);
+  if (state.phase === "playing") frameId = requestAnimationFrame(frame);
 
-  return function stopGame() {
+  function pause() {
+    if (state.phase !== "playing") return;
+    state.phase = "paused";
+    cancelAnimationFrame(frameId);
+    input.setEnabled(false);
+    previousTime = null;
+    onHudChange(getHudSnapshot(state));
+  }
+
+  function resume() {
+    if (state.phase !== "paused") return;
+    state.phase = "playing";
+    input.setEnabled(true);
+    previousTime = null;
+    canvas.focus();
+    onHudChange(getHudSnapshot(state));
+    frameId = requestAnimationFrame(frame);
+  }
+
+  function stop() {
     cancelAnimationFrame(frameId);
     input.dispose();
-  };
+  }
+
+  return { pause, resume, stop };
 }

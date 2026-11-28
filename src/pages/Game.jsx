@@ -1,7 +1,9 @@
-﻿import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { createGameState, getHudSnapshot } from "../js/game/gameState.js";
 import { roles } from "../js/game/roles.js";
+import { getLobbySession } from "../js/game/gameSession.js";
+import { saveHighScores } from "../js/game/highScores.js";
 import GameModal from "../components/GameModal.jsx";
 
 import { startGame } from "../js/game/gameLoop.js";
@@ -20,7 +22,6 @@ const squad = [
   { id: "four", number: 4, role: "Cazador", ship: fighterShip },
 ];
 
-// El icono distingue cada recurso; el nombre y el valor siguen siendo accesibles.
 function ResourceMeter({ label, value, maxValue = 100, variant, icon }) {
   const safeMaxValue = Math.max(0, maxValue);
   const safeValue = Math.max(0, Math.min(value, safeMaxValue));
@@ -108,34 +109,81 @@ export default function Game() {
     <LocalGame
       key={location.key}
       setup={location.state?.player}
+      progress={location.state?.session}
+      attemptId={location.state?.attemptId}
     />
   );
 }
 
-function LocalGame({ setup }) {
+function LocalGame({ setup, progress, attemptId }) {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const defeatDialogRef = useRef(null);
-  const victoryDialogRef = useRef(null);
-  const [gameState] = useState(() => createGameState(setup));
+  const dialogRef = useRef(null);
+  const controllerRef = useRef(null);
+  const savedRef = useRef(false);
+  const [storageFailed, setStorageFailed] = useState(false);
+  const [gameState] = useState(() => createGameState(setup, progress, attemptId));
   const [hud, setHud] = useState(() => getHudSnapshot(gameState));
   const activePlayer = hud.players.find(({ id }) => id === gameState.localPlayerId);
   const defeatReason = hud.planet.hp === 0
     ? `El planeta ${hud.planet.name} se quedó sin puntos de vida.`
     : `La nave de ${activePlayer?.name ?? "tu jugador"} se quedó sin puntos de vida.`;
+  const paused = hud.phase === "paused";
+  const title = {
+    paused: "Partida en pausa",
+    "level-complete": `¡Nivel ${hud.levelId} completado!`,
+    defeat: "¡Perdiste!",
+    victory: "¡Victoria final!",
+  }[hud.phase];
+  const description = {
+    paused: "Continúa la partida o abandona para volver al inicio.",
+    "level-complete": "Regresa al lobby para preparar el siguiente nivel.",
+    defeat: defeatReason,
+    victory: "Completaste los 3 niveles y salvaste los planetas.",
+  }[hud.phase];
+  const continueLabel = hud.phase === "defeat"
+    ? "Reintentar"
+    : hud.phase === "victory" ? "Volver al lobby" : "Continuar";
+
+  function continueGame() {
+    if (gameState.phase === "paused") {
+      controllerRef.current?.resume();
+    } else {
+      const session = getLobbySession(gameState);
+      if (session) navigate("/lobby", { replace: true, state: { session } });
+    }
+  }
 
   useEffect(() => {
-    return startGame(canvasRef.current, gameState, setHud);
+    const controller = startGame(canvasRef.current, gameState, setHud);
+    controllerRef.current = controller;
+
+    function handlePause(event) {
+      if (event.code !== "Escape") return;
+      event.preventDefault();
+      if (event.repeat) return;
+
+      if (gameState.phase === "playing") controller?.pause();
+      else if (gameState.phase === "paused") controller?.resume();
+    }
+
+    window.addEventListener("keydown", handlePause);
+    return () => {
+      window.removeEventListener("keydown", handlePause);
+      controller?.stop();
+      controllerRef.current = null;
+    };
   }, [gameState]);
 
   useEffect(() => {
-    const dialog = defeatDialogRef.current;
+    const dialog = dialogRef.current;
     if (!dialog) return undefined;
 
-    if (hud.phase === "defeat" && !dialog.open) {
+    if (hud.phase !== "playing" && !dialog.open) {
       dialog.showModal();
-    } else if (hud.phase !== "defeat" && dialog.open) {
+    } else if (hud.phase === "playing" && dialog.open) {
       dialog.close();
+      canvasRef.current?.focus();
     }
 
     return () => {
@@ -144,19 +192,11 @@ function LocalGame({ setup }) {
   }, [hud.phase]);
 
   useEffect(() => {
-    const dialog = victoryDialogRef.current;
-    if (!dialog) return undefined;
-
-    if (hud.phase === "victory" && !dialog.open) {
-      dialog.showModal();
-    } else if (hud.phase !== "victory" && dialog.open) {
-      dialog.close();
+    if (["defeat", "victory"].includes(hud.phase) && !savedRef.current) {
+      savedRef.current = true;
+      setStorageFailed(!saveHighScores(gameState.attemptId, hud.phase, hud.players));
     }
-
-    return () => {
-      if (dialog.open) dialog.close();
-    };
-  }, [hud.phase]);
+  }, [gameState.attemptId, hud.phase, hud.players]);
 
   return (
     <section id="game" className="game" aria-labelledby="game-title">
@@ -203,14 +243,16 @@ function LocalGame({ setup }) {
             )}
           </div>
         )}
-        <details className="game-menu">
-          <summary><span aria-hidden="true">☰</span> Opciones</summary>
-          <nav aria-label="Opciones de la partida">
-            <Link to="/rules">Ver controles</Link>
-            <Link to="/lobby">Volver al lobby</Link>
-            <Link to="/scoreboard">Ver marcadores</Link>
-          </nav>
-        </details>
+        <button
+          type="button"
+          className="game-menu"
+          aria-haspopup="dialog"
+          aria-controls="game-status-modal"
+          onClick={() => controllerRef.current?.pause()}
+          disabled={hud.phase !== "playing"}
+        >
+          <span aria-hidden="true">☰</span> Pausar
+        </button>
         
         <div className="game-planet">
           <div className="game-planet-health">
@@ -227,8 +269,8 @@ function LocalGame({ setup }) {
         <canvas
           ref={canvasRef}
           id="game-board"
-          width="1280" // 960 original
-          height="720" // 540 original
+          width="1280"
+          height="720"
           tabIndex={0}
           onPointerDown={(event) => event.currentTarget.focus()}
           aria-labelledby="game-board-title"
@@ -244,9 +286,7 @@ function LocalGame({ setup }) {
         <h2 id="game-squad-title" className="game-visually-hidden">Estado del escuadrón</h2>
         <ul className="game-squad-list" aria-label="Jugadores del escuadrón">
           {squad.map((slot, index) => {
-            const player = index === 0
-              ? hud.players.find(({ id }) => id === gameState.localPlayerId)
-              : null;
+            const player = hud.players[index];
 
             return (
               <li key={slot.id}>
@@ -257,56 +297,51 @@ function LocalGame({ setup }) {
         </ul>
       </section>
       <GameModal
-        id="game-defeat-modal"
-        className="game-modal--defeat"
-        dialogRef={defeatDialogRef}
-        onCancel={(event) => event.preventDefault()}
-        title="¡Perdiste!"
-        description={defeatReason}
+        id="game-status-modal"
+        className={`game-modal-${hud.phase}`}
+        dialogRef={dialogRef}
+        onCancel={(event) => {
+          event.preventDefault();
+          if (gameState.phase === "paused") controllerRef.current?.resume();
+        }}
+        title={title}
+        description={description}
         actions={
           <>
-            <button type="button" onClick={() => navigate("/lobby")}>
-              Volver al lobby
+            <button type="button" onClick={continueGame}>
+              {continueLabel}
             </button>
             <button type="button" onClick={() => navigate("/")}>
-              Volver al inicio
+              Abandonar
             </button>
           </>
         }
       >
-        <div className="game-defeat-content">
-          <span className="game-defeat-icon" aria-hidden="true">×</span>
-          <p className="game-defeat-summary">La partida ha terminado</p>
-          <p className="game-defeat-score">
-            Puntaje final: <strong>{activePlayer?.score ?? 0}</strong>
-          </p>
-        </div>
-      </GameModal>
-      <GameModal
-        id="game-victory-modal"
-        className="game-modal--victory"
-        dialogRef={victoryDialogRef}
-        onCancel={(event) => event.preventDefault()}
-        title="¡Victoria!"
-        description="Derrotaste al jefe del nivel 3 y salvaste el planeta."
-        actions={
+        {!paused && (
           <>
-            <button type="button" onClick={() => navigate("/lobby")}>
-              Volver al lobby
-            </button>
-            <button type="button" onClick={() => navigate("/")}>
-              Volver al inicio
-            </button>
+            <span className={hud.phase === "defeat" ? "game-defeat-icon" : "game-victory-icon"} aria-hidden="true">
+              {hud.phase === "defeat" ? "×" : "✓"}
+            </span>
+            <table className="game-results">
+              <caption>Puntajes acumulados de la partida</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Jugador</th>
+                  <th scope="col">Puntos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...hud.players].sort((a, b) => b.score - a.score).map((player) => (
+                  <tr key={player.id}>
+                    <th scope="row">{player.name}</th>
+                    <td>{player.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {storageFailed && <p role="status">No se pudo guardar el resultado en este navegador.</p>}
           </>
-        }
-      >
-        <div className="game-victory-content">
-          <span className="game-victory-icon" aria-hidden="true">✓</span>
-          <p className="game-victory-summary">¡El planeta está a salvo!</p>
-          <p className="game-defeat-score">
-            Puntaje final: <strong>{activePlayer?.score ?? 0}</strong>
-          </p>
-        </div>
+        )}
       </GameModal>
     </section>
   );

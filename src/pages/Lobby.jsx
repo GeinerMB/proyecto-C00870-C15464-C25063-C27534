@@ -1,6 +1,8 @@
-import { Link, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useState } from "react";
-// import fighterShip from "../assets/player/fighter_ship.svg";
+import { createGameSession } from "../js/game/gameSession.js";
+import { levels } from "../js/game/levels.js";
+import { planetTypes } from "../js/game/entities/planet.js";
 
 import GameModal from "../components/GameModal.jsx";
 import PlayerCard from "../components/PlayerCard.jsx";
@@ -28,10 +30,21 @@ const initialPlayers = [
 ];
 
 export default function Lobby() {
+  const location = useLocation();
+
+  return <LocalLobby key={location.key} progress={location.state?.session} />;
+}
+
+function LocalLobby({ progress }) {
   const navigate = useNavigate();
 
-  const currentPlayerId = "player-1";
-  const [players, setPlayers] = useState(initialPlayers);
+  const currentPlayerId = progress?.localPlayerId ?? "player-1";
+  const [players, setPlayers] = useState(() => initialPlayers.map((player) => ({
+    ...player,
+    ...progress?.players.find(({ id }) => id === player.id),
+  })));
+  const levelId = progress?.levelId ?? 1;
+  const planet = planetTypes[levels[levelId].planetType];
 
   function changeCurrentRole(role) {
     setPlayers((previous) =>
@@ -46,7 +59,14 @@ export default function Lobby() {
       (player) => player.id === currentPlayerId
     );
 
-    navigate("/game", { state: { player: { id, name, role } } });
+    const session = progress ? {
+      ...progress,
+      players: progress.players.map((player) => player.id === currentPlayerId
+        ? { ...player, role }
+        : player),
+    } : createGameSession({ id, name, role });
+
+    navigate("/game", { replace: true, state: { session, attemptId: crypto.randomUUID() } });
   }
   
   return (
@@ -105,7 +125,7 @@ export default function Lobby() {
         <section id="lobby-mission" className="lobby-mission" aria-labelledby="lobby-mission-title">
           <header className="lobby-mission_header">
             <h2 id="lobby-mission-title" className="lobby-mission_title">
-              Misión
+              Misión · Nivel {levelId}
             </h2>
           </header>
 
@@ -119,15 +139,26 @@ export default function Lobby() {
 
           <dl className="lobby-mission-details">
             <dt>Planeta:</dt>
-            <dd>Tierra</dd>
+            <dd>{planet.name}</dd>
 
             <dt>Dificultad:</dt>
             <dd>Normal</dd>
           </dl>
 
+          {progress && (
+            <p role="status">
+              {progress.outcome === "victory"
+                ? "¡Misión completada! Puedes comenzar una nueva partida."
+                : progress.outcome === "defeat"
+                  ? `Reintentarás el nivel ${levelId} con el puntaje que tenías al comenzarlo.`
+                  : `Continúa al nivel ${levelId} con tu puntaje acumulado.`}
+              {" "}Puntos: {progress.players.find(({ id }) => id === currentPlayerId)?.score ?? 0}.
+            </p>
+          )}
+
           <div className="lobby-mission-actions">
             <button type="button" className="lobby-mission-button lobby-mission-privacy">
-              <span class="privacy-icon" aria-hidden="true"></span>
+              <span className="privacy-icon" aria-hidden="true"></span>
               <span>Privada</span>
             </button>  
 
