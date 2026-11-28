@@ -25,6 +25,7 @@ https://geinermb.github.io/proyecto-C00870-C15464-C25063-C27534/
 - [Dependencias](#dependencias)
 - [Instalación y ejecución local](#instalación-y-ejecución-local)
 - [Comandos disponibles](#comandos-disponibles)
+- [Flujo de juego y marcadores locales](#flujo-de-juego-y-marcadores-locales)
 - [Archivos de dependencias y compilación](#archivos-de-dependencias-y-compilación)
 - [Validación HTML con W3C](#validación-html-con-w3c)
 
@@ -39,8 +40,8 @@ ronda contenga al final un jefe para pasar a la siguiente.
 
 ## Reglas:
 1. Durante una partida, cada jugador puede desplazarse libremente por el escenario utilizando su nave espacial con las teclas de movimiento WASD. El movimiento ocurre en tiempo real y está limitado por la velocidad y características de la empleada nave.
-2. Cada jugador posee un contador de puntos que aumenta al destruir enemigos e ir avanzando entre niveles. Al finalizar una partida, ya sea que completen los niveles, los jugadores sean eliminados tras agotar sus puntos de vida o que el planeta que están defendiendo agote sus puntos de vida, los puntajes van a ser clasificados de acuerdo con la cantidad total de puntos obtenidos, registrados en el servidor y mostrarse en una tabla de clasificación global.
-3. Al final de cada nivel, los jugadores se deben enfrentar a un jefe. Este cuenta con una mayor cantidad de puntos de vida y genera disparos de vuelta a los jugadores con el fin de eliminarlos. Una vez que el jefe es derrotado, se avanza al siguiente nivel.
+2. Cada jugador posee un contador de puntos que aumenta al destruir enemigos e ir avanzando entre niveles. Al finalizar una partida por victoria o derrota, los resultados individuales se clasifican por puntaje y se guardan los cinco mejores en el navegador mediante LocalStorage. El registro en servidor y la clasificación global quedan pendientes de la integración multijugador.
+3. Al final de cada nivel, los jugadores se deben enfrentar a un jefe. Este cuenta con una mayor cantidad de puntos de vida y genera disparos de vuelta a los jugadores con el fin de eliminarlos. Una vez derrotado el jefe, se muestran los resultados y se vuelve al lobby con Continuar para preparar el nivel siguiente.
 4. Los jugadores no pueden atravesar los obstáculos o enemigos presentes en el escenario. Al colisionar con ellos, las naves de los jugadores perderán puntos de vida. Una vez se agoten los puntos de salud de su nave, el jugador será eliminado de la ronda y deberán esperar a que todos sus compañeros sean eliminados o, por el contrario, se pase de nivel.
 5. Cada jugador al inicio de la partida elegirá un rol para su nave. Cada rol posee habilidades especiales (mayor velocidad, escudo protector y sanación).
     1. **Rol Furtivo:** su habilidad le otorga una leve mejora en velocidad de movimiento y un número de disparos mayor.
@@ -68,7 +69,7 @@ de un servidor que registra y gestiona el estado global del juego.
 
 ### Condición de fin:
 Una partida termina cuando:
-- Se completen todos niveles (un total de 5).
+- Se completen los 3 niveles implementados.
 - Los jugadores sean eliminados tras agotar sus puntos de vida.
 - El planeta que están defendiendo agote sus puntos de vida.
 
@@ -185,6 +186,63 @@ Después de obtener cambios que modifiquen las dependencias, ejecutar nuevamente
 ```bash
 npm run build
 npm start
+```
+
+## Flujo de juego y marcadores locales
+
+Esta entrega ejecuta una partida local con un jugador. Los otros jugadores del
+lobby son ejemplos; no participan en el combate ni aparecen en los resultados.
+El servidor Express sirve la interfaz; la sincronización multijugador queda pendiente.
+
+- **Pausa:** presionar Escape o el botón Pausar abre un modal con Continuar y
+  Abandonar. Durante la pausa se detienen enemigos, proyectiles, habilidades y
+  entradas del teclado. Continuar o Escape reanuda; Abandonar vuelve al inicio.
+- **Fin de nivel:** derrotar al jefe muestra el puntaje acumulado. Continuar
+  lleva al lobby; Jugar inicia el nivel siguiente con los puntos conservados.
+- **Derrota:** perder la nave o el planeta muestra los resultados y registra el
+  puntaje alcanzado. Reintentar vuelve al lobby y Jugar repite el mismo nivel
+  recuperando los puntos que había al comenzarlo, para no duplicarlos.
+- **Inicio de nivel:** la nave y el planeta recuperan toda su vida. También se
+  reinician posición, enemigos, proyectiles y habilidades.
+- **Victoria final:** completar el nivel 3 muestra el modal final y registra los
+  puntos acumulados. Volver al lobby prepara una partida nueva desde el nivel 1
+  con cero puntos; Abandonar vuelve al inicio.
+- **Marcadores:** se muestran los 5 mejores resultados individuales, de mayor a
+  menor, con nombres repetidos permitidos. Los empates conservan el orden de
+  registro. No se registran pausas, abandonos ni cierres intermedios de nivel.
+  Cada intento terminado se registra una sola vez.
+
+Los resultados se guardan bajo `galactic-squadrons.high-scores.v1` en LocalStorage,
+por navegador y origen. Si los datos son inválidos, se omiten. Si el navegador no
+permite guardar, el juego sigue funcionando y muestra un aviso; los resultados
+solo quedan disponibles temporalmente mientras la página permanezca abierta.
+El progreso viaja entre juego y lobby en el estado de navegación; no se guarda
+como una partida persistente en LocalStorage.
+
+Para probar en PowerShell desde la raíz del repositorio:
+
+```powershell
+npm.cmd ci
+npm.cmd run dev
+```
+
+Abrir la dirección que muestre Vite, normalmente
+`http://localhost:5173/proyecto-C00870-C15464-C25063-C27534/`.
+Desde Jugar, entrar al lobby y comenzar. El tablero usa WASD o flechas para
+moverse, Espacio para disparar y E para activar la habilidad.
+
+Verificar pausa con botón y Escape, continuación por el lobby, reintento con
+puntaje restaurado, abandono y victoria al completar el tercer nivel. Tras una
+derrota o victoria, abrir Marcadores y recargar para comprobar la persistencia.
+Para comprobar el estado vacío, eliminar únicamente la clave indicada desde las
+herramientas de desarrollo del navegador y recargar Marcadores.
+
+Validaciones disponibles del proyecto:
+
+```powershell
+npm.cmd run lint
+npm.cmd run lint:css:game
+npm.cmd run build
 ```
 
 ## Archivos de dependencias y compilación
