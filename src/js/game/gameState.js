@@ -5,24 +5,37 @@ import { DEFAULT_ROLE, roles } from "./roles.js";
 import { shieldTypes } from "./entities/enemies.js";
 import { createSpawners } from "./systems/spawnersSystem.js";
 import { getAbilityPercent } from "./systems/abilitySystem.js";
+import { createGameSession } from "./gameSession.js";
 
 // Crea una partida local. Los datos del lobby son opcionales para permitir
 // que el usuario entre directamente a la página de juego.
-export function createGameState(setup = {}) {
-  const levelId = 1;
+export function createGameState(
+  setup = {},
+  progress = createGameSession(setup),
+  attemptId = crypto.randomUUID(),
+) {
+  const levelId = Object.hasOwn(levels, progress.levelId) ? progress.levelId : 1;
   const level = levels[levelId];
-  const player = createPlayerShip(setup.id ?? "player-1");
-
-  player.name = setup.name ?? "Jugador 1";
-  player.role = Object.hasOwn(roles, setup.role) ? setup.role : DEFAULT_ROLE;
+  const players = new Map(progress.players.map((entry) => {
+    const player = createPlayerShip(entry.id);
+    player.name = entry.name;
+    player.role = Object.hasOwn(roles, entry.role) ? entry.role : DEFAULT_ROLE;
+    player.score = Number.isSafeInteger(entry.score) && entry.score >= 0 ? entry.score : 0;
+    return [player.id, player];
+  }));
 
   return {
     levelId,
+    attemptId,
+    session: {
+      ...progress,
+      players: Array.from(players.values(), ({ id, name, role, score }) => ({ id, name, role, score })),
+    },
     phase: "playing",
-    localPlayerId: player.id,
+    localPlayerId: progress.localPlayerId,
     waveCleared: false,
     bossIncoming: false,
-    players: new Map([[player.id, player]]),
+    players,
     planet: createPlanet(level.planetType),
     enemies: [],
     projectiles: [],
