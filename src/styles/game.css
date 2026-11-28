@@ -89,6 +89,44 @@ body:has(.game) {
   transform: translateX(-50%);
 }
 
+.game-level-announcement {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 0.375rem;
+  width: min(24rem, calc(100% - 2rem));
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 2px solid var(--button-edge);
+  background: linear-gradient(135deg, rgb(9 17 42 / 96%), rgb(29 30 66 / 96%));
+  box-shadow: 0 0 2rem rgb(0 0 0 / 55%), inset 0 0 1.5rem rgb(86 132 255 / 15%);
+  color: var(--color-text);
+  pointer-events: none;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  animation: game-level-reveal 3s ease both;
+}
+
+.game-level-announcement > span:first-child {
+  color: var(--game-text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+}
+
+.game-level-announcement > strong {
+  color: var(--game-warning);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 0 1.25rem rgb(255 213 128 / 50%);
+}
+
+.game-level-announcement > span:last-child {
+  font-weight: 700;
+}
+
 .game-scene {
   position: absolute;
   inset: 0;
@@ -260,6 +298,17 @@ body:has(.game) {
   background: var(--dialog-surface);
 }
 
+.game-player-active {
+  border-color: var(--button-edge);
+  box-shadow: 0 0 0.5rem var(--button-edge);
+}
+
+.game-player-inactive,
+.game-player-eliminated {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
 .game-player-header {
   display: flex;
   align-items: baseline;
@@ -299,6 +348,133 @@ body:has(.game) {
 .game-player-resources {
   display: grid;
   gap: 0.375rem;
+}
+
+.game-player-status {
+  color: var(--game-text-muted);
+  font-size: 0.75rem;
+}
+
+.game-planet-name {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.game-boss-status {
+  position: absolute;
+  z-index: 2;
+  top: 3.5rem;
+  left: 50%;
+  display: grid;
+  gap: 0.375rem;
+  width: min(18rem, calc(100% - 2rem));
+  padding: 0.5rem;
+  border: 1px solid var(--game-warning);
+  border-radius: var(--game-radius);
+  background: var(--dialog-header-top);
+  transform: translateX(-50%);
+}
+
+.game-modal--defeat {
+  width: min(32rem, calc(100% - 2rem));
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 65%);
+}
+
+.game-modal--defeat .game-modal__header {
+  border-bottom-color: #ef596d;
+  background: linear-gradient(135deg, #541d32, #222039);
+}
+
+.game-modal--defeat .game-modal__header h2 {
+  color: #ff8995;
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 1rem rgb(239 89 109 / 55%);
+  text-transform: uppercase;
+}
+
+.game-modal--defeat .game-modal__body {
+  padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+.game-modal--victory {
+  width: min(32rem, calc(100% - 2rem));
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 65%);
+}
+
+.game-modal--victory .game-modal__header {
+  border-bottom-color: #52d68b;
+  background: linear-gradient(135deg, #164b38, #172f39);
+}
+
+.game-modal--victory .game-modal__header h2 {
+  color: #8dffc0;
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 1rem rgb(82 214 139 / 55%);
+  text-transform: uppercase;
+}
+
+.game-modal--victory .game-modal__body {
+  padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+.game-defeat-icon {
+  display: grid;
+  width: 4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 2px solid #ef596d;
+  border-radius: 50%;
+  color: #ff8995;
+  font-size: 3rem;
+  line-height: 1;
+  box-shadow: 0 0 1.5rem rgb(239 89 109 / 35%);
+}
+
+.game-victory-icon {
+  display: grid;
+  width: 4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 2px solid #52d68b;
+  border-radius: 50%;
+  color: #8dffc0;
+  font-size: 3rem;
+  line-height: 1;
+  box-shadow: 0 0 1.5rem rgb(82 214 139 / 35%);
+}
+
+.game-defeat-summary {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.game-victory-summary {
+  margin: 0;
+  color: #a7ffd0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.game-defeat-score {
+  margin: 0.5rem 0 0;
+  color: var(--game-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.game-boss-status > strong {
+  color: var(--game-warning);
+  font-size: 0.75rem;
+}
+
+.game-meter-boss .game-meter-fill {
+  background: #ff5b5b;
 }
 
 /* Formas e iconos distintos, además del color; etiquetas disponibles para lectores. */
@@ -366,6 +542,37 @@ body:has(.game) {
   }
 }
 
+@keyframes game-level-reveal {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -44%) scale(0.94);
+  }
+
+  12%,
+  78% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -56%) scale(1.02);
+  }
+}
+
+@keyframes game-level-reveal-reduced {
+  0%,
+  5% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* 6. En retrato estrecho, dos filas; en horizontal se conserva una sola franja. */
 @media (width <= 40rem) and (orientation: portrait) {
   .game-squad-list {
@@ -390,7 +597,12 @@ body:has(.game) {
     animation: none;
   }
 
+  .game-level-announcement {
+    animation-name: game-level-reveal-reduced;
+  }
+
   .game-menu a {
     transition: none;
   }
+
 }

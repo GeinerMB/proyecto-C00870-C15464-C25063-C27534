@@ -1,9 +1,15 @@
-import { enemyTypes } from "../entities/enemies.js";
+import { enemyTypes, shieldTypes, getEnemyBeamBounds } from "../entities/enemies.js";
 import { planetTypes } from "../entities/planet.js";
 import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
+import dreadnoughtBeamUrl from "../../../assets/enemies/weapons/dreadnought_beam.png";
 
 const PLAYER_SPRITE_SCALE = 0.75;
 const ENEMY_SPRITE_SCALE = 1.25;
+
+function getEnemyScale(enemy, scaleX, scaleY) {
+  const spriteScale = enemy.spriteScale ?? ENEMY_SPRITE_SCALE;
+  return Math.min(1, scaleX, scaleY) * spriteScale;
+}
 
 function loadImage(url) {
   const image = new Image();
@@ -30,6 +36,23 @@ function getPlayerLayout(canvas, ship) {
   const centerY = progressY * (viewHeight - height) + height / 2;
 
   return { centerX, centerY, width, height, scaleX, scaleY };
+}
+
+// Comprobar si el rayo del boss toca el sprite del jugador
+function beamTouchesPlayer(canvas, ship, beam) {
+  const layout = getPlayerLayout(canvas, ship);
+  if (!layout || beam.width <= 0) return false;
+
+  const { centerX, centerY, width, height, scaleX, scaleY } = layout;
+
+  // El giro de 90° intercambia el ancho y el alto del sprite.
+  const left = (centerX - height / 2) / scaleX;
+  const right = (centerX + height / 2) / scaleX;
+  const top = (centerY - width / 2) / scaleY;
+  const bottom = (centerY + width / 2) / scaleY;
+
+  return left < beam.x + beam.width && right > beam.x
+    && top < beam.y + beam.height && bottom > beam.y;
 }
 
 function drawPlayer(context, ship, sprite, board = context.canvas) {
@@ -64,10 +87,10 @@ export function getPlayerMuzzle(canvas, ship) {
   };
 }
 
-function drawEnemy(context, enemy, image, canvas = context.canvas) {
+function drawEnemy(context, enemy, image, canvas = context.canvas, config = enemyTypes[enemy.type]) {
   if (!image.complete || image.naturalWidth === 0) return;
 
-  const config = enemyTypes[enemy.type];
+  // const config = enemyTypes[enemy.type];
   const { frameWidth, frameHeight } = config;
   const frame = Math.floor(enemy.age * config.framesPerSecond) % config.frameCount;
 
@@ -77,7 +100,7 @@ function drawEnemy(context, enemy, image, canvas = context.canvas) {
   if (scaleX === 0 || scaleY === 0) return;
 
   // Mismo criterio que el jugador: reducir uniformemente y limitar la escala a 1.
-  const spriteScale = Math.min(1, scaleX, scaleY) * ENEMY_SPRITE_SCALE;
+  const spriteScale = getEnemyScale(enemy, scaleX, scaleY);
 
   context.save();
   context.translate(enemy.x, enemy.y);
@@ -113,7 +136,42 @@ function drawPlayerBullet(context, playerBullet, image) {
   context.restore();
 }
 
-function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planetImage) {
+function drawDreadnoughtBeam(context, enemy, beam, image) {
+  if (beam.width <= 0 || !image.complete || !image.naturalWidth) return;
+
+  const frameWidth = 18;
+  const frameHeight = 38;
+  const frameCount = 4;
+  const framesPerSecond = 12;
+  const frame = Math.floor(enemy.beamTime * framesPerSecond) % frameCount;
+
+  // Mantiene la proporción del sprite si cambias el grosor del rayo.
+  const tileLength = frameHeight * beam.height / frameWidth;
+
+  context.save();
+  context.imageSmoothingEnabled = false;
+
+  // Solo se ve el tramo que la mecánica considera activo.
+  context.beginPath();
+  context.rect(beam.x, beam.y, beam.width, beam.height);
+  context.clip();
+
+  // Tras el giro, cada tramo crece desde la nave hacia la izquierda.
+  context.translate(enemy.x, enemy.y);
+  context.rotate(Math.PI / 2);
+
+  for (let offset = 0; offset < enemy.x - beam.x; offset += tileLength) {
+    context.drawImage(
+      image,
+      frame * frameWidth, 0, frameWidth, frameHeight,
+      -beam.height / 2, offset, beam.height, tileLength
+    );
+  }
+
+  context.restore();
+}
+
+function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planetImage, shieldImages) {
   const mask = document.createElement("canvas");
   const ctx = mask.getContext("2d", { willReadFrequently: true });
 
@@ -128,7 +186,17 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
     if (isBullet) image = bulletImage;
     if (isPlanet) image = planetImage;
 
-    const enemyImage = enemyImages.get(enemy.type);
+    // const enemyImage = enemyImages.get(enemy.type);
+    const useShield = isBullet && enemy.shield?.phase === "active";
+
+    const config = useShield
+      ? shieldTypes[enemy.shield.type]
+      : enemyTypes[enemy.type];
+
+    const enemyImage = useShield
+      ? shieldImages.get(enemy.shield.type)
+      : enemyImages.get(enemy.type);
+
     if (!image.complete || !image.naturalWidth ||
         !enemyImage?.complete || !enemyImage.naturalWidth) return false;
 
@@ -156,8 +224,8 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
       halfH = layout.width / (2 * sy);
     }
 
-    const config = enemyTypes[enemy.type];
-    const scale = Math.min(1, sx, sy) * ENEMY_SPRITE_SCALE;
+    // const config = enemyTypes[enemy.type];
+    const scale = getEnemyScale(enemy, sx, sy);
     const cos = Math.abs(Math.cos(config.rotation));
     const sin = Math.abs(Math.sin(config.rotation));
     const enemyHalfW = (config.frameWidth * cos + config.frameHeight * sin)
@@ -189,7 +257,7 @@ function createEnemyHitTest(board, playerImage, bulletImage, enemyImages, planet
     }
 
     ctx.globalCompositeOperation = "source-in";
-    drawEnemy(ctx, enemy, enemyImage, board);
+    drawEnemy(ctx, enemy, enemyImage, board, config);
     ctx.restore();
 
     const pixels = ctx.getImageData(0, 0, width, height).data;
@@ -242,10 +310,16 @@ export function createRenderer(context, playerSpriteUrl, planet) {
   const planetImage = loadImage(planetTypes[planet.type].spriteUrl);
   const playerImage = loadImage(playerSpriteUrl);
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
+  const beamImage = loadImage(dreadnoughtBeamUrl);
   const enemyImages = new Map();
+  const shieldImages = new Map();
 
   for (const [type, config] of Object.entries(enemyTypes)) {
     enemyImages.set(type, loadImage(config.spriteUrl));
+  }
+
+  for (const [type, config] of Object.entries(shieldTypes)) {
+    shieldImages.set(type, loadImage(config.spriteUrl));
   }
 
   function render(playerShip, enemies, playerBullets) {
@@ -255,7 +329,22 @@ export function createRenderer(context, playerSpriteUrl, planet) {
 
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
+      const beam = getEnemyBeamBounds(enemy);
+
+      if (beam) {
+        drawDreadnoughtBeam(context, enemy, beam, beamImage);
+      }
+
       drawEnemy(context, enemy, enemyImages.get(enemy.type));
+
+      if (enemy.shield?.phase === "active") {
+        const type = enemy.shield.type;
+
+        context.save();
+        context.globalAlpha = 0.55;
+        drawEnemy(context, enemy, shieldImages.get(type), canvas, shieldTypes[type]);
+        context.restore();
+      }
     }
 
     for (const playerBullet of playerBullets) {
@@ -269,6 +358,9 @@ export function createRenderer(context, playerSpriteUrl, planet) {
 
   return {
     render,
-    hitsEnemy: createEnemyHitTest(context.canvas, playerImage, playerBulletImage, enemyImages, planetImage,),
+    hitsEnemy: createEnemyHitTest(
+      context.canvas, playerImage, playerBulletImage, enemyImages, planetImage, shieldImages
+    ),
+    beamTouchesPlayer: (ship, beam) => beamTouchesPlayer(context.canvas, ship, beam),
   };
 }

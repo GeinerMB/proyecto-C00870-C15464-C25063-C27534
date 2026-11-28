@@ -1,11 +1,11 @@
 import { createPlayerShip, moveShip } from "./entities/player.js";
 import { createPlanet } from "./entities/planet.js";
-import { updateEnemies } from "./entities/enemies.js";
+import { createEnemy, enemyTypes, shieldTypes, updateEnemies } from "./entities/enemies.js";
 import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet.js";
 import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
 import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
-import { resolveHits } from "./systems/collisionSystem.js";
+import { resolveHits, resolveBeamHits } from "./systems/collisionSystem.js";
 import { roles } from "./roles.js";
 import { getHudSnapshot } from "./gameState.js";
 import { levels } from "./levels.js";
@@ -20,14 +20,7 @@ export function startGame(canvas, state, onHudChange) {
   const playerShip = players.get(state.localPlayerId);
   const spriteUrl = roles[playerShip.role].ship;
 
-  // const planet = createPlanet(levels[levelId].planetType)
-  // const playerShip = createPlayerShip();
-  // const players = new Map([[playerShip.id, playerShip]]);
-  // const contacts = new Map();
-  // const projectiles = []
-  // const enemies = [];
-  // const spawners = createSpawners(levels[levelId].spawners);
-  const { render, hitsEnemy } = createRenderer(context, spriteUrl, planet);
+  const { render, hitsEnemy, beamTouchesPlayer } = createRenderer(context, spriteUrl, planet);
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -44,6 +37,13 @@ export function startGame(canvas, state, onHudChange) {
     const oldHp = playerShip.hp;
     const oldScore = playerShip.score;
     const oldPlanetHp = planet.hp;
+    const oldLevelId = state.levelId;
+    const oldBossIncoming = state.bossIncoming;
+    const bossType = levels[state.levelId]?.bossType;
+    const oldBoss = enemies.find((enemy) => enemy.type === bossType);
+    const oldBossHp = oldBoss?.hp;
+    const oldBossShieldHp = oldBoss?.shield?.hp;
+    const oldBossShieldPhase = oldBoss?.shield?.phase;
     const movement = input.readMovement();
 
     if (playerShip.hp > 0 && shots > 0) {
@@ -64,17 +64,93 @@ export function startGame(canvas, state, onHudChange) {
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
       resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
+      resolveBeamHits(players, enemies, beamTouchesPlayer);
+
+      const allSpawned = spawners.every(
+        (spawner) => spawner.spawned >= spawner.maxEnemies
+      );
+      if (!state.waveCleared && allSpawned && enemies.length > 0) {
+        state.bossIncoming = true;
+      }
 
       if (planet.hp === 0 || playerShip.hp === 0) {
         state.phase = "defeat";
         break;
       }
+
+      // Se detecta el final de la oleada una sola vez.
+      if (!state.waveCleared && enemies.length === 0) {
+        const allSpawned = spawners.every(
+          (spawner) => spawner.spawned >= spawner.maxEnemies
+        );
+
+        if (allSpawned) {
+          state.waveCleared = true;
+          state.bossIncoming = false;
+          console.log("Oleada terminada"); // TODO: Eliminar el console log
+
+          const bossType = levels[state.levelId].bossType;
+          const config = enemyTypes[bossType];
+          const spawnY = (canvas.height - config.frameHeight) / 2;
+          const boss = createEnemy(bossType, canvas.width, spawnY);
+
+          boss.spriteScale = 1.5;
+          boss.stopX = canvas.width * 0.82;
+
+          if (config.beam) {
+            boss.nextBeamHit = new Map();
+            const marginY = 200;
+            boss.patrol = {
+              positions: [marginY, canvas.height / 2, canvas.height - marginY],
+              from: 1,
+              to: 1,
+              cycle: 0,
+            };
+          }
+
+          if (config.shieldType) {
+            boss.shield = {
+              type: config.shieldType,
+              hp: shieldTypes[config.shieldType].maxHp,
+              phase: "pending",
+            };
+          }
+          enemies.push(boss);
+        }
+      }
+
+      const activeBossType = levels[state.levelId]?.bossType;
+      const bossIsDefeated = state.waveCleared
+        && activeBossType
+        && !enemies.some((enemy) => enemy.type === activeBossType);
+      const nextLevelId = state.levelId + 1;
+      const nextLevel = levels[nextLevelId];
+
+      if (bossIsDefeated) {
+        if (nextLevel) {
+          state.levelId = nextLevelId;
+          state.waveCleared = false;
+          state.bossIncoming = false;
+          spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
+          projectiles.length = 0;
+          contacts.clear();
+        } else {
+          state.phase = "victory";
+          break;
+        }
+      }
     }
 
+    const currentBoss = enemies.find((enemy) => enemy.type === bossType);
     const hudChanged =
       playerShip.hp !== oldHp ||
       playerShip.score !== oldScore ||
       planet.hp !== oldPlanetHp ||
+      state.levelId !== oldLevelId ||
+      state.bossIncoming !== oldBossIncoming ||
+      oldBossHp !== currentBoss?.hp ||
+      oldBossShieldHp !== currentBoss?.shield?.hp ||
+      oldBossShieldPhase !== currentBoss?.shield?.phase ||
       state.phase !== "playing";
 
     if (hudChanged) {

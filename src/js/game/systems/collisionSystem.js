@@ -1,3 +1,52 @@
+import { enemyTypes, getEnemyBeamBounds } from "../entities/enemies.js";
+
+function damageEnemy(enemy, amount) {
+  const shield = enemy.shield;
+
+  if (shield?.phase === "pending") return;
+
+  if (shield?.phase === "active") {
+    shield.hp = Math.max(0, shield.hp - amount);
+
+    if (shield.hp === 0) {
+      shield.phase = "broken";
+    }
+
+    return;
+  }
+
+  enemy.hp = Math.max(0, enemy.hp - amount);
+}
+
+export function resolveBeamHits(players, enemies, touchesPlayer) {
+  for (const enemy of enemies) {
+    const nextHit = enemy.nextBeamHit;
+    if (!nextHit) continue;
+
+    const beam = getEnemyBeamBounds(enemy);
+    if (!beam || beam.width <= 0) {
+      nextHit.clear();
+      continue;
+    }
+
+    const { damage, hitInterval } = enemyTypes[enemy.type].beam;
+
+    for (const ship of players.values()) {
+      if (ship.hp <= 0 || !touchesPlayer(ship, beam)) {
+        nextHit.delete(ship.id);
+        continue;
+      }
+
+      const due = nextHit.get(ship.id) ?? enemy.beamTime;
+      if (enemy.beamTime < due) continue;
+
+      const hits = 1 + Math.floor((enemy.beamTime - due) / hitInterval);
+      ship.hp = Math.max(0, ship.hp - hits * damage);
+      nextHit.set(ship.id, due + hits * hitInterval);
+    }
+  }
+}
+
 export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, planet) {
   // Resolver los disparos primero. Una baja ya no puede embestir en este paso.
   for (let i = bullets.length - 1; i >= 0; i--) {
@@ -7,7 +56,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
 
     bullets.splice(i, 1);
     const enemy = enemies[index];
-    enemy.hp = Math.max(0, enemy.hp - 1);
+    damageEnemy(enemy, 1)
 
     if (enemy.hp === 0) {
       enemies.splice(index, 1);
@@ -35,7 +84,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
 
       if (!previous?.has(enemy)) {
         ship.hp = Math.max(0, ship.hp - 1);
-        enemy.hp = Math.max(0, enemy.hp - 1);
+        damageEnemy(enemy, 1);
       }
 
       if (enemy.hp === 0) {

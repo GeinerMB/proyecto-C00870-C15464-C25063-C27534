@@ -3,6 +3,7 @@ import { createPlanet, planetTypes } from "./entities/planet.js";
 import { createSpawners } from "./systems/spawnersSystem.js";
 import { levels } from "./levels.js";
 import { DEFAULT_ROLE, roles } from "./roles.js";
+import { shieldTypes } from "./entities/enemies.js";
 
 // Crea una partida local. Los datos del lobby son opcionales para permitir
 // que el usuario entre directamente a la página de juego.
@@ -18,6 +19,8 @@ export function createGameState(setup = {}) {
     levelId,
     phase: "playing",
     localPlayerId: player.id,
+    waveCleared: false,
+    bossIncoming: false,
     players: new Map([[player.id, player]]),
     planet: createPlanet(level.planetType),
     enemies: [],
@@ -30,14 +33,28 @@ export function createGameState(setup = {}) {
 // Devuelve una copia de los valores visibles en el panel de la partida.
 export function getHudSnapshot(state) {
   const { planet } = state;
+  const bossType = levels[state.levelId]?.bossType;
+  const boss = state.enemies.find((enemy) => enemy.type === bossType);
 
   return {
     phase: state.phase,
+    levelId: state.levelId,
+    bossIncoming: state.bossIncoming,
     planet: {
       name: planetTypes[planet.type].name,
       hp: planet.hp,
       maxHp: planet.maxHp,
     },
+    boss: boss ? {
+      type: boss.type,
+      hp: boss.hp,
+      maxHp: boss.maxHp,
+      shield: boss.shield ? {
+        hp: boss.shield.hp,
+        maxHp: shieldTypes[boss.shield.type].maxHp,
+        phase: boss.shield.phase,
+      } : null,
+    } : null,
     players: Array.from(state.players.values(), (player) => ({
       id: player.id,
       name: player.name,
