@@ -1,5 +1,6 @@
 import { enemyTypes, shieldTypes, getEnemyBeamBounds } from "../entities/enemies.js";
 import { planetTypes } from "../entities/planet.js";
+import { createPlayerEffects } from "./playerEffects.js";
 import playerBulletSpriteUrl from "../../../assets/player/player_bullet.png";
 import dreadnoughtBeamUrl from "../../../assets/enemies/weapons/dreadnought_beam.png";
 
@@ -311,6 +312,7 @@ export function createRenderer(context, playerSpriteUrl, planet) {
   const playerImage = loadImage(playerSpriteUrl);
   const playerBulletImage = loadImage(playerBulletSpriteUrl);
   const beamImage = loadImage(dreadnoughtBeamUrl);
+  const drawPlayerEffects = createPlayerEffects(loadImage);
   const enemyImages = new Map();
   const shieldImages = new Map();
 
@@ -353,7 +355,7 @@ export function createRenderer(context, playerSpriteUrl, planet) {
 
     // Valora que la vida del jugador no sea 0
     if (playerShip.hp > 0) drawPlayer(context, playerShip, playerImage);
-
+    drawPlayerEffects(context, playerShip, getPlayerLayout(canvas, playerShip));
   }
 
   return {

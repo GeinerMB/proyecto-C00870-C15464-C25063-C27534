@@ -1,3 +1,5 @@
+import { HUNTER_ABILITY, isHunterActive } from "../systems/abilitySystem.js";
+
 const CANVAS_WIDTH = 1280;
 const CANVAS_HEIGHT = 720;
 
@@ -14,6 +16,7 @@ export function createPlayerShip(id = "one", maxHp = 5) {
     width: 64, // Width of the ship asset
     height: 64, // Height of the ship asset
     speed: 230, // Base speed of the ship
+    ability: { remaining: 0, readyIn: 0 },
   }
 }
 
@@ -33,8 +36,11 @@ export function moveShip(ship, entry, deltaTime) {
     return;
   }
 
+  // Activa el multiplicador de velocidad si la habilidad está activa
+  const multiplier = isHunterActive(ship) ? HUNTER_ABILITY.speedMultiplier : 1;
+
   // Calculate the distance to move based on the ship's speed and the elapsed time (deltaTime)
-  const distance = ship.speed * deltaTime;
+  const distance = ship.speed * multiplier * deltaTime;
 
   // Calculate the next position of the ship based on the normalized movement vector and distance
   const nextX = ship.x + (dx / magnitude) * distance;

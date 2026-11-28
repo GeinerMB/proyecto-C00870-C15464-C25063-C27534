@@ -1,4 +1,5 @@
 import { enemyTypes, getEnemyBeamBounds } from "../entities/enemies.js";
+import { isGuardianActive } from "./abilitySystem.js";
 
 function damageEnemy(enemy, amount) {
   const shield = enemy.shield;
@@ -32,7 +33,7 @@ export function resolveBeamHits(players, enemies, touchesPlayer) {
     const { damage, hitInterval } = enemyTypes[enemy.type].beam;
 
     for (const ship of players.values()) {
-      if (ship.hp <= 0 || !touchesPlayer(ship, beam)) {
+      if (ship.hp <= 0 || isGuardianActive(ship) || !touchesPlayer(ship, beam)) {
         nextHit.delete(ship.id);
         continue;
       }
@@ -56,7 +57,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
 
     bullets.splice(i, 1);
     const enemy = enemies[index];
-    damageEnemy(enemy, 1)
+    damageEnemy(enemy, bullet.damage)
 
     if (enemy.hp === 0) {
       enemies.splice(index, 1);
@@ -75,6 +76,7 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
   for (const ship of players.values()) {
     if (ship.hp === 0) continue;
 
+    const guardianActive = isGuardianActive(ship);
     const previous = contacts.get(ship.id);
     const current = new Set();
 
@@ -82,9 +84,19 @@ export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, plan
       const enemy = enemies[i];
       if (!hitsEnemy(ship, enemy)) continue;
 
+      // La embestida protegida elimina cualquier nave normal al tocarla.
+      if (guardianActive && !enemy.isBoss) {
+        enemies.splice(i, 1);
+        continue;
+      }
+
+      // Un contacto sostenido con el jefe cuenta como una sola embestida.
       if (!previous?.has(enemy)) {
         ship.hp = Math.max(0, ship.hp - 1);
-        damageEnemy(enemy, 1);
+
+        if (!guardianActive) {
+          damageEnemy(enemy, 1);
+        }
       }
 
       if (enemy.hp === 0) {

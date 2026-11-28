@@ -9,6 +9,13 @@ import { resolveHits, resolveBeamHits } from "./systems/collisionSystem.js";
 import { roles } from "./roles.js";
 import { getHudSnapshot } from "./gameState.js";
 import { levels } from "./levels.js";
+import {
+  HUNTER_ABILITY,
+  activateAbility,
+  isHunterActive,
+  isGuardianActive,
+  updateAbility,
+} from "./systems/abilitySystem.js";
 
 export function startGame(canvas, state, onHudChange) {
   const context = canvas.getContext("2d");
@@ -33,17 +40,22 @@ export function startGame(canvas, state, onHudChange) {
     previousTime = time;
     planet.age += deltaTime;
 
+    // Si E y espacio llegan en el mismo fotograma, el disparo ya recibe la mejora
+    if (input.consumeAbility()) activateAbility(playerShip);
+
     const shots = input.consumeShots();
     const oldHp = playerShip.hp;
     const oldScore = playerShip.score;
     const oldPlanetHp = planet.hp;
     const movement = input.readMovement();
 
-    if (playerShip.hp > 0 && shots > 0) {
+    if (playerShip.hp > 0 && shots > 0 && !isGuardianActive(playerShip)) {
       const muzzle = getPlayerMuzzle(canvas, playerShip);
       if (muzzle) {
+        const damage = isHunterActive(playerShip) ? HUNTER_ABILITY.bulletDamage : 1;
+
         for (let i = 0; i < shots; i++) {
-          projectiles.push(createPlayerBullet(muzzle, playerShip.id));
+          projectiles.push(createPlayerBullet(muzzle, playerShip.id, damage));
         }
       }
     }
@@ -53,6 +65,7 @@ export function startGame(canvas, state, onHudChange) {
 
     for (let i = 0; i < steps; i++) {
       if (playerShip.hp > 0) moveShip(playerShip, movement, dt);
+      updateAbility(playerShip, dt);
       updateEnemies(enemies, dt);
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
@@ -78,6 +91,7 @@ export function startGame(canvas, state, onHudChange) {
           const config = enemyTypes[bossType];
           const spawnY = (canvas.height - config.frameHeight) / 2;
           const boss = createEnemy(bossType, canvas.width, spawnY);
+          boss.isBoss = true;
 
           boss.spriteScale = 1.5;
           boss.stopX = canvas.width * 0.82;
