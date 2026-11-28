@@ -37,6 +37,11 @@ export function startGame(canvas, state, onHudChange) {
     const oldHp = playerShip.hp;
     const oldScore = playerShip.score;
     const oldPlanetHp = planet.hp;
+    const bossType = levels[state.levelId]?.bossType;
+    const oldBoss = enemies.find((enemy) => enemy.type === bossType);
+    const oldBossHp = oldBoss?.hp;
+    const oldBossShieldHp = oldBoss?.shield?.hp;
+    const oldBossShieldPhase = oldBoss?.shield?.phase;
     const movement = input.readMovement();
 
     if (playerShip.hp > 0 && shots > 0) {
@@ -105,10 +110,14 @@ export function startGame(canvas, state, onHudChange) {
       }
     }
 
+    const currentBoss = enemies.find((enemy) => enemy.type === bossType);
     const hudChanged =
       playerShip.hp !== oldHp ||
       playerShip.score !== oldScore ||
       planet.hp !== oldPlanetHp ||
+      oldBossHp !== currentBoss?.hp ||
+      oldBossShieldHp !== currentBoss?.shield?.hp ||
+      oldBossShieldPhase !== currentBoss?.shield?.phase ||
       state.phase !== "playing";
 
     if (hudChanged) {
