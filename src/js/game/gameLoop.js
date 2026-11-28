@@ -5,7 +5,7 @@ import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet
 import { createInput } from "./systems/inputSystem.js";
 import { createRenderer, getPlayerMuzzle } from "./systems/renderSystem.js";
 import { createSpawners, updateSpawners } from "./systems/spawnersSystem.js";
-import { resolveHits } from "./systems/collisionSystem.js";
+import { resolveHits, resolveBeamHits } from "./systems/collisionSystem.js";
 import { roles } from "./roles.js";
 import { getHudSnapshot } from "./gameState.js";
 import { levels } from "./levels.js";
@@ -20,7 +20,7 @@ export function startGame(canvas, state, onHudChange) {
   const playerShip = players.get(state.localPlayerId);
   const spriteUrl = roles[playerShip.role].ship;
 
-  const { render, hitsEnemy } = createRenderer(context, spriteUrl, planet);
+  const { render, hitsEnemy, beamTouchesPlayer } = createRenderer(context, spriteUrl, planet);
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -57,6 +57,7 @@ export function startGame(canvas, state, onHudChange) {
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
       resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
+      resolveBeamHits(players, enemies, beamTouchesPlayer);
 
       if (planet.hp === 0 || playerShip.hp === 0) {
         state.phase = "defeat";
@@ -78,7 +79,20 @@ export function startGame(canvas, state, onHudChange) {
           const spawnY = (canvas.height - config.frameHeight) / 2;
           const boss = createEnemy(bossType, canvas.width, spawnY);
 
+          boss.spriteScale = 1.5;
           boss.stopX = canvas.width * 0.82;
+
+          if (config.beam) {
+            boss.nextBeamHit = new Map();
+            const marginY = 200;
+            boss.patrol = {
+              positions: [marginY, canvas.height / 2, canvas.height - marginY],
+              from: 1,
+              to: 1,
+              cycle: 0,
+            };
+          }
+
           if (config.shieldType) {
             boss.shield = {
               type: config.shieldType,

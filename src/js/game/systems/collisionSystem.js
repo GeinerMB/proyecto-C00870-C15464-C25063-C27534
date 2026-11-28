@@ -1,3 +1,5 @@
+import { enemyTypes, getEnemyBeamBounds } from "../entities/enemies.js";
+
 function damageEnemy(enemy, amount) {
   const shield = enemy.shield;
 
@@ -14,6 +16,35 @@ function damageEnemy(enemy, amount) {
   }
 
   enemy.hp = Math.max(0, enemy.hp - amount);
+}
+
+export function resolveBeamHits(players, enemies, touchesPlayer) {
+  for (const enemy of enemies) {
+    const nextHit = enemy.nextBeamHit;
+    if (!nextHit) continue;
+
+    const beam = getEnemyBeamBounds(enemy);
+    if (!beam || beam.width <= 0) {
+      nextHit.clear();
+      continue;
+    }
+
+    const { damage, hitInterval } = enemyTypes[enemy.type].beam;
+
+    for (const ship of players.values()) {
+      if (ship.hp <= 0 || !touchesPlayer(ship, beam)) {
+        nextHit.delete(ship.id);
+        continue;
+      }
+
+      const due = nextHit.get(ship.id) ?? enemy.beamTime;
+      if (enemy.beamTime < due) continue;
+
+      const hits = 1 + Math.floor((enemy.beamTime - due) / hitInterval);
+      ship.hp = Math.max(0, ship.hp - hits * damage);
+      nextHit.set(ship.id, due + hits * hitInterval);
+    }
+  }
 }
 
 export function resolveHits(players, enemies, bullets, hitsEnemy, contacts, planet) {
