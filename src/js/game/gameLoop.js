@@ -1,5 +1,6 @@
 import { createPlayerShip, moveShip } from "./entities/player.js";
 import { createPlanet } from "./entities/planet.js";
+import { dropMedkit, resolveMedkits } from "./entities/medkit.js";
 import { createEnemy, enemyTypes, shieldTypes, updateEnemies } from "./entities/enemies.js";
 import { createPlayerBullet, updatePlayerBullets } from "./entities/playerBullet.js";
 import { createInput } from "./systems/inputSystem.js";
@@ -9,6 +10,15 @@ import { resolveHits, resolveBeamHits } from "./systems/collisionSystem.js";
 import { roles } from "./roles.js";
 import { getHudSnapshot } from "./gameState.js";
 import { levels } from "./levels.js";
+import {
+  HUNTER_ABILITY,
+  SPECIALIST_ABILITY,
+  activateAbility,
+  isHunterActive,
+  isGuardianActive,
+  updateAbility,
+  getAbilityPercent,
+} from "./systems/abilitySystem.js";
 
 export function startGame(canvas, state, onHudChange) {
   const context = canvas.getContext("2d");
@@ -16,11 +26,13 @@ export function startGame(canvas, state, onHudChange) {
 
   canvas.focus();
 
-  const { players, planet, enemies, projectiles, spawners, contacts } = state;
+  const { players, planet, enemies, projectiles, spawners, contacts, medkits } = state;
   const playerShip = players.get(state.localPlayerId);
   const spriteUrl = roles[playerShip.role].ship;
 
-  const { render, hitsEnemy, beamTouchesPlayer } = createRenderer(context, spriteUrl, planet);
+  const { render, hitsEnemy, beamTouchesPlayer, touchesMedkit } =
+    createRenderer(context, spriteUrl, planet);
+    
   const input = createInput(canvas);
 
   let previousTime = null;
@@ -33,8 +45,19 @@ export function startGame(canvas, state, onHudChange) {
     previousTime = time;
     planet.age += deltaTime;
 
-    const shots = input.consumeShots();
+    const oldAbilityPercent = getAbilityPercent(playerShip);
     const oldHp = playerShip.hp;
+    let pickupChangedHud = false;
+
+    // Si E y espacio llegan en el mismo fotograma, el disparo ya recibe la mejora
+    if (input.consumeAbility() && activateAbility(playerShip)) {
+      if (playerShip.role === "especialista") {
+        dropMedkit(playerShip, medkits, SPECIALIST_ABILITY.dropHealFraction);
+      }
+    }
+
+    const shots = input.consumeShots();
+    
     const oldScore = playerShip.score;
     const oldPlanetHp = planet.hp;
     const oldLevelId = state.levelId;
@@ -46,11 +69,13 @@ export function startGame(canvas, state, onHudChange) {
     const oldBossShieldPhase = oldBoss?.shield?.phase;
     const movement = input.readMovement();
 
-    if (playerShip.hp > 0 && shots > 0) {
+    if (playerShip.hp > 0 && shots > 0 && !isGuardianActive(playerShip)) {
       const muzzle = getPlayerMuzzle(canvas, playerShip);
       if (muzzle) {
+        const damage = isHunterActive(playerShip) ? HUNTER_ABILITY.bulletDamage : 1;
+
         for (let i = 0; i < shots; i++) {
-          projectiles.push(createPlayerBullet(muzzle, playerShip.id));
+          projectiles.push(createPlayerBullet(muzzle, playerShip.id, damage));
         }
       }
     }
@@ -59,10 +84,22 @@ export function startGame(canvas, state, onHudChange) {
     const dt = deltaTime / steps;
 
     for (let i = 0; i < steps; i++) {
+
+      for (const ship of players.values()) {
+        ship.healFxRemaining = Math.max(0, ship.healFxRemaining - dt);
+      }
+
       if (playerShip.hp > 0) moveShip(playerShip, movement, dt);
+      updateAbility(playerShip, dt);
       updateEnemies(enemies, dt);
       updatePlayerBullets(projectiles, dt, canvas.width);
       updateSpawners(spawners, enemies, dt);
+
+      // Se procesan los contactos con los botiquines
+      if (resolveMedkits(medkits, players, touchesMedkit, SPECIALIST_ABILITY.pickupHealFraction)) {
+        pickupChangedHud = true;
+      }
+
       resolveHits(players, enemies, projectiles, hitsEnemy, contacts, planet);
       resolveBeamHits(players, enemies, beamTouchesPlayer);
 
@@ -93,6 +130,7 @@ export function startGame(canvas, state, onHudChange) {
           const config = enemyTypes[bossType];
           const spawnY = (canvas.height - config.frameHeight) / 2;
           const boss = createEnemy(bossType, canvas.width, spawnY);
+          boss.isBoss = true;
 
           boss.spriteScale = 1.5;
           boss.stopX = canvas.width * 0.82;
@@ -133,6 +171,7 @@ export function startGame(canvas, state, onHudChange) {
           state.bossIncoming = false;
           spawners.splice(0, spawners.length, ...createSpawners(nextLevel.spawners));
           projectiles.length = 0;
+          medkits.length = 0
           contacts.clear();
         } else {
           state.phase = "victory";
@@ -143,6 +182,8 @@ export function startGame(canvas, state, onHudChange) {
 
     const currentBoss = enemies.find((enemy) => enemy.type === bossType);
     const hudChanged =
+      pickupChangedHud ||
+      getAbilityPercent(playerShip) !== oldAbilityPercent ||
       playerShip.hp !== oldHp ||
       playerShip.score !== oldScore ||
       planet.hp !== oldPlanetHp ||
@@ -157,7 +198,7 @@ export function startGame(canvas, state, onHudChange) {
       onHudChange(getHudSnapshot(state));
     }
 
-    render(playerShip, enemies, projectiles);
+    render(playerShip, enemies, projectiles, medkits, players);
 
     if (state.phase === "playing") {
       frameId = requestAnimationFrame(frame);

@@ -10,10 +10,19 @@ export function createInput(canvas) {
   const pressedKeys = new Set();
   // Guarda la cantidad de disparos pendientes de procesar.
   let pendingShots = 0;
+  // Registra la solicitud para activar la habilidad del rol.
+  let abilityRequested = false;
 
   // Registra una tecla de movimiento mientras no se usen combinaciones especiales.
   function handleKeyDown(event) {
     // Comprueba si la tecla presionada corresponde al disparo.
+    if (event.code === "KeyE") {
+      if (event.target !== canvas || event.altKey || event.ctrlKey || event.metaKey) return;
+
+      event.preventDefault();
+      if (!event.repeat) abilityRequested = true;
+      return;
+    }
     if (event.code === "Space") {
       // Solo permite disparar cuando el evento proviene del canvas
       if (event.target !== canvas || event.altKey || event.ctrlKey || event.metaKey) return;
@@ -35,6 +44,13 @@ export function createInput(canvas) {
     pressedKeys.add(event.code);
   }
 
+  // Activa la habilidad.
+  function consumeAbility() {
+    const requested = abilityRequested;
+    abilityRequested = false;
+    return requested;
+  }
+
   // Elimina la tecla cuando el usuario la suelta.
   function handleKeyUp(event) {
     pressedKeys.delete(event.code);
@@ -44,6 +60,7 @@ export function createInput(canvas) {
   function clearKeys() {
     pressedKeys.clear();
     pendingShots = 0;
+    abilityRequested = false;
   }
 
   // Registra los eventos de teclado y pérdida de foco en la ventana.
@@ -76,6 +93,6 @@ export function createInput(canvas) {
   }
 
   // Expone las funciones necesarias para consultar movimiento,
-  // procesar disparos y limpiar los eventos al destruir el sistema.
-  return { readMovement, consumeShots, dispose };
+  // procesar disparos, habilidades y limpiar los eventos al destruir el sistema.
+  return { readMovement, consumeShots, consumeAbility, dispose };
 }

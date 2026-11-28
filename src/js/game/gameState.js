@@ -1,9 +1,10 @@
 import { createPlayerShip } from "./entities/player.js";
 import { createPlanet, planetTypes } from "./entities/planet.js";
-import { createSpawners } from "./systems/spawnersSystem.js";
 import { levels } from "./levels.js";
 import { DEFAULT_ROLE, roles } from "./roles.js";
 import { shieldTypes } from "./entities/enemies.js";
+import { createSpawners } from "./systems/spawnersSystem.js";
+import { getAbilityPercent } from "./systems/abilitySystem.js";
 
 // Crea una partida local. Los datos del lobby son opcionales para permitir
 // que el usuario entre directamente a la página de juego.
@@ -25,6 +26,7 @@ export function createGameState(setup = {}) {
     planet: createPlanet(level.planetType),
     enemies: [],
     projectiles: [],
+    medkits: [],
     spawners: createSpawners(level.spawners),
     contacts: new Map(),
   };
@@ -62,6 +64,7 @@ export function getHudSnapshot(state) {
       hp: player.hp,
       maxHp: player.maxHp,
       score: player.score,
+      abilityPercent: getAbilityPercent(player),
     })),
   };
 }
