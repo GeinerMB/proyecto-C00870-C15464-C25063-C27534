@@ -339,6 +339,54 @@ body:has(.game) {
   transform: translateX(-50%);
 }
 
+.game-modal--defeat {
+  width: min(32rem, calc(100% - 2rem));
+  box-shadow: 0 1rem 4rem rgb(0 0 0 / 65%);
+}
+
+.game-modal--defeat .game-modal__header {
+  border-bottom-color: #ef596d;
+  background: linear-gradient(135deg, #541d32, #222039);
+}
+
+.game-modal--defeat .game-modal__header h2 {
+  color: #ff8995;
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 1rem rgb(239 89 109 / 55%);
+  text-transform: uppercase;
+}
+
+.game-modal--defeat .game-modal__body {
+  padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+.game-defeat-icon {
+  display: grid;
+  width: 4rem;
+  aspect-ratio: 1;
+  place-items: center;
+  margin: 0 auto 1rem;
+  border: 2px solid #ef596d;
+  border-radius: 50%;
+  color: #ff8995;
+  font-size: 3rem;
+  line-height: 1;
+  box-shadow: 0 0 1.5rem rgb(239 89 109 / 35%);
+}
+
+.game-defeat-summary {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.game-defeat-score {
+  margin: 0.5rem 0 0;
+  color: var(--game-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .game-boss-status > strong {
   color: var(--game-warning);
   font-size: 0.75rem;

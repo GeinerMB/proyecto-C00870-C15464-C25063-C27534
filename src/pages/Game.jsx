@@ -1,7 +1,8 @@
-﻿import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { createGameState, getHudSnapshot } from "../js/game/gameState.js";
 import { roles } from "../js/game/roles.js";
+import GameModal from "../components/GameModal.jsx";
 
 import { startGame } from "../js/game/gameLoop.js";
 
@@ -113,13 +114,34 @@ export default function Game() {
 }
 
 function LocalGame({ setup }) {
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
+  const defeatDialogRef = useRef(null);
   const [gameState] = useState(() => createGameState(setup));
   const [hud, setHud] = useState(() => getHudSnapshot(gameState));
+  const activePlayer = hud.players.find(({ id }) => id === gameState.localPlayerId);
+  const defeatReason = hud.planet.hp === 0
+    ? `El planeta ${hud.planet.name} se quedó sin puntos de vida.`
+    : `La nave de ${activePlayer?.name ?? "tu jugador"} se quedó sin puntos de vida.`;
 
   useEffect(() => {
     return startGame(canvasRef.current, gameState, setHud);
   }, [gameState]);
+
+  useEffect(() => {
+    const dialog = defeatDialogRef.current;
+    if (!dialog) return undefined;
+
+    if (hud.phase === "defeat" && !dialog.open) {
+      dialog.showModal();
+    } else if (hud.phase !== "defeat" && dialog.open) {
+      dialog.close();
+    }
+
+    return () => {
+      if (dialog.open) dialog.close();
+    };
+  }, [hud.phase]);
 
   return (
     <section id="game" className="game" aria-labelledby="game-title">
@@ -207,6 +229,32 @@ function LocalGame({ setup }) {
           })}
         </ul>
       </section>
+      <GameModal
+        id="game-defeat-modal"
+        className="game-modal--defeat"
+        dialogRef={defeatDialogRef}
+        onCancel={(event) => event.preventDefault()}
+        title="¡Perdiste!"
+        description={defeatReason}
+        actions={
+          <>
+            <button type="button" onClick={() => navigate("/lobby")}>
+              Volver al lobby
+            </button>
+            <button type="button" onClick={() => navigate("/")}>
+              Volver al inicio
+            </button>
+          </>
+        }
+      >
+        <div className="game-defeat-content">
+          <span className="game-defeat-icon" aria-hidden="true">×</span>
+          <p className="game-defeat-summary">La partida ha terminado</p>
+          <p className="game-defeat-score">
+            Puntaje final: <strong>{activePlayer?.score ?? 0}</strong>
+          </p>
+        </div>
+      </GameModal>
     </section>
   );
 }
